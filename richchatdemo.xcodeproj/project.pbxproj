@@ -10,28 +10,29 @@
 		987F294716E87A8400D670C2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 987F294616E87A8300D670C2 /* UIKit.framework */; };
 		987F294916E87A8400D670C2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 987F294816E87A8400D670C2 /* Foundation.framework */; };
 		987F294B16E87A8400D670C2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 987F294A16E87A8400D670C2 /* CoreGraphics.framework */; };
-		987F295116E87A8400D670C2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 987F294F16E87A8400D670C2 /* InfoPlist.strings */; };
-		987F295316E87A8400D670C2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 987F295216E87A8400D670C2 /* main.m */; };
-		987F295716E87A8400D670C2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 987F295616E87A8400D670C2 /* AppDelegate.m */; };
-		987F295916E87A8400D670C2 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 987F295816E87A8400D670C2 /* Default.png */; };
-		987F295B16E87A8400D670C2 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 987F295A16E87A8400D670C2 /* Default@2x.png */; };
-		987F295D16E87A8400D670C2 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 987F295C16E87A8400D670C2 /* Default-568h@2x.png */; };
+		987F296E16E8814E00D670C2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 987F296516E8814E00D670C2 /* AppDelegate.m */; };
+		987F296F16E8814E00D670C2 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 987F296616E8814E00D670C2 /* Default-568h@2x.png */; };
+		987F297016E8814E00D670C2 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 987F296716E8814E00D670C2 /* Default.png */; };
+		987F297116E8814E00D670C2 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 987F296816E8814E00D670C2 /* Default@2x.png */; };
+		987F297216E8814E00D670C2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 987F296916E8814E00D670C2 /* InfoPlist.strings */; };
+		987F297316E8814E00D670C2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 987F296B16E8814E00D670C2 /* main.m */; };
+		987F297416E8814E00D670C2 /* richchatdemo-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 987F296C16E8814E00D670C2 /* richchatdemo-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		987F294316E87A8300D670C2 /* richchat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = richchat.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		987F294316E87A8300D670C2 /* richchatdemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = richchatdemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		987F294616E87A8300D670C2 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		987F294816E87A8400D670C2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		987F294A16E87A8400D670C2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		987F294E16E87A8400D670C2 /* richchat-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "richchat-Info.plist"; sourceTree = "<group>"; };
-		987F295016E87A8400D670C2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		987F295216E87A8400D670C2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		987F295416E87A8400D670C2 /* richchat-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "richchat-Prefix.pch"; sourceTree = "<group>"; };
-		987F295516E87A8400D670C2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		987F295616E87A8400D670C2 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		987F295816E87A8400D670C2 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		987F295A16E87A8400D670C2 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		987F295C16E87A8400D670C2 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		987F296416E8814E00D670C2 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		987F296516E8814E00D670C2 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		987F296616E8814E00D670C2 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		987F296716E8814E00D670C2 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		987F296816E8814E00D670C2 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		987F296A16E8814E00D670C2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		987F296B16E8814E00D670C2 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		987F296C16E8814E00D670C2 /* richchatdemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "richchatdemo-Info.plist"; sourceTree = "<group>"; };
+		987F296D16E8814E00D670C2 /* richchatdemo-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "richchatdemo-Prefix.pch"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,7 +52,7 @@
 		987F293A16E87A8300D670C2 = {
 			isa = PBXGroup;
 			children = (
-				987F294C16E87A8400D670C2 /* richchat */,
+				987F296316E8814E00D670C2 /* richchatdemo */,
 				987F294516E87A8300D670C2 /* Frameworks */,
 				987F294416E87A8300D670C2 /* Products */,
 			);
@@ -60,7 +61,7 @@
 		987F294416E87A8300D670C2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				987F294316E87A8300D670C2 /* richchat.app */,
+				987F294316E87A8300D670C2 /* richchatdemo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -75,36 +76,28 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		987F294C16E87A8400D670C2 /* richchat */ = {
+		987F296316E8814E00D670C2 /* richchatdemo */ = {
 			isa = PBXGroup;
 			children = (
-				987F295516E87A8400D670C2 /* AppDelegate.h */,
-				987F295616E87A8400D670C2 /* AppDelegate.m */,
-				987F294D16E87A8400D670C2 /* Supporting Files */,
+				987F296416E8814E00D670C2 /* AppDelegate.h */,
+				987F296516E8814E00D670C2 /* AppDelegate.m */,
+				987F296616E8814E00D670C2 /* Default-568h@2x.png */,
+				987F296716E8814E00D670C2 /* Default.png */,
+				987F296816E8814E00D670C2 /* Default@2x.png */,
+				987F296916E8814E00D670C2 /* InfoPlist.strings */,
+				987F296B16E8814E00D670C2 /* main.m */,
+				987F296C16E8814E00D670C2 /* richchatdemo-Info.plist */,
+				987F296D16E8814E00D670C2 /* richchatdemo-Prefix.pch */,
 			);
-			path = richchat;
-			sourceTree = "<group>";
-		};
-		987F294D16E87A8400D670C2 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				987F294E16E87A8400D670C2 /* richchat-Info.plist */,
-				987F294F16E87A8400D670C2 /* InfoPlist.strings */,
-				987F295216E87A8400D670C2 /* main.m */,
-				987F295416E87A8400D670C2 /* richchat-Prefix.pch */,
-				987F295816E87A8400D670C2 /* Default.png */,
-				987F295A16E87A8400D670C2 /* Default@2x.png */,
-				987F295C16E87A8400D670C2 /* Default-568h@2x.png */,
-			);
-			name = "Supporting Files";
+			path = richchatdemo;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		987F294216E87A8300D670C2 /* richchat */ = {
+		987F294216E87A8300D670C2 /* richchatdemo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 987F296016E87A8400D670C2 /* Build configuration list for PBXNativeTarget "richchat" */;
+			buildConfigurationList = 987F296016E87A8400D670C2 /* Build configuration list for PBXNativeTarget "richchatdemo" */;
 			buildPhases = (
 				987F293F16E87A8300D670C2 /* Sources */,
 				987F294016E87A8300D670C2 /* Frameworks */,
@@ -114,9 +107,9 @@
 			);
 			dependencies = (
 			);
-			name = richchat;
+			name = richchatdemo;
 			productName = richchat;
-			productReference = 987F294316E87A8300D670C2 /* richchat.app */;
+			productReference = 987F294316E87A8300D670C2 /* richchatdemo.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -128,7 +121,7 @@
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = Colin;
 			};
-			buildConfigurationList = 987F293E16E87A8300D670C2 /* Build configuration list for PBXProject "richchat" */;
+			buildConfigurationList = 987F293E16E87A8300D670C2 /* Build configuration list for PBXProject "richchatdemo" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -140,7 +133,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				987F294216E87A8300D670C2 /* richchat */,
+				987F294216E87A8300D670C2 /* richchatdemo */,
 			);
 		};
 /* End PBXProject section */
@@ -150,10 +143,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				987F295116E87A8400D670C2 /* InfoPlist.strings in Resources */,
-				987F295916E87A8400D670C2 /* Default.png in Resources */,
-				987F295B16E87A8400D670C2 /* Default@2x.png in Resources */,
-				987F295D16E87A8400D670C2 /* Default-568h@2x.png in Resources */,
+				987F296F16E8814E00D670C2 /* Default-568h@2x.png in Resources */,
+				987F297016E8814E00D670C2 /* Default.png in Resources */,
+				987F297116E8814E00D670C2 /* Default@2x.png in Resources */,
+				987F297216E8814E00D670C2 /* InfoPlist.strings in Resources */,
+				987F297416E8814E00D670C2 /* richchatdemo-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -164,18 +158,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				987F295316E87A8400D670C2 /* main.m in Sources */,
-				987F295716E87A8400D670C2 /* AppDelegate.m in Sources */,
+				987F296E16E8814E00D670C2 /* AppDelegate.m in Sources */,
+				987F297316E8814E00D670C2 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		987F294F16E87A8400D670C2 /* InfoPlist.strings */ = {
+		987F296916E8814E00D670C2 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				987F295016E87A8400D670C2 /* en */,
+				987F296A16E8814E00D670C2 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -241,9 +235,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "richchat/richchat-Prefix.pch";
-				INFOPLIST_FILE = "richchat/richchat-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "richchat/richchatdemo-Prefix.pch";
+				INFOPLIST_FILE = "richchat/richchatdemo-Info.plist";
+				PRODUCT_NAME = richchatdemo;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -252,9 +246,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "richchat/richchat-Prefix.pch";
-				INFOPLIST_FILE = "richchat/richchat-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "richchat/richchatdemo-Prefix.pch";
+				INFOPLIST_FILE = "richchat/richchatdemo-Info.plist";
+				PRODUCT_NAME = richchatdemo;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -262,7 +256,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		987F293E16E87A8300D670C2 /* Build configuration list for PBXProject "richchat" */ = {
+		987F293E16E87A8300D670C2 /* Build configuration list for PBXProject "richchatdemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				987F295E16E87A8400D670C2 /* Debug */,
@@ -271,7 +265,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		987F296016E87A8400D670C2 /* Build configuration list for PBXNativeTarget "richchat" */ = {
+		987F296016E87A8400D670C2 /* Build configuration list for PBXNativeTarget "richchatdemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				987F296116E87A8400D670C2 /* Debug */,
