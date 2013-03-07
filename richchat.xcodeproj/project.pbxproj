@@ -1,0 +1,285 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		987F294716E87A8400D670C2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 987F294616E87A8300D670C2 /* UIKit.framework */; };
+		987F294916E87A8400D670C2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 987F294816E87A8400D670C2 /* Foundation.framework */; };
+		987F294B16E87A8400D670C2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 987F294A16E87A8400D670C2 /* CoreGraphics.framework */; };
+		987F295116E87A8400D670C2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 987F294F16E87A8400D670C2 /* InfoPlist.strings */; };
+		987F295316E87A8400D670C2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 987F295216E87A8400D670C2 /* main.m */; };
+		987F295716E87A8400D670C2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 987F295616E87A8400D670C2 /* AppDelegate.m */; };
+		987F295916E87A8400D670C2 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 987F295816E87A8400D670C2 /* Default.png */; };
+		987F295B16E87A8400D670C2 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 987F295A16E87A8400D670C2 /* Default@2x.png */; };
+		987F295D16E87A8400D670C2 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 987F295C16E87A8400D670C2 /* Default-568h@2x.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		987F294316E87A8300D670C2 /* richchat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = richchat.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		987F294616E87A8300D670C2 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		987F294816E87A8400D670C2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		987F294A16E87A8400D670C2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		987F294E16E87A8400D670C2 /* richchat-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "richchat-Info.plist"; sourceTree = "<group>"; };
+		987F295016E87A8400D670C2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		987F295216E87A8400D670C2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		987F295416E87A8400D670C2 /* richchat-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "richchat-Prefix.pch"; sourceTree = "<group>"; };
+		987F295516E87A8400D670C2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		987F295616E87A8400D670C2 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		987F295816E87A8400D670C2 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		987F295A16E87A8400D670C2 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		987F295C16E87A8400D670C2 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		987F294016E87A8300D670C2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				987F294716E87A8400D670C2 /* UIKit.framework in Frameworks */,
+				987F294916E87A8400D670C2 /* Foundation.framework in Frameworks */,
+				987F294B16E87A8400D670C2 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		987F293A16E87A8300D670C2 = {
+			isa = PBXGroup;
+			children = (
+				987F294C16E87A8400D670C2 /* richchat */,
+				987F294516E87A8300D670C2 /* Frameworks */,
+				987F294416E87A8300D670C2 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		987F294416E87A8300D670C2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				987F294316E87A8300D670C2 /* richchat.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		987F294516E87A8300D670C2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				987F294616E87A8300D670C2 /* UIKit.framework */,
+				987F294816E87A8400D670C2 /* Foundation.framework */,
+				987F294A16E87A8400D670C2 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		987F294C16E87A8400D670C2 /* richchat */ = {
+			isa = PBXGroup;
+			children = (
+				987F295516E87A8400D670C2 /* AppDelegate.h */,
+				987F295616E87A8400D670C2 /* AppDelegate.m */,
+				987F294D16E87A8400D670C2 /* Supporting Files */,
+			);
+			path = richchat;
+			sourceTree = "<group>";
+		};
+		987F294D16E87A8400D670C2 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				987F294E16E87A8400D670C2 /* richchat-Info.plist */,
+				987F294F16E87A8400D670C2 /* InfoPlist.strings */,
+				987F295216E87A8400D670C2 /* main.m */,
+				987F295416E87A8400D670C2 /* richchat-Prefix.pch */,
+				987F295816E87A8400D670C2 /* Default.png */,
+				987F295A16E87A8400D670C2 /* Default@2x.png */,
+				987F295C16E87A8400D670C2 /* Default-568h@2x.png */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		987F294216E87A8300D670C2 /* richchat */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 987F296016E87A8400D670C2 /* Build configuration list for PBXNativeTarget "richchat" */;
+			buildPhases = (
+				987F293F16E87A8300D670C2 /* Sources */,
+				987F294016E87A8300D670C2 /* Frameworks */,
+				987F294116E87A8300D670C2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = richchat;
+			productName = richchat;
+			productReference = 987F294316E87A8300D670C2 /* richchat.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		987F293B16E87A8300D670C2 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = Colin;
+			};
+			buildConfigurationList = 987F293E16E87A8300D670C2 /* Build configuration list for PBXProject "richchat" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 987F293A16E87A8300D670C2;
+			productRefGroup = 987F294416E87A8300D670C2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				987F294216E87A8300D670C2 /* richchat */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		987F294116E87A8300D670C2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				987F295116E87A8400D670C2 /* InfoPlist.strings in Resources */,
+				987F295916E87A8400D670C2 /* Default.png in Resources */,
+				987F295B16E87A8400D670C2 /* Default@2x.png in Resources */,
+				987F295D16E87A8400D670C2 /* Default-568h@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		987F293F16E87A8300D670C2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				987F295316E87A8400D670C2 /* main.m in Sources */,
+				987F295716E87A8400D670C2 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		987F294F16E87A8400D670C2 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				987F295016E87A8400D670C2 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		987F295E16E87A8400D670C2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		987F295F16E87A8400D670C2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		987F296116E87A8400D670C2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "richchat/richchat-Prefix.pch";
+				INFOPLIST_FILE = "richchat/richchat-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		987F296216E87A8400D670C2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "richchat/richchat-Prefix.pch";
+				INFOPLIST_FILE = "richchat/richchat-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		987F293E16E87A8300D670C2 /* Build configuration list for PBXProject "richchat" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				987F295E16E87A8400D670C2 /* Debug */,
+				987F295F16E87A8400D670C2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		987F296016E87A8400D670C2 /* Build configuration list for PBXNativeTarget "richchat" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				987F296116E87A8400D670C2 /* Debug */,
+				987F296216E87A8400D670C2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 987F293B16E87A8300D670C2 /* Project object */;
+}
