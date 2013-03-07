@@ -52,6 +52,7 @@
 		987F293A16E87A8300D670C2 = {
 			isa = PBXGroup;
 			children = (
+				987F297516E8841A00D670C2 /* richchat */,
 				987F296316E8814E00D670C2 /* richchatdemo */,
 				987F294516E87A8300D670C2 /* Frameworks */,
 				987F294416E87A8300D670C2 /* Products */,
@@ -90,6 +91,13 @@
 				987F296D16E8814E00D670C2 /* richchatdemo-Prefix.pch */,
 			);
 			path = richchatdemo;
+			sourceTree = "<group>";
+		};
+		987F297516E8841A00D670C2 /* richchat */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = richchat;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
