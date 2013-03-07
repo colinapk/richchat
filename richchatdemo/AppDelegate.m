@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "RichChatVC.h"
 
 @implementation AppDelegate
 
@@ -21,6 +22,13 @@
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
+    
+    RichChatVC * vc=[[RichChatVC alloc]initWithTheOtherOne:@"colinapk"];
+    UINavigationController * nav=[[UINavigationController alloc]initWithRootViewController:vc];
+    [vc release];
+    self.window.rootViewController=nav;
+    [nav release];
+    
     [self.window makeKeyAndVisible];
     return YES;
 }
