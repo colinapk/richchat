@@ -236,7 +236,7 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "richchat/richchatdemo-Prefix.pch";
-				INFOPLIST_FILE = "richchat/richchatdemo-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/richchatdemo/richchatdemo-Info.plist";
 				PRODUCT_NAME = richchatdemo;
 				WRAPPER_EXTENSION = app;
 			};
@@ -247,7 +247,7 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "richchat/richchatdemo-Prefix.pch";
-				INFOPLIST_FILE = "richchat/richchatdemo-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/richchatdemo/richchatdemo-Info.plist";
 				PRODUCT_NAME = richchatdemo;
 				WRAPPER_EXTENSION = app;
 			};
