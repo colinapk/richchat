@@ -9,8 +9,7 @@
 #import "RichChatVC.h"
 
 @interface RichChatVC (){
-    CGFloat _seperationY;
-    
+    CGFloat _heightKeyboard;
     UITableView * _table;
     UIImageView * _ivBg;
     UITextView * _tvInput;
@@ -22,6 +21,17 @@
 @implementation RichChatVC
 @synthesize theOtherOne=_theOtherOne;
 @synthesize arrayHistory=_arrayHistory;
+
+
+#define SINGLE_LINE_HEIGHT 38 //60
+#define FONT_SIZE        18
+//#define SINGLE_LINE_HEIGHT 40 //64
+//#define FONT_SIZE        20
+//#define SINGLE_LINE_HEIGHT 43 //70
+//#define FONT_SIZE        22
+//#define SINGLE_LINE_HEIGHT 45 //74
+//#define FONT_SIZE        24
+
 
 - (id)initWithTheOtherOne:(NSString *)name
 {
@@ -55,12 +65,13 @@
     self.arrayHistory=array;
     [array release];
     
+    
     //ui
     self.title=[NSString stringWithFormat:NSLocalizedString(@"Chating with %@", nil),_theOtherOne];
     
-    _seperationY=self.view.frame.size.height-44;
+    
     //聊天记录
-    UITableView * table=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, _seperationY) style:UITableViewStylePlain];
+    UITableView * table=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 0) style:UITableViewStylePlain];
     table.dataSource=self;
     table.delegate=self;
     [self.view addSubview:table];
@@ -70,14 +81,16 @@
     UIImageView * ivBg=[[UIImageView alloc]initWithImage:nil];
     ivBg.userInteractionEnabled=YES;
     ivBg.backgroundColor=[UIColor lightGrayColor];
-    ivBg.frame=CGRectMake(0, _seperationY, self.view.frame.size.width, self.view.frame.size.height-_seperationY);
+    ivBg.frame=CGRectMake(0, 0, self.view.frame.size.width, SINGLE_LINE_HEIGHT+10);
     _ivBg=ivBg;
     [self.view addSubview:ivBg];
     [ivBg release];
     //文字框
     UITextView * tv=[[UITextView alloc]init];
+    tv.font=[UIFont systemFontOfSize:FONT_SIZE];
+    tv.delegate=self;
     tv.backgroundColor=[UIColor whiteColor];
-    tv.frame=CGRectMake(0, 5, ivBg.frame.size.width/2, ivBg.frame.size.height-10);
+    tv.frame=CGRectMake(0, 5, ivBg.frame.size.width/4, SINGLE_LINE_HEIGHT);
     [ivBg addSubview:tv];
     _tvInput=tv;
     [tv release];
@@ -99,10 +112,12 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
     }
 #endif
+    
 
     
 }
 -(void)viewDidAppear:(BOOL)animated{
+    [self autoMovekeyBoard:0];
     [self moveTableViewToBottom];
 }
 #pragma mark Responding to keyboard events
@@ -127,6 +142,7 @@
     [animationDurationValue getValue:&animationDuration];
     
     // Animate the resize of the text view's frame in sync with the keyboard's appearance.
+    _heightKeyboard=keyboardRect.size.height;
     [self autoMovekeyBoard:keyboardRect.size.height];
 }
 
@@ -151,14 +167,35 @@
     
     
    
-	_ivBg.frame = CGRectMake(0.0f, (float)(480.0-h-108.0), 320.0f, 44.0f);
+	_ivBg.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-SINGLE_LINE_HEIGHT-10), 320.0f, SINGLE_LINE_HEIGHT+10);
 	
-	_table.frame = CGRectMake(0.0f, 0.0f, 320.0f,(float)(480.0-h-108.0));//108包括通知栏20，导航栏44，编辑框44
+	_table.frame = CGRectMake(0.0f, 0.0f, 320.0f,(float)(480.0-h-20-44-SINGLE_LINE_HEIGHT));//通知栏20，导航栏44，编辑框SINGLE_LINE_HEIGHT
     
     [self moveTableViewToBottom];
     
 }
-
+#pragma mark - text view delegate
+-(void)textViewDidChange:(UITextView *)textView{
+    CGSize size = textView.contentSize;
+    NSLog(@"size:%f,%f",size.width,size.height);
+    if (size.height>SINGLE_LINE_HEIGHT*2) {
+        //大于3行，不再拉伸
+        return;
+    }
+    _tvInput.frame=CGRectMake(0, 5, _tvInput.frame.size.width, size.height);
+    
+    CGRect rcIvBg=_ivBg.frame;
+    rcIvBg.size.height=size.height+10;
+    rcIvBg.origin.y=self.view.frame.size.height-_heightKeyboard-rcIvBg.size.height;
+    _ivBg.frame=rcIvBg;
+    
+    
+    
+    _table.frame = CGRectMake(0.0f, 0.0f, 320.0f,_ivBg.frame.origin.y);
+    [self moveTableViewToBottom];
+    
+}
+#pragma mark - funtions
 -(IBAction)sendMessage_Click:(id)sender
 {
 	NSString *messageStr = _tvInput.text;
