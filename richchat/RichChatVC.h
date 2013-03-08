@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RichChatVC : UIViewController{
+@interface RichChatVC : UIViewController<UITableViewDataSource,UITableViewDelegate>{
 
 }
 
