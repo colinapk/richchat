@@ -18,6 +18,9 @@
 		987F297316E8814E00D670C2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 987F296B16E8814E00D670C2 /* main.m */; };
 		987F297416E8814E00D670C2 /* richchatdemo-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 987F296C16E8814E00D670C2 /* richchatdemo-Info.plist */; };
 		987F297816E885D900D670C2 /* RichChatVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 987F297716E885D900D670C2 /* RichChatVC.m */; };
+		988FA0C216ED8A2300E51EF1 /* happy.png in Resources */ = {isa = PBXBuildFile; fileRef = 988FA0C116ED8A2300E51EF1 /* happy.png */; };
+		988FA0C416ED8D6D00E51EF1 /* plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 988FA0C316ED8D6D00E51EF1 /* plus.png */; };
+		988FA0C616EDA44800E51EF1 /* voice.png in Resources */ = {isa = PBXBuildFile; fileRef = 988FA0C516EDA44800E51EF1 /* voice.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +39,9 @@
 		987F296D16E8814E00D670C2 /* richchatdemo-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "richchatdemo-Prefix.pch"; sourceTree = "<group>"; };
 		987F297616E885D900D670C2 /* RichChatVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RichChatVC.h; sourceTree = "<group>"; };
 		987F297716E885D900D670C2 /* RichChatVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RichChatVC.m; sourceTree = "<group>"; };
+		988FA0C116ED8A2300E51EF1 /* happy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = happy.png; sourceTree = "<group>"; };
+		988FA0C316ED8D6D00E51EF1 /* plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus.png; sourceTree = "<group>"; };
+		988FA0C516EDA44800E51EF1 /* voice.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = voice.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,10 +105,21 @@
 		987F297516E8841A00D670C2 /* richchat */ = {
 			isa = PBXGroup;
 			children = (
+				988FA0C016ED8A2300E51EF1 /* image */,
 				987F297616E885D900D670C2 /* RichChatVC.h */,
 				987F297716E885D900D670C2 /* RichChatVC.m */,
 			);
 			path = richchat;
+			sourceTree = "<group>";
+		};
+		988FA0C016ED8A2300E51EF1 /* image */ = {
+			isa = PBXGroup;
+			children = (
+				988FA0C516EDA44800E51EF1 /* voice.png */,
+				988FA0C316ED8D6D00E51EF1 /* plus.png */,
+				988FA0C116ED8A2300E51EF1 /* happy.png */,
+			);
+			path = image;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -161,6 +178,9 @@
 				987F297116E8814E00D670C2 /* Default@2x.png in Resources */,
 				987F297216E8814E00D670C2 /* InfoPlist.strings in Resources */,
 				987F297416E8814E00D670C2 /* richchatdemo-Info.plist in Resources */,
+				988FA0C216ED8A2300E51EF1 /* happy.png in Resources */,
+				988FA0C416ED8D6D00E51EF1 /* plus.png in Resources */,
+				988FA0C616EDA44800E51EF1 /* voice.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,6 +306,7 @@
 				987F296216E87A8400D670C2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
