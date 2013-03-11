@@ -14,9 +14,11 @@
     UIImageView * _ivBg;
     UITextField * _tfBg;
     UITextView * _tvInput;
-    UIButton * _btnSend;
+    UIButton * _btnVoice;
     UIButton * _btnFace;
     UIButton * _btnPlus;
+    UIButton * _btnTalk;
+    UILabel * _labCancel;
 }
 @property(nonatomic,strong)NSString * theOtherOne;
 @property(nonatomic,strong)NSMutableArray * arrayHistory;
@@ -85,7 +87,6 @@
     UIImageView * ivBg=[[UIImageView alloc]initWithImage:nil];
     ivBg.userInteractionEnabled=YES;
     ivBg.backgroundColor=[UIColor lightGrayColor];
-//    ivBg.image=[UIImage imageNamed:@"text_bg"];
     ivBg.frame=CGRectMake(0, 0, self.view.frame.size.width, SINGLE_LINE_HEIGHT+10);
     _ivBg=ivBg;
     [self.view addSubview:ivBg];
@@ -94,19 +95,19 @@
     UIButton * btnPlus=[UIButton buttonWithType:UIButtonTypeCustom];
     btnPlus.frame=CGRectMake(0, _tvInput.frame.origin.y, SINGLE_LINE_HEIGHT, SINGLE_LINE_HEIGHT);
     [btnPlus setBackgroundImage:[UIImage imageNamed:@"plus"] forState:UIControlStateNormal];
-//    [btnPlus addTarget:self action:@selector(sendMessage_Click:) forControlEvents:UIControlEventTouchUpInside];
+//    [btnPlus addTarget:self action:@selector(onClickSend:) forControlEvents:UIControlEventTouchUpInside];
     _btnPlus = btnPlus;
     [ivBg addSubview:btnPlus];
     //表情按钮
     UIButton * btnFace=[UIButton buttonWithType:UIButtonTypeCustom];
     btnFace.frame=CGRectMake(SINGLE_LINE_HEIGHT, _tvInput.frame.origin.y, SINGLE_LINE_HEIGHT, SINGLE_LINE_HEIGHT);
     [btnFace setBackgroundImage:[UIImage imageNamed:@"happy"] forState:UIControlStateNormal];
-//    [btnFace addTarget:self action:@selector(sendMessage_Click:) forControlEvents:UIControlEventTouchUpInside];
+//    [btnFace addTarget:self action:@selector(onClickSend:) forControlEvents:UIControlEventTouchUpInside];
     _btnFace = btnFace;
     [ivBg addSubview:btnFace];
     //文字框背景
     UITextField * tf=[[UITextField alloc]init];
-    tf.frame=CGRectMake(SINGLE_LINE_HEIGHT*2, 5, ivBg.frame.size.width/4, SINGLE_LINE_HEIGHT);
+    tf.frame=CGRectMake(SINGLE_LINE_HEIGHT*2, 5, ivBg.frame.size.width-SINGLE_LINE_HEIGHT*3, SINGLE_LINE_HEIGHT);
     [tf setBorderStyle:UITextBorderStyleRoundedRect];
     tf.userInteractionEnabled=NO;
     [ivBg addSubview:tf];
@@ -118,16 +119,47 @@
     tv.delegate=self;
     tv.backgroundColor=[UIColor clearColor];
     tv.frame=tf.frame;
+    tv.keyboardType=UIKeyboardTypeDefault;
+    tv.returnKeyType=UIReturnKeySend;
+    tv.contentMode=UIControlContentVerticalAlignmentBottom;
     [ivBg addSubview:tv];
     _tvInput=tv;
     [tv release];
-    //发送按钮
-    UIButton * btnSend=[UIButton buttonWithType:UIButtonTypeRoundedRect];
-    btnSend.frame=CGRectMake(_tvInput.frame.origin.x+_tvInput.frame.size.width, _tvInput.frame.origin.y, SINGLE_LINE_HEIGHT*1.4, SINGLE_LINE_HEIGHT);
-    [btnSend setTitle:NSLocalizedString(@"Send", nil) forState:UIControlStateNormal];
-    [btnSend addTarget:self action:@selector(sendMessage_Click:) forControlEvents:UIControlEventTouchUpInside];
-    _btnSend = btnSend;
-    [ivBg addSubview:btnSend];
+    //voice/text按钮
+    UIButton * btnVoice=[UIButton buttonWithType:UIButtonTypeCustom];
+    btnVoice.frame=CGRectMake(ivBg.frame.size.width-SINGLE_LINE_HEIGHT, _tvInput.frame.origin.y, SINGLE_LINE_HEIGHT, SINGLE_LINE_HEIGHT);
+    [btnVoice setBackgroundImage:[UIImage imageNamed:@"voice"] forState:UIControlStateNormal];
+    [btnVoice setBackgroundImage:[UIImage imageNamed:@"text"] forState:UIControlStateSelected];
+    [btnVoice addTarget:self action:@selector(onClickBtnVoiceText:) forControlEvents:UIControlEventTouchUpInside];
+    _btnVoice = btnVoice;
+    [ivBg addSubview:btnVoice];
+    
+    //Hold to talk
+    UIButton * btnTalk=[UIButton buttonWithType:UIButtonTypeCustom];
+    UIImage * img = [UIImage imageNamed:@"holdtotalk"];
+    btnTalk.frame=CGRectMake(ivBg.frame.size.width/2-img.size.width/2, 5, img.size.width, SINGLE_LINE_HEIGHT);
+    [btnTalk setBackgroundImage:img forState:UIControlStateNormal];
+    [btnTalk setTitleColor:[UIColor darkTextColor] forState:UIControlStateNormal];
+    [btnTalk setTitle:NSLocalizedString(@"Hold To Talk", nil) forState:UIControlStateNormal];
+    _btnTalk=btnTalk;
+    btnTalk.hidden=YES;
+    [ivBg addSubview:btnTalk];
+    
+    //move up to cancel
+    UILabel * lab=[[UILabel alloc]init];
+    lab.frame=CGRectMake(0, 0, 100, 100);
+    lab.center=self.view.center;
+    lab.backgroundColor=[UIColor colorWithWhite:0 alpha:0.5];
+    lab.text=NSLocalizedString(@"Move up to cancel", nil);
+    lab.lineBreakMode=UILineBreakModeWordWrap;
+    [self.view addSubview:lab];
+    _labCancel=lab;
+    [lab release];
+    //手势
+    UIPanGestureRecognizer * pan=[[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(handlePanGesture:)];
+    [btnTalk addGestureRecognizer:pan];
+    lab.userInteractionEnabled=YES;
+    [pan release];
     
     //监听键盘高度的变换
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -145,7 +177,7 @@
     
 }
 -(void)viewDidAppear:(BOOL)animated{
-    [self autoMovekeyBoard:0];
+    [self autoMovekeyBoard:0 duration:0.3];
     [self moveTableViewToBottom];
 }
 #pragma mark Responding to keyboard events
@@ -171,7 +203,7 @@
     
     // Animate the resize of the text view's frame in sync with the keyboard's appearance.
     _heightKeyboard=keyboardRect.size.height;
-    [self autoMovekeyBoard:keyboardRect.size.height];
+    [self autoMovekeyBoard:keyboardRect.size.height duration:animationDuration];
 }
 
 
@@ -188,38 +220,52 @@
     [animationDurationValue getValue:&animationDuration];
     
     
-    [self autoMovekeyBoard:0];
+    [self autoMovekeyBoard:0 duration:animationDuration];
 }
 
--(void) autoMovekeyBoard: (float) h{
+-(void) autoMovekeyBoard: (float) h duration:(NSTimeInterval)time{
     
-    
-   
-	_ivBg.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-SINGLE_LINE_HEIGHT-10), 320.0f, SINGLE_LINE_HEIGHT+10);
-    
-    _tfBg.frame=CGRectMake(_tfBg.frame.origin.x, _tfBg.frame.origin.y, _tfBg.frame.size.width, SINGLE_LINE_HEIGHT);
-    _tvInput.frame=_tfBg.frame;
+    [UIView animateWithDuration:time animations:^{
+        _ivBg.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-SINGLE_LINE_HEIGHT-10), 320.0f, SINGLE_LINE_HEIGHT+10);
+        
+        _tfBg.frame=CGRectMake(_tfBg.frame.origin.x, _tfBg.frame.origin.y, _tfBg.frame.size.width, SINGLE_LINE_HEIGHT);
+        _tvInput.frame=_tfBg.frame;
+        
+        CGRect rc=_btnVoice.frame;
+        rc.origin.y=_ivBg.frame.size.height-5-rc.size.height;
+        _btnVoice.frame=rc;
+        
+        rc.size.width=SINGLE_LINE_HEIGHT;
+        rc.origin.x=0;
+        _btnPlus.frame=rc;
+        
+        rc.origin.x=SINGLE_LINE_HEIGHT;
+        _btnFace.frame=rc;
+        
+        _table.frame = CGRectMake(0.0f, 0.0f, 320.0f,(float)(480.0-h-20-44-SINGLE_LINE_HEIGHT));//通知栏20，导航栏44，编辑框SINGLE_LINE_HEIGHT
 
-    CGRect rc=_btnSend.frame;
-    rc.origin.y=_ivBg.frame.size.height-5-rc.size.height;
-    _btnSend.frame=rc;
-    
-    rc.size.width=SINGLE_LINE_HEIGHT;
-    rc.origin.x=0;
-    _btnPlus.frame=rc;
-    
-    rc.origin.x=SINGLE_LINE_HEIGHT;
-    _btnFace.frame=rc;
-	
-	_table.frame = CGRectMake(0.0f, 0.0f, 320.0f,(float)(480.0-h-20-44-SINGLE_LINE_HEIGHT));//通知栏20，导航栏44，编辑框SINGLE_LINE_HEIGHT
-    
+    }];
+   
+	    
     [self moveTableViewToBottom];
     
 }
 #pragma mark - text view delegate
+-(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+    NSLog(@"\n%d,%d,%@",range.length,range.location,text);
+    if ([@"\n" isEqualToString:text]) {
+        //return key
+        [self onClickSend:nil];
+        return NO;
+    }else{
+        //common key
+        return YES;
+    }
+    
+}
 -(void)textViewDidChange:(UITextView *)textView{
     CGSize size = textView.contentSize;
-    NSLog(@"size:%f,%f",size.width,size.height);
+//    NSLog(@"size:%f,%f",size.width,size.height);
     if (size.height>SINGLE_LINE_HEIGHT*2) {
         //大于3行，不再拉伸
         return;
@@ -240,20 +286,48 @@
     rc.origin.y=_ivBg.frame.size.height-5-rc.size.height;
     _btnFace.frame=rc;
     
-    rc=_btnSend.frame;
+    rc=_btnVoice.frame;
     rc.origin.y=_ivBg.frame.size.height-5-rc.size.height;
-    _btnSend.frame=rc;
-    
-    
-   
-    
+    _btnVoice.frame=rc;
     
     _table.frame = CGRectMake(0.0f, 0.0f, 320.0f,_ivBg.frame.origin.y);
     [self moveTableViewToBottom];
     
 }
 #pragma mark - funtions
--(IBAction)sendMessage_Click:(id)sender
+-(void)onClickBtnVoiceText:(UIButton *)sender{
+    sender.selected=!sender.selected;
+    if (sender.selected) {
+        //进入语音模式
+        [_tvInput setText:@""];
+        [_tvInput resignFirstResponder];
+        [self autoMovekeyBoard:0 duration:0.3];
+    } else {
+        //回到文字模式
+        [_tvInput becomeFirstResponder];
+    }
+    _btnFace.hidden=sender.selected;
+    _tfBg.hidden=sender.selected;
+    _tvInput.hidden=sender.selected;
+    _btnTalk.hidden=!sender.selected;
+}
+-(void)handlePanGesture:(UIPanGestureRecognizer *)pan{
+    CGPoint point = [pan locationInView:self.view];
+    UIGestureRecognizerState state=pan.state;
+    BOOL isOnLab = CGRectContainsPoint(_labCancel.frame, point);
+    if (isOnLab) {
+        _labCancel.text=@"in";
+        if (UIGestureRecognizerStateEnded==state) {
+            [self sendMessage:@"一段语音"];
+        }
+    }else{
+        _labCancel.text=@"out";
+        if (UIGestureRecognizerStateEnded==state) {
+            [self sendMessage:@"一段语音"];
+        }
+    }
+}
+-(IBAction)onClickSend:(id)sender
 {
 	NSString *messageStr = _tvInput.text;
    

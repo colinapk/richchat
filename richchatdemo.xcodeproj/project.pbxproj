@@ -21,6 +21,9 @@
 		988FA0C216ED8A2300E51EF1 /* happy.png in Resources */ = {isa = PBXBuildFile; fileRef = 988FA0C116ED8A2300E51EF1 /* happy.png */; };
 		988FA0C416ED8D6D00E51EF1 /* plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 988FA0C316ED8D6D00E51EF1 /* plus.png */; };
 		988FA0C616EDA44800E51EF1 /* voice.png in Resources */ = {isa = PBXBuildFile; fileRef = 988FA0C516EDA44800E51EF1 /* voice.png */; };
+		988FA0C816EDB04F00E51EF1 /* box.png in Resources */ = {isa = PBXBuildFile; fileRef = 988FA0C716EDB04F00E51EF1 /* box.png */; };
+		988FA0CA16EDB73400E51EF1 /* holdtotalk.png in Resources */ = {isa = PBXBuildFile; fileRef = 988FA0C916EDB73400E51EF1 /* holdtotalk.png */; };
+		988FA0CC16EDBBDD00E51EF1 /* text.png in Resources */ = {isa = PBXBuildFile; fileRef = 988FA0CB16EDBBDD00E51EF1 /* text.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +45,9 @@
 		988FA0C116ED8A2300E51EF1 /* happy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = happy.png; sourceTree = "<group>"; };
 		988FA0C316ED8D6D00E51EF1 /* plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus.png; sourceTree = "<group>"; };
 		988FA0C516EDA44800E51EF1 /* voice.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = voice.png; sourceTree = "<group>"; };
+		988FA0C716EDB04F00E51EF1 /* box.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = box.png; sourceTree = "<group>"; };
+		988FA0C916EDB73400E51EF1 /* holdtotalk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = holdtotalk.png; sourceTree = "<group>"; };
+		988FA0CB16EDBBDD00E51EF1 /* text.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = text.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +121,9 @@
 		988FA0C016ED8A2300E51EF1 /* image */ = {
 			isa = PBXGroup;
 			children = (
+				988FA0CB16EDBBDD00E51EF1 /* text.png */,
+				988FA0C916EDB73400E51EF1 /* holdtotalk.png */,
+				988FA0C716EDB04F00E51EF1 /* box.png */,
 				988FA0C516EDA44800E51EF1 /* voice.png */,
 				988FA0C316ED8D6D00E51EF1 /* plus.png */,
 				988FA0C116ED8A2300E51EF1 /* happy.png */,
@@ -181,6 +190,9 @@
 				988FA0C216ED8A2300E51EF1 /* happy.png in Resources */,
 				988FA0C416ED8D6D00E51EF1 /* plus.png in Resources */,
 				988FA0C616EDA44800E51EF1 /* voice.png in Resources */,
+				988FA0C816EDB04F00E51EF1 /* box.png in Resources */,
+				988FA0CA16EDB73400E51EF1 /* holdtotalk.png in Resources */,
+				988FA0CC16EDBBDD00E51EF1 /* text.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
