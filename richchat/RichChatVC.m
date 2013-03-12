@@ -18,7 +18,9 @@
     UIButton * _btnFace;
     UIButton * _btnPlus;
     UIButton * _btnTalk;
-    UILabel * _labCancel;
+    UIButton * _btnCancel;
+    
+    BOOL  _isPan;
 }
 @property(nonatomic,strong)NSString * theOtherOne;
 @property(nonatomic,strong)NSMutableArray * arrayHistory;
@@ -144,21 +146,24 @@
     _btnTalk=btnTalk;
     btnTalk.hidden=YES;
     [ivBg addSubview:btnTalk];
+    [btnTalk addTarget:self action:@selector(onTalkTouchDown:) forControlEvents:UIControlEventTouchDown];
+    [btnTalk addTarget:self action:@selector(onTalkTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
     
     //move up to cancel
-    UILabel * lab=[[UILabel alloc]init];
+    UIButton * lab=[UIButton buttonWithType:UIButtonTypeCustom];
     lab.frame=CGRectMake(0, 0, 100, 100);
     lab.center=self.view.center;
     lab.backgroundColor=[UIColor colorWithWhite:0 alpha:0.5];
-    lab.text=NSLocalizedString(@"Move up to cancel", nil);
-    lab.lineBreakMode=UILineBreakModeWordWrap;
+    [lab setTitle:NSLocalizedString(@"Move Up To Cancel", nil) forState:UIControlStateNormal];
+    [lab setTitle:NSLocalizedString(@"Release To Cancel", nil) forState:UIControlStateSelected];
     [self.view addSubview:lab];
-    _labCancel=lab;
-    [lab release];
+    _btnCancel=lab;
+    _btnCancel.hidden=YES;
+
     //手势
     UIPanGestureRecognizer * pan=[[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(handlePanGesture:)];
-    [btnTalk addGestureRecognizer:pan];
-    lab.userInteractionEnabled=YES;
+    [_btnTalk addGestureRecognizer:pan];
+//    lab.userInteractionEnabled=YES;
     [pan release];
     
     //监听键盘高度的变换
@@ -295,6 +300,19 @@
     
 }
 #pragma mark - funtions
+-(void)onTalkTouchDown:(UIButton *)sender{
+    _isPan=NO;
+    _btnCancel.hidden=NO;
+    NSLog(@"开始录音");
+}
+-(void)onTalkTouchUpInside:(UIButton *)sender{
+    if (_isPan) {
+        return;
+    }
+    _btnCancel.hidden=YES;
+    NSLog(@"停止录音");
+     [self sendMessage:@"一段语音"];
+}
 -(void)onClickBtnVoiceText:(UIButton *)sender{
     sender.selected=!sender.selected;
     if (sender.selected) {
@@ -313,19 +331,21 @@
 }
 -(void)handlePanGesture:(UIPanGestureRecognizer *)pan{
     CGPoint point = [pan locationInView:self.view];
-    UIGestureRecognizerState state=pan.state;
-    BOOL isOnLab = CGRectContainsPoint(_labCancel.frame, point);
-    if (isOnLab) {
-        _labCancel.text=@"in";
-        if (UIGestureRecognizerStateEnded==state) {
+    BOOL isOnLab = CGRectContainsPoint(_btnCancel.frame, point);
+    _btnCancel.selected=isOnLab;
+    _isPan=YES;
+    if (UIGestureRecognizerStateEnded==pan.state) {
+        _btnCancel.hidden=YES;
+        NSLog(@"停止录音");
+        if (isOnLab) {
+           
+        } else {
             [self sendMessage:@"一段语音"];
         }
-    }else{
-        _labCancel.text=@"out";
-        if (UIGestureRecognizerStateEnded==state) {
-            [self sendMessage:@"一段语音"];
-        }
+        
     }
+    
+    
 }
 -(IBAction)onClickSend:(id)sender
 {
