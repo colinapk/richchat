@@ -5,6 +5,8 @@
 
 *.xcscheme
 
-*.plist
+
 
 *.xcsettings
+
+.DS_Store
