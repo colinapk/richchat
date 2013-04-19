@@ -119,13 +119,14 @@
     tf.userInteractionEnabled=NO;
     [ivBg addSubview:tf];
     _tfBg=tf;
+//    _tfBg.hidden=YES;
     [tf release];
     
     //文字框
     HPGrowingTextView * tv=[[HPGrowingTextView alloc]init];
     tv.font=[UIFont systemFontOfSize:FONT_SIZE];
     tv.delegate=self;
-    tv.backgroundColor=[UIColor orangeColor];
+    tv.backgroundColor=[UIColor clearColor];
     tv.frame=tf.frame;
 //    tv.keyboardType=UIKeyboardTypeDefault;
     tv.returnKeyType=UIReturnKeySend;
@@ -188,8 +189,8 @@
 
     
 }
--(void)viewDidAppear:(BOOL)animated{
-    [self autoMovekeyBoard:0 duration:0.3];
+-(void)viewWillAppear:(BOOL)animated{
+    [self autoMovekeyBoard:0 duration:0];
 }
 #pragma mark Responding to keyboard events
 - (void)keyboardWillShow:(NSNotification *)notification {
@@ -237,7 +238,10 @@
 -(void) autoMovekeyBoard: (float) h duration:(NSTimeInterval)time{
     
     [UIView animateWithDuration:time animations:^{
-        _ivBg.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-SINGLE_LINE_HEIGHT-10), 320.0f, SINGLE_LINE_HEIGHT+10);
+        _ivBg.frame = CGRectMake(_ivBg.frame.origin.x
+                                 , (float)(self.view.frame.size.height-h-SINGLE_LINE_HEIGHT-10)
+                                 , _ivBg.frame.size.width
+                                 , SINGLE_LINE_HEIGHT+10);
         
         _tfBg.frame=CGRectMake(_tfBg.frame.origin.x, _tfBg.frame.origin.y, _tfBg.frame.size.width, SINGLE_LINE_HEIGHT);
         _tvInput.frame=_tfBg.frame;
@@ -253,58 +257,21 @@
         rc.origin.x=SINGLE_LINE_HEIGHT;
         _btnFace.frame=rc;
         
-        _table.frame = CGRectMake(0.0f, 0.0f, 320.0f,(float)(480.0-h-20-44-SINGLE_LINE_HEIGHT));//通知栏20，导航栏44，编辑框SINGLE_LINE_HEIGHT
+        //通知栏20，导航栏44，编辑框SINGLE_LINE_HEIGHT
+        _table.frame = CGRectMake(0.0f, 0.0f, 320.0f,(float)(480.0-h-20-44-SINGLE_LINE_HEIGHT-10));
+        
 
+    } completion:^(BOOL finished){
+        if (finished) {
+            [self moveTableViewToBottom];
+        }
     }];
    
 	    
-    [self moveTableViewToBottom];
+    
     
 }
-#pragma mark - text view delegate
--(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
-    NSLog(@"\n%d,%d,%@",range.length,range.location,text);
-    if ([@"\n" isEqualToString:text]) {
-        //return key
-        [self onClickSend:nil];
-        return NO;
-    }else{
-        //common key
-        return YES;
-    }
-    
-}
--(void)textViewDidChange:(UITextView *)textView{
-    CGSize size = textView.contentSize;
-//    NSLog(@"size:%f,%f",size.width,size.height);
-    if (size.height>SINGLE_LINE_HEIGHT*2) {
-        //大于3行，不再拉伸
-        return;
-    }
-    _tfBg.frame=CGRectMake(_tfBg.frame.origin.x, _tfBg.frame.origin.y, _tfBg.frame.size.width, size.height);
-    _tvInput.frame=_tfBg.bounds;
-    
-    CGRect rc=_ivBg.frame;
-    rc.size.height=size.height+10;
-    rc.origin.y=self.view.frame.size.height-_heightKeyboard-rc.size.height;
-    _ivBg.frame=rc;
-    
-    rc=_btnPlus.frame;
-    rc.origin.y=_ivBg.frame.size.height-5-rc.size.height;
-    _btnPlus.frame=rc;
-    
-    rc=_btnFace.frame;
-    rc.origin.y=_ivBg.frame.size.height-5-rc.size.height;
-    _btnFace.frame=rc;
-    
-    rc=_btnVoice.frame;
-    rc.origin.y=_ivBg.frame.size.height-5-rc.size.height;
-    _btnVoice.frame=rc;
-    
-    _table.frame = CGRectMake(0.0f, 0.0f, 320.0f,_ivBg.frame.origin.y);
-    [self moveTableViewToBottom];
-    
-}
+
 #pragma mark - funtions
 -(void)onTalkTouchDown:(UIButton *)sender{
     _isPan=NO;
@@ -323,7 +290,7 @@
     sender.selected=!sender.selected;
     if (sender.selected) {
         //进入语音模式
-        [_tvInput setText:@""];
+//        [_tvInput setText:@""];
         [_tvInput resignFirstResponder];
         [self autoMovekeyBoard:0 duration:0.3];
     } else {
@@ -375,7 +342,7 @@
 -(void)sendMessage:(NSString*)str{
     [_arrayHistory addObject:str];
     [_table reloadData];
-    [self moveTableViewToBottom];
+//    [self moveTableViewToBottom];
 }
 #pragma mark - table
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -393,5 +360,37 @@
 -(void)moveTableViewToBottom{
     NSIndexPath * pi=[NSIndexPath indexPathForRow:_arrayHistory.count-1 inSection:0];
     [_table scrollToRowAtIndexPath:pi atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+}
+#pragma mark - hptext delegate
+-(void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height{
+   
+    _tfBg.frame=CGRectMake(_tfBg.frame.origin.x, _tfBg.frame.origin.y, _tfBg.frame.size.width, height);
+    _tvInput.frame=_tfBg.frame;
+    
+    CGRect rc=_ivBg.frame;
+    rc.size.height=height+10;
+    rc.origin.y=self.view.frame.size.height-_heightKeyboard-rc.size.height;
+    _ivBg.frame=rc;
+    
+    rc=_btnPlus.frame;
+    rc.origin.y=_ivBg.frame.size.height-5-rc.size.height;
+    _btnPlus.frame=rc;
+    
+    rc=_btnFace.frame;
+    rc.origin.y=_ivBg.frame.size.height-5-rc.size.height;
+    _btnFace.frame=rc;
+    
+    rc=_btnVoice.frame;
+    rc.origin.y=_ivBg.frame.size.height-5-rc.size.height;
+    _btnVoice.frame=rc;
+    
+    _table.frame = CGRectMake(0.0f, 0.0f, 320.0f,_ivBg.frame.origin.y);
+    [self moveTableViewToBottom];
+}
+-(BOOL)growingTextViewShouldReturn:(HPGrowingTextView *)growingTextView{
+
+        //return key
+        [self onClickSend:nil];
+        return NO;
 }
 @end
