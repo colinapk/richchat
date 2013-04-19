@@ -65,6 +65,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
     //data
     NSMutableArray * array=[[NSMutableArray alloc]init];
     for (int i=0; i<10; i++) {
@@ -85,6 +86,7 @@
     [self.view addSubview:table];
     _table = table;
     [table release];
+    
     //输入区域
     UIImageView * ivBg=[[UIImageView alloc]initWithImage:nil];
     ivBg.userInteractionEnabled=YES;
@@ -93,6 +95,7 @@
     _ivBg=ivBg;
     [self.view addSubview:ivBg];
     [ivBg release];
+    
     //+按钮
     UIButton * btnPlus=[UIButton buttonWithType:UIButtonTypeCustom];
     btnPlus.frame=CGRectMake(0, _tvInput.frame.origin.y, SINGLE_LINE_HEIGHT, SINGLE_LINE_HEIGHT);
@@ -100,6 +103,7 @@
 //    [btnPlus addTarget:self action:@selector(onClickSend:) forControlEvents:UIControlEventTouchUpInside];
     _btnPlus = btnPlus;
     [ivBg addSubview:btnPlus];
+    
     //表情按钮
     UIButton * btnFace=[UIButton buttonWithType:UIButtonTypeCustom];
     btnFace.frame=CGRectMake(SINGLE_LINE_HEIGHT, _tvInput.frame.origin.y, SINGLE_LINE_HEIGHT, SINGLE_LINE_HEIGHT);
@@ -107,6 +111,7 @@
 //    [btnFace addTarget:self action:@selector(onClickSend:) forControlEvents:UIControlEventTouchUpInside];
     _btnFace = btnFace;
     [ivBg addSubview:btnFace];
+    
     //文字框背景
     UITextField * tf=[[UITextField alloc]init];
     tf.frame=CGRectMake(SINGLE_LINE_HEIGHT*2, 5, ivBg.frame.size.width-SINGLE_LINE_HEIGHT*3, SINGLE_LINE_HEIGHT);
@@ -115,11 +120,12 @@
     [ivBg addSubview:tf];
     _tfBg=tf;
     [tf release];
+    
     //文字框
     UITextView * tv=[[UITextView alloc]init];
     tv.font=[UIFont systemFontOfSize:FONT_SIZE];
     tv.delegate=self;
-    tv.backgroundColor=[UIColor clearColor];
+    tv.backgroundColor=[UIColor orangeColor];
     tv.frame=tf.frame;
     tv.keyboardType=UIKeyboardTypeDefault;
     tv.returnKeyType=UIReturnKeySend;
@@ -127,6 +133,7 @@
     [ivBg addSubview:tv];
     _tvInput=tv;
     [tv release];
+    
     //voice/text按钮
     UIButton * btnVoice=[UIButton buttonWithType:UIButtonTypeCustom];
     btnVoice.frame=CGRectMake(ivBg.frame.size.width-SINGLE_LINE_HEIGHT, _tvInput.frame.origin.y, SINGLE_LINE_HEIGHT, SINGLE_LINE_HEIGHT);
@@ -183,7 +190,6 @@
 }
 -(void)viewDidAppear:(BOOL)animated{
     [self autoMovekeyBoard:0 duration:0.3];
-    [self moveTableViewToBottom];
 }
 #pragma mark Responding to keyboard events
 - (void)keyboardWillShow:(NSNotification *)notification {
@@ -276,7 +282,7 @@
         return;
     }
     _tfBg.frame=CGRectMake(_tfBg.frame.origin.x, _tfBg.frame.origin.y, _tfBg.frame.size.width, size.height);
-    _tvInput.frame=_tfBg.frame;
+    _tvInput.frame=_tfBg.bounds;
     
     CGRect rc=_ivBg.frame;
     rc.size.height=size.height+10;
