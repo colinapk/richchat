@@ -126,7 +126,7 @@
     HPGrowingTextView * tv=[[HPGrowingTextView alloc]init];
     tv.font=[UIFont systemFontOfSize:FONT_SIZE];
     tv.delegate=self;
-    tv.backgroundColor=[UIColor clearColor];
+    tv.internalTextView.backgroundColor=[UIColor clearColor];
     tv.frame=tf.frame;
 //    tv.keyboardType=UIKeyboardTypeDefault;
     tv.returnKeyType=UIReturnKeySend;
