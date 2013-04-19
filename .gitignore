@@ -10,3 +10,11 @@
 *.xcsettings
 
 .DS_Store
+
+*.xcbkptlist
+
+richchatdemo.xcodeproj/xcuserdata/jiawang.xcuserdatad/xcdebugger/Breakpoints.xcbkptlist
+
+*.xcbkptlist
+
+*.xcbkptlist
