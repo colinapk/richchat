@@ -13,7 +13,7 @@
     UITableView * _table;
     UIImageView * _ivBg;
     UITextField * _tfBg;
-    UITextView * _tvInput;
+    HPGrowingTextView * _tvInput;
     UIButton * _btnVoice;
     UIButton * _btnFace;
     UIButton * _btnPlus;
@@ -122,12 +122,12 @@
     [tf release];
     
     //文字框
-    UITextView * tv=[[UITextView alloc]init];
+    HPGrowingTextView * tv=[[HPGrowingTextView alloc]init];
     tv.font=[UIFont systemFontOfSize:FONT_SIZE];
     tv.delegate=self;
     tv.backgroundColor=[UIColor orangeColor];
     tv.frame=tf.frame;
-    tv.keyboardType=UIKeyboardTypeDefault;
+//    tv.keyboardType=UIKeyboardTypeDefault;
     tv.returnKeyType=UIReturnKeySend;
     tv.contentMode=UIControlContentVerticalAlignmentBottom;
     [ivBg addSubview:tv];

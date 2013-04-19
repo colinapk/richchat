@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HPGrowingTextView.h"
 
 @interface RichChatVC : UIViewController<UITableViewDataSource
 ,UITableViewDelegate
-,UITextViewDelegate>{
+,UITextViewDelegate
+,HPGrowingTextViewDelegate>{
 
 }
 
