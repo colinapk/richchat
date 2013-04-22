@@ -261,6 +261,7 @@
 #pragma mark - funtions
 -(void)reloadTableView{
     [_table reloadData];
+    [self moveTableViewToBottom];
 }
 -(void)onTalkTouchDown:(UIButton *)sender{
     _isPan=NO;
@@ -321,18 +322,21 @@
         [alert release];
     }else
     {
-        [self sendMessage:messageStr];
+        RichChatItem * item=[[RichChatItem alloc]init];
+        item.itemSenderTitle=messageStr;
+        [self sendMessage:item];
+        [item release];
     }
 	_tvInput.text = @"";
 	[_tvInput resignFirstResponder];
     
     
 }
--(void)sendMessage:(NSString*)str{
+-(void)sendMessage:(RichChatItem*)item{
 //    [_arrayHistory addObject:str];
 //    [_table reloadData];
     if (self.delegate && [self.delegate respondsToSelector:@selector(richChatRequestToSendMessage:)]) {
-        [self.delegate richChatRequestToSendMessage:nil];
+        [self.delegate richChatRequestToSendMessage:item];
     }
     
 }
@@ -361,7 +365,7 @@
 -(void)moveTableViewToBottom{
     NSInteger rowsCount=[_table numberOfRowsInSection:0];
     if (rowsCount>0) {
-        NSIndexPath * pi=[NSIndexPath indexPathForRow:-1 inSection:0];
+        NSIndexPath * pi=[NSIndexPath indexPathForRow:rowsCount-1 inSection:0];
         [_table scrollToRowAtIndexPath:pi atScrollPosition:UITableViewScrollPositionBottom animated:NO];
     }
 

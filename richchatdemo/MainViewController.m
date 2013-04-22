@@ -64,7 +64,7 @@
 -(void)richChatRequestToUpdateHistory{
     //模仿网络请求
     NSDictionary * item=[[NSDictionary alloc]initWithObjectsAndKeys:@"Jim",@"sender_title",nil];
-    NSArray * items=[[NSArray alloc]initWithObjects:item,item,item,item,item,item, nil];
+    NSArray * items=[[NSArray alloc]initWithObjects:item,item, nil];
     NSDictionary * dict=[[NSDictionary alloc]initWithObjectsAndKeys:@"200",@"code",items,@"data",nil];
     
     [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(requestSucceed:) userInfo:dict repeats:NO];
@@ -75,7 +75,18 @@
     
 }
 -(void)richChatRequestToSendMessage:(RichChatItem *)item{
+    //模仿网络请求
+    NSDictionary * dictitem=[[NSDictionary alloc]initWithObjectsAndKeys:item.itemSenderTitle,@"sender_title",nil];
+    NSMutableArray * items=[[NSMutableArray alloc]initWithArray:self.chatArray];
+    [items addObject:dictitem];
+    NSDictionary * dict=[[NSDictionary alloc]initWithObjectsAndKeys:@"200",@"code",items,@"data",nil];
     
+    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(requestSucceed:) userInfo:dict repeats:NO];
+    
+    [dict release];
+    [items release];
+    [dictitem release];
+
 }
 -(NSInteger)richChatHistoryCount{
     return self.chatArray.count;
