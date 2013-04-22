@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "RichChatVC.h"
+#import "MainViewController.h"
 
 @implementation AppDelegate
 
@@ -23,7 +23,7 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     
-    RichChatVC * vc=[[RichChatVC alloc]initWithTheOtherOne:@"colinapk"];
+    MainViewController * vc=[[MainViewController alloc]init];
     UINavigationController * nav=[[UINavigationController alloc]initWithRootViewController:vc];
     [vc release];
     self.window.rootViewController=nav;

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		982B2B3C1725245700BD4AA4 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 982B2B3B1725245700BD4AA4 /* MainViewController.m */; };
 		986302EA172142860095EC95 /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 986302E7172142860095EC95 /* HPGrowingTextView.m */; };
 		986302EB172142860095EC95 /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 986302E9172142860095EC95 /* HPTextViewInternal.m */; };
 		987F294716E87A8400D670C2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 987F294616E87A8300D670C2 /* UIKit.framework */; };
@@ -29,6 +30,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		982B2B3A1725245700BD4AA4 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		982B2B3B1725245700BD4AA4 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		986302E6172142860095EC95 /* HPGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPGrowingTextView.h; sourceTree = "<group>"; };
 		986302E7172142860095EC95 /* HPGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPGrowingTextView.m; sourceTree = "<group>"; };
 		986302E8172142860095EC95 /* HPTextViewInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPTextViewInternal.h; sourceTree = "<group>"; };
@@ -114,6 +117,8 @@
 			children = (
 				987F296416E8814E00D670C2 /* AppDelegate.h */,
 				987F296516E8814E00D670C2 /* AppDelegate.m */,
+				982B2B3A1725245700BD4AA4 /* MainViewController.h */,
+				982B2B3B1725245700BD4AA4 /* MainViewController.m */,
 				987F296616E8814E00D670C2 /* Default-568h@2x.png */,
 				987F296716E8814E00D670C2 /* Default.png */,
 				987F296816E8814E00D670C2 /* Default@2x.png */,
@@ -226,6 +231,7 @@
 				987F297816E885D900D670C2 /* RichChatVC.m in Sources */,
 				986302EA172142860095EC95 /* HPGrowingTextView.m in Sources */,
 				986302EB172142860095EC95 /* HPTextViewInternal.m in Sources */,
+				982B2B3C1725245700BD4AA4 /* MainViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

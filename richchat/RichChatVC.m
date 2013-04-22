@@ -7,7 +7,16 @@
 //
 
 #import "RichChatVC.h"
+//富聊天条目的模型实现
+@implementation RichChatItem
+@synthesize itemType;
+@synthesize itemSenderTitle;
+@synthesize itemContent;
+@synthesize itemSenderFace;
+@synthesize itemTime;
+@end
 
+//富聊天视图控制的私有成员变量
 @interface RichChatVC (){
     CGFloat _heightKeyboard;
     UITableView * _table;
@@ -22,15 +31,12 @@
     
     BOOL  _isPan;
 }
-@property(nonatomic,strong)NSString * theOtherOne;
-@property(nonatomic,strong)NSMutableArray * arrayHistory;
 @end
 
+//富聊天视图控制的实现
 @implementation RichChatVC
-@synthesize theOtherOne=_theOtherOne;
-@synthesize arrayHistory=_arrayHistory;
-
-
+@synthesize delegate=_delegate;
+//预定义行高 字体
 #define SINGLE_LINE_HEIGHT 38 //60
 #define FONT_SIZE        18
 //#define SINGLE_LINE_HEIGHT 40 //64
@@ -41,20 +47,6 @@
 //#define FONT_SIZE        24
 
 
-- (id)initWithTheOtherOne:(NSString *)name
-{
-    self = [super init];
-    if (self) {
-        // Custom initialization
-        self.theOtherOne=name;
-    }
-    return self;
-}
--(void)dealloc{
-    [_arrayHistory release];
-    [_theOtherOne release];
-    [super dealloc];
-}
 -(void)loadView{
     UIView * view=[[UIView alloc]init];
     view.frame=CGRectMake(0, 0, 320, self.navigationController.navigationBarHidden?460:(460-self.navigationController.navigationBar.frame.size.height));
@@ -66,17 +58,9 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    //data
-    NSMutableArray * array=[[NSMutableArray alloc]init];
-    for (int i=0; i<10; i++) {
-        [array addObject:[NSString stringWithFormat:@"Row %d",i]];
-    }
-    self.arrayHistory=array;
-    [array release];
+        
     
-    
-    //ui
-    self.title=[NSString stringWithFormat:NSLocalizedString(@"Chating with %@", nil),_theOtherOne];
+   
     
     
     //聊天记录
@@ -186,7 +170,9 @@
     }
 #endif
     
-
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(richChatRequestToUpdateHistory)]) {
+        [self.delegate richChatRequestToUpdateHistory];
+    }
     
 }
 -(void)viewWillAppear:(BOOL)animated{
@@ -273,6 +259,9 @@
 }
 
 #pragma mark - funtions
+-(void)reloadTableView{
+    [_table reloadData];
+}
 -(void)onTalkTouchDown:(UIButton *)sender{
     _isPan=NO;
     _btnCancel.hidden=NO;
@@ -340,9 +329,12 @@
     
 }
 -(void)sendMessage:(NSString*)str{
-    [_arrayHistory addObject:str];
-    [_table reloadData];
-//    [self moveTableViewToBottom];
+//    [_arrayHistory addObject:str];
+//    [_table reloadData];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(richChatRequestToSendMessage:)]) {
+        [self.delegate richChatRequestToSendMessage:nil];
+    }
+    
 }
 #pragma mark - table
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -351,15 +343,28 @@
     if (!cell) {
         cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentify];
     }
-    cell.textLabel.text=[_arrayHistory objectAtIndex:indexPath.row];
+    RichChatItem * item=[[RichChatItem alloc]init];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(richChatHistoryItem:AtIndex:)]) {
+        [self.delegate richChatHistoryItem:item AtIndex:indexPath.row];
+    }
+    cell.textLabel.text=item.itemSenderTitle;
+    cell.detailTextLabel.text=[NSString stringWithFormat:@"%d",item.itemType];
+    
     return cell;
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return _arrayHistory.count;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(richChatHistoryCount)]) {
+        return [self.delegate richChatHistoryCount];
+    }else
+        return 0;
 }
 -(void)moveTableViewToBottom{
-    NSIndexPath * pi=[NSIndexPath indexPathForRow:_arrayHistory.count-1 inSection:0];
-    [_table scrollToRowAtIndexPath:pi atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    NSInteger rowsCount=[_table numberOfRowsInSection:0];
+    if (rowsCount>0) {
+        NSIndexPath * pi=[NSIndexPath indexPathForRow:-1 inSection:0];
+        [_table scrollToRowAtIndexPath:pi atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+    }
+
 }
 #pragma mark - hptext delegate
 -(void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height{
