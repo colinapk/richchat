@@ -99,7 +99,7 @@
             item.itemSenderTitle=[dict objectForKey:@"sender_title"];
             item.itemType=ENUM_HISTORY_TYPE_TEXT;
             item.itemTime=[NSDate timeIntervalSinceReferenceDate];
-            item.itemSenderFace=[UIImage imageNamed:@"happy"];
+            item.itemSenderFace=[UIImage imageNamed:@"wangjia"];
             item.itemContent=@"Hello!";
         }
     }
