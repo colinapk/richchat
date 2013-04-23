@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		982B2B3C1725245700BD4AA4 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 982B2B3B1725245700BD4AA4 /* MainViewController.m */; };
-		982B2B3F1725431800BD4AA4 /* bubble@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 982B2B3D1725431800BD4AA4 /* bubble@2x.png */; };
-		982B2B401725431800BD4AA4 /* bubbleSelf@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 982B2B3E1725431800BD4AA4 /* bubbleSelf@2x.png */; };
+		982B2B3F1725431800BD4AA4 /* bubble.png in Resources */ = {isa = PBXBuildFile; fileRef = 982B2B3D1725431800BD4AA4 /* bubble.png */; };
+		982B2B401725431800BD4AA4 /* bubbleSelf.png in Resources */ = {isa = PBXBuildFile; fileRef = 982B2B3E1725431800BD4AA4 /* bubbleSelf.png */; };
 		982B2B421725448C00BD4AA4 /* wangjia.png in Resources */ = {isa = PBXBuildFile; fileRef = 982B2B411725448C00BD4AA4 /* wangjia.png */; };
 		986302EA172142860095EC95 /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 986302E7172142860095EC95 /* HPGrowingTextView.m */; };
 		986302EB172142860095EC95 /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 986302E9172142860095EC95 /* HPTextViewInternal.m */; };
@@ -29,13 +29,15 @@
 		988FA0C816EDB04F00E51EF1 /* box@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 988FA0C716EDB04F00E51EF1 /* box@2x.png */; };
 		988FA0CA16EDB73400E51EF1 /* holdtotalk@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 988FA0C916EDB73400E51EF1 /* holdtotalk@2x.png */; };
 		988FA0CC16EDBBDD00E51EF1 /* text@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 988FA0CB16EDBBDD00E51EF1 /* text@2x.png */; };
+		98FD40BD17268ABE00398A79 /* demoHistory.plist in Resources */ = {isa = PBXBuildFile; fileRef = 98FD40BC17268ABE00398A79 /* demoHistory.plist */; };
+		98FD40BF17268C3F00398A79 /* fugen.png in Resources */ = {isa = PBXBuildFile; fileRef = 98FD40BE17268C3F00398A79 /* fugen.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		982B2B3A1725245700BD4AA4 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		982B2B3B1725245700BD4AA4 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
-		982B2B3D1725431800BD4AA4 /* bubble@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bubble@2x.png"; sourceTree = "<group>"; };
-		982B2B3E1725431800BD4AA4 /* bubbleSelf@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bubbleSelf@2x.png"; sourceTree = "<group>"; };
+		982B2B3D1725431800BD4AA4 /* bubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubble.png; sourceTree = "<group>"; };
+		982B2B3E1725431800BD4AA4 /* bubbleSelf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubbleSelf.png; sourceTree = "<group>"; };
 		982B2B411725448C00BD4AA4 /* wangjia.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wangjia.png; sourceTree = "<group>"; };
 		986302E6172142860095EC95 /* HPGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPGrowingTextView.h; sourceTree = "<group>"; };
 		986302E7172142860095EC95 /* HPGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPGrowingTextView.m; sourceTree = "<group>"; };
@@ -62,6 +64,8 @@
 		988FA0C716EDB04F00E51EF1 /* box@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "box@2x.png"; sourceTree = "<group>"; };
 		988FA0C916EDB73400E51EF1 /* holdtotalk@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "holdtotalk@2x.png"; sourceTree = "<group>"; };
 		988FA0CB16EDBBDD00E51EF1 /* text@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "text@2x.png"; sourceTree = "<group>"; };
+		98FD40BC17268ABE00398A79 /* demoHistory.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = demoHistory.plist; sourceTree = "<group>"; };
+		98FD40BE17268C3F00398A79 /* fugen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fugen.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +124,7 @@
 		987F296316E8814E00D670C2 /* richchatdemo */ = {
 			isa = PBXGroup;
 			children = (
+				98FD40BE17268C3F00398A79 /* fugen.png */,
 				982B2B411725448C00BD4AA4 /* wangjia.png */,
 				987F296416E8814E00D670C2 /* AppDelegate.h */,
 				987F296516E8814E00D670C2 /* AppDelegate.m */,
@@ -132,6 +137,7 @@
 				987F296B16E8814E00D670C2 /* main.m */,
 				987F296C16E8814E00D670C2 /* richchatdemo-Info.plist */,
 				987F296D16E8814E00D670C2 /* richchatdemo-Prefix.pch */,
+				98FD40BC17268ABE00398A79 /* demoHistory.plist */,
 			);
 			path = richchatdemo;
 			sourceTree = "<group>";
@@ -150,8 +156,8 @@
 		988FA0C016ED8A2300E51EF1 /* image */ = {
 			isa = PBXGroup;
 			children = (
-				982B2B3D1725431800BD4AA4 /* bubble@2x.png */,
-				982B2B3E1725431800BD4AA4 /* bubbleSelf@2x.png */,
+				982B2B3D1725431800BD4AA4 /* bubble.png */,
+				982B2B3E1725431800BD4AA4 /* bubbleSelf.png */,
 				988FA0CB16EDBBDD00E51EF1 /* text@2x.png */,
 				988FA0C916EDB73400E51EF1 /* holdtotalk@2x.png */,
 				988FA0C716EDB04F00E51EF1 /* box@2x.png */,
@@ -223,9 +229,11 @@
 				988FA0C816EDB04F00E51EF1 /* box@2x.png in Resources */,
 				988FA0CA16EDB73400E51EF1 /* holdtotalk@2x.png in Resources */,
 				988FA0CC16EDBBDD00E51EF1 /* text@2x.png in Resources */,
-				982B2B3F1725431800BD4AA4 /* bubble@2x.png in Resources */,
-				982B2B401725431800BD4AA4 /* bubbleSelf@2x.png in Resources */,
+				982B2B3F1725431800BD4AA4 /* bubble.png in Resources */,
+				982B2B401725431800BD4AA4 /* bubbleSelf.png in Resources */,
 				982B2B421725448C00BD4AA4 /* wangjia.png in Resources */,
+				98FD40BD17268ABE00398A79 /* demoHistory.plist in Resources */,
+				98FD40BF17268C3F00398A79 /* fugen.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

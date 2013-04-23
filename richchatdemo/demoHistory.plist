@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>content</key>
+		<string>Hello,Nice to meet you! What&apos;s your name?</string>
+		<key>type</key>
+		<integer>2</integer>
+		<key>time</key>
+		<date>2013-04-23T09:32:50Z</date>
+		<key>sender_face</key>
+		<string>wangjia</string>
+		<key>sender_is_self</key>
+		<true/>
+		<key>sender_title</key>
+		<string>wangjia</string>
+	</dict>
+	<dict>
+		<key>content</key>
+		<string>Hello,Nice to meet you! My name is Fugen!</string>
+		<key>type</key>
+		<integer>2</integer>
+		<key>time</key>
+		<date>2013-04-23T09:36:50Z</date>
+		<key>sender_face</key>
+		<string>fugen</string>
+		<key>sender_is_self</key>
+		<false/>
+		<key>sender_title</key>
+		<string>FuGen</string>
+	</dict>
+	<dict>
+		<key>content</key>
+		<string>WangJia</string>
+		<key>type</key>
+		<integer>2</integer>
+		<key>time</key>
+		<date>2013-04-23T09:32:50Z</date>
+		<key>sender_face</key>
+		<string>wangjia</string>
+		<key>sender_is_self</key>
+		<true/>
+		<key>sender_title</key>
+		<string>wangjia</string>
+	</dict>
+</array>
+</plist>

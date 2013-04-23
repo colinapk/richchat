@@ -63,15 +63,15 @@
 #pragma mark - rich chat delegate
 -(void)richChatRequestToUpdateHistory{
     //模仿网络请求
-    NSDictionary * item=[[NSDictionary alloc]initWithObjectsAndKeys:@"Jim",@"sender_title",nil];
-    NSArray * items=[[NSArray alloc]initWithObjects:item,item, nil];
+    NSString * path=[[[NSBundle mainBundle]resourcePath]stringByAppendingPathComponent:@"demoHistory.plist"];
+    NSArray * items=[[NSArray alloc]initWithContentsOfFile:path];
     NSDictionary * dict=[[NSDictionary alloc]initWithObjectsAndKeys:@"200",@"code",items,@"data",nil];
     
     [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(requestSucceed:) userInfo:dict repeats:NO];
     
     [dict release];
     [items release];
-    [item release];
+    
     
 }
 -(void)richChatRequestToSendMessage:(RichChatItem *)item{
@@ -97,10 +97,11 @@
         if (dict&&[dict isKindOfClass:[NSDictionary class]]) {
             //将dict中的数据赋值给对应的item属性
             item.itemSenderTitle=[dict objectForKey:@"sender_title"];
-            item.itemType=ENUM_HISTORY_TYPE_TEXT;
-            item.itemTime=[NSDate timeIntervalSinceReferenceDate];
-            item.itemSenderFace=[UIImage imageNamed:@"wangjia"];
-            item.itemContent=@"Hello!";
+            item.itemType=(ENUM_HISTORY_TYPE)[[dict objectForKey:@"type"]integerValue];
+            item.itemTime=[dict objectForKey:@"time"];
+            item.itemSenderFace=[UIImage imageNamed:[dict objectForKey:@"sender_face"]];
+            item.itemContent=[dict objectForKey:@"content"];
+            item.itemSenderIsSelf=[[dict objectForKey:@"sender_is_self"]boolValue];
         }
     }
 }

@@ -40,6 +40,10 @@
 //预定义行高 字体
 #define VIEW_WIDTH 320
 #define VIEW_HEIGHT 460
+#define FACE_HEIGHT 40
+#define ITEMS_SEPERATE 10
+#define ITEM_FONT_SIZE 18
+#define VIEW_INSET 10
 #define SINGLE_LINE_HEIGHT 38 //60
 #define FONT_SIZE        18
 //#define SINGLE_LINE_HEIGHT 40 //64
@@ -70,6 +74,8 @@
     UITableView * table=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 0) style:UITableViewStylePlain];
     table.dataSource=self;
     table.delegate=self;
+    table.separatorStyle=UITableViewCellSeparatorStyleNone;
+    table.backgroundColor=[UIColor clearColor];
     [self.view addSubview:table];
     _table = table;
     [table release];
@@ -344,6 +350,28 @@
     
 }
 #pragma mark - table
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    RichChatItem * item=[[RichChatItem alloc]init];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(richChatHistoryItem:AtIndex:)]) {
+        [self.delegate richChatHistoryItem:item AtIndex:indexPath.row];
+    }
+    CGFloat cellHeight=0;
+    cellHeight=FACE_HEIGHT;
+    if (item.itemType==ENUM_HISTORY_TYPE_TEXT) {
+        NSString * strContent=item.itemContent;
+        CGSize size=[strContent sizeWithFont:[UIFont systemFontOfSize:ITEM_FONT_SIZE] constrainedToSize:CGSizeMake(_table.frame.size.width-VIEW_INSET*2-FACE_HEIGHT-VIEW_INSET*2, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping];
+       
+        if ((size.height+VIEW_INSET*2)>cellHeight) {
+            cellHeight=size.height+VIEW_INSET*2;
+        }
+        
+    }
+    
+    [item release];
+    return cellHeight+ITEMS_SEPERATE;
+}
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString * cellIdentify=@"historyCell";
     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdentify];
@@ -354,9 +382,53 @@
     if (self.delegate && [self.delegate respondsToSelector:@selector(richChatHistoryItem:AtIndex:)]) {
         [self.delegate richChatHistoryItem:item AtIndex:indexPath.row];
     }
-    cell.textLabel.text=item.itemSenderTitle;
-    cell.detailTextLabel.text=[NSString stringWithFormat:@"%d",item.itemType];
-    
+    //是一条信息
+    if (item.itemType&&(item.itemType!=ENUM_HISTORY_TYPE_TIME)) {
+        //只要是信息，就一定有头像
+        UIImageView * ivFace=[[UIImageView alloc]init];
+        if (item.itemSenderFace && [item.itemSenderFace isKindOfClass:[UIImage class]]) {
+            ivFace.image=item.itemSenderFace;
+        }
+        CGRect rc=CGRectMake(item.itemSenderIsSelf?(_table.frame.size.width-VIEW_INSET-FACE_HEIGHT):VIEW_INSET, [self tableView:tableView heightForRowAtIndexPath:indexPath]-FACE_HEIGHT, FACE_HEIGHT, FACE_HEIGHT);
+        ivFace.frame=rc;
+        [cell.contentView addSubview:ivFace];
+        [ivFace release];
+        
+        if (item.itemType==ENUM_HISTORY_TYPE_TEXT) {
+            NSString * strContent=item.itemContent;
+            CGSize size=[strContent sizeWithFont:[UIFont systemFontOfSize:ITEM_FONT_SIZE] constrainedToSize:CGSizeMake(_table.frame.size.width-VIEW_INSET*2-FACE_HEIGHT-VIEW_INSET*2, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping];
+            CGRect rcContentBg=CGRectMake(item.itemSenderIsSelf
+                                        ?VIEW_INSET
+                                        :ivFace.frame.origin.x
+                                        +ivFace.frame.size.width
+                                        , ITEMS_SEPERATE
+                                        , _table.frame.size.width-VIEW_INSET*2-FACE_HEIGHT
+                                        , size.height+VIEW_INSET*2);
+            
+            UIImage * imgContentBg=[[UIImage imageNamed:(item.itemSenderIsSelf?@"bubbleSelf":@"bubble")]stretchableImageWithLeftCapWidth:22 topCapHeight:15];
+            UIImageView * ivContentBg=[[UIImageView alloc]init];
+            ivContentBg.frame=rcContentBg;
+            ivContentBg.image=imgContentBg;
+            [cell.contentView addSubview:ivContentBg];
+            [ivContentBg release];
+            
+            UILabel * lbContent=[[UILabel alloc]init];
+            lbContent.frame=CGRectMake(VIEW_INSET, VIEW_INSET, size.width, size.height);
+            lbContent.text=strContent;
+            lbContent.font=[UIFont systemFontOfSize:FONT_SIZE];
+            lbContent.numberOfLines=0;
+            lbContent.lineBreakMode=NSLineBreakByWordWrapping;
+            lbContent.backgroundColor=[UIColor clearColor];
+            [ivContentBg addSubview:lbContent];
+            [lbContent release];
+            
+        }
+
+    }else{
+        //不是信息，是时间标签
+    }
+          
+    [item release];
     return cell;
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -400,7 +472,6 @@
     [self moveTableViewToBottom];
 }
 -(BOOL)growingTextViewShouldReturn:(HPGrowingTextView *)growingTextView{
-
         //return key
         [self onClickSend:nil];
         return NO;
