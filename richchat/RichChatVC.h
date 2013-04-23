@@ -11,9 +11,10 @@
 @class RichChatVC;
 
 typedef enum {
-    ENUM_HISTORY_TYPE_TEXT=1,
-    ENUM_HISTORY_TYPE_VOICE=2,
-    ENUM_HISTORY_TYPE_IMAGE=3,
+    ENUM_HISTORY_TYPE_TIME=1,
+    ENUM_HISTORY_TYPE_TEXT,
+    ENUM_HISTORY_TYPE_VOICE,
+    ENUM_HISTORY_TYPE_IMAGE,
     ENUM_HISTORY_TYPE_VIDEO,
     ENUM_HISTORY_TYPE_LOCATION,
 }ENUM_HISTORY_TYPE;
@@ -24,6 +25,7 @@ typedef enum {
 @property(nonatomic,assign)NSTimeInterval itemTime;
 @property(nonatomic,strong)NSString * itemSenderTitle;
 @property(nonatomic,strong)UIImage * itemSenderFace;
+@property(nonatomic,assign)BOOL itemSenderIsSelf;
 @end
 
 

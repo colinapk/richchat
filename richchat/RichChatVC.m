@@ -14,6 +14,7 @@
 @synthesize itemContent;
 @synthesize itemSenderFace;
 @synthesize itemTime;
+@synthesize itemSenderIsSelf;
 @end
 
 //富聊天视图控制的私有成员变量
@@ -37,6 +38,8 @@
 @implementation RichChatVC
 @synthesize delegate=_delegate;
 //预定义行高 字体
+#define VIEW_WIDTH 320
+#define VIEW_HEIGHT 460
 #define SINGLE_LINE_HEIGHT 38 //60
 #define FONT_SIZE        18
 //#define SINGLE_LINE_HEIGHT 40 //64
@@ -49,7 +52,7 @@
 
 -(void)loadView{
     UIView * view=[[UIView alloc]init];
-    view.frame=CGRectMake(0, 0, 320, self.navigationController.navigationBarHidden?460:(460-self.navigationController.navigationBar.frame.size.height));
+    view.frame=CGRectMake(0, 0, VIEW_WIDTH, self.navigationController.navigationBarHidden?VIEW_HEIGHT:(VIEW_HEIGHT-self.navigationController.navigationBar.frame.size.height));
     self.view=view;
     [view release];
 }
@@ -166,7 +169,7 @@
 #ifdef __IPHONE_5_0
     float version = [[[UIDevice currentDevice] systemVersion] floatValue];
     if (version >= 5.0) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
+//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
     }
 #endif
     
@@ -244,7 +247,7 @@
         _btnFace.frame=rc;
         
         //通知栏20，导航栏44，编辑框SINGLE_LINE_HEIGHT
-        _table.frame = CGRectMake(0.0f, 0.0f, 320.0f,(float)(480.0-h-20-44-SINGLE_LINE_HEIGHT-10));
+        _table.frame = CGRectMake(0.0f, 0.0f, VIEW_WIDTH,(float)(VIEW_HEIGHT-h-44-SINGLE_LINE_HEIGHT-10));
         
 
     } completion:^(BOOL finished){
@@ -393,7 +396,7 @@
     rc.origin.y=_ivBg.frame.size.height-5-rc.size.height;
     _btnVoice.frame=rc;
     
-    _table.frame = CGRectMake(0.0f, 0.0f, 320.0f,_ivBg.frame.origin.y);
+    _table.frame = CGRectMake(0.0f, 0.0f, VIEW_WIDTH,_ivBg.frame.origin.y);
     [self moveTableViewToBottom];
 }
 -(BOOL)growingTextViewShouldReturn:(HPGrowingTextView *)growingTextView{
