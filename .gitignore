@@ -18,3 +18,7 @@ richchatdemo.xcodeproj/xcuserdata/jiawang.xcuserdatad/xcdebugger/Breakpoints.xcb
 *.xcbkptlist
 
 *.xcbkptlist
+
+*.svn-base
+
+richchat/MoodFace/faces/.svn/entries

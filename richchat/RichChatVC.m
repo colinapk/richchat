@@ -7,6 +7,8 @@
 //
 
 #import "RichChatVC.h"
+#import "MoodFaceVC.h"
+
 //富聊天条目的模型实现
 @implementation RichChatItem
 @synthesize itemType;
@@ -31,12 +33,15 @@
     UIButton * _btnCancel;
     
     BOOL  _isPan;
+    BOOL  _isShowMood;
 }
+@property(nonatomic,strong)MoodFaceVC * mood;
 @end
 
 //富聊天视图控制的实现
 @implementation RichChatVC
 @synthesize delegate=_delegate;
+@synthesize mood=_mood;
 //预定义行高 字体
 #define VIEW_WIDTH 320
 #define VIEW_HEIGHT 460
@@ -53,7 +58,10 @@
 //#define SINGLE_LINE_HEIGHT 45 //74
 //#define FONT_SIZE        24
 
-
+-(void)dealloc{
+    [_mood release];
+    [super dealloc];
+}
 -(void)loadView{
     UIView * view=[[UIView alloc]init];
     view.frame=CGRectMake(0, 0, VIEW_WIDTH, self.navigationController.navigationBarHidden?VIEW_HEIGHT:(VIEW_HEIGHT-self.navigationController.navigationBar.frame.size.height));
@@ -101,7 +109,7 @@
     UIButton * btnFace=[UIButton buttonWithType:UIButtonTypeCustom];
     btnFace.frame=CGRectMake(SINGLE_LINE_HEIGHT, _tvInput.frame.origin.y, SINGLE_LINE_HEIGHT, SINGLE_LINE_HEIGHT);
     [btnFace setBackgroundImage:[UIImage imageNamed:@"happy"] forState:UIControlStateNormal];
-//    [btnFace addTarget:self action:@selector(onClickSend:) forControlEvents:UIControlEventTouchUpInside];
+    [btnFace addTarget:self action:@selector(onClickFace:) forControlEvents:UIControlEventTouchUpInside];
     _btnFace = btnFace;
     [ivBg addSubview:btnFace];
     
@@ -183,6 +191,15 @@
         [self.delegate richChatRequestToUpdateHistory];
     }
     
+    MoodFaceVC * mvc=[[MoodFaceVC alloc]init];
+    self.mood=mvc;
+    CGRect rcMood = _mood.view.frame;
+    rcMood.origin.y=_ivBg.frame.size.height;
+    _mood.view.frame=rcMood;
+    [_ivBg addSubview:mvc.view];
+    [mvc release];
+    
+    
 }
 -(void)viewWillAppear:(BOOL)animated{
     [self autoMovekeyBoard:0 duration:0];
@@ -226,8 +243,12 @@
     NSTimeInterval animationDuration;
     [animationDurationValue getValue:&animationDuration];
     
+    if (_isShowMood) {
+        //把键盘撤掉就行了，就不把编辑区域整体下移了
+    }else{
+        [self autoMovekeyBoard:0 duration:animationDuration];
+    }
     
-    [self autoMovekeyBoard:0 duration:animationDuration];
 }
 
 -(void) autoMovekeyBoard: (float) h duration:(NSTimeInterval)time{
@@ -254,6 +275,7 @@
         
         //通知栏20，导航栏44，编辑框SINGLE_LINE_HEIGHT
         _table.frame = CGRectMake(0.0f, 0.0f, VIEW_WIDTH,(float)(VIEW_HEIGHT-h-44-SINGLE_LINE_HEIGHT-10));
+        
         
 
     } completion:^(BOOL finished){
@@ -317,6 +339,12 @@
         
     }
     
+    
+}
+-(void)onClickFace:(UIButton *)sender{
+    _isShowMood=YES;
+    [_tvInput resignFirstResponder];
+    [self autoMovekeyBoard:205 duration:0.3];
     
 }
 -(IBAction)onClickSend:(id)sender
@@ -476,4 +504,5 @@
         [self onClickSend:nil];
         return NO;
 }
+
 @end
