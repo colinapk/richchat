@@ -20,12 +20,13 @@
 @property (assign, nonatomic) NSInteger mNImgSize;
 @property (assign, nonatomic) NSInteger mNWith;
 
-+ (MoodFaceVC *)sharedInstance;
-+(void)destroy;
+
+
 - (void)clickButton:(id)sender;
 - (void)hideOrShowAnimation:(BOOL)aIsHide;
 - (NSString *)getImgPathName:(NSString *)aDescription;
 - (NSString *)convertToImagedView:(NSString *)aStr;
+//获得图文混排视图
 - (UIView *)assembleMessageAtIndex : (NSString *) message;
 - (NSString *)getImgShortPath:(NSString *)aDescription;
 @end

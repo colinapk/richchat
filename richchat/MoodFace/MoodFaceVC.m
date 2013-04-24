@@ -22,7 +22,7 @@
 @synthesize mScrollView;
 @synthesize mPageControl;
 
-static MoodFaceVC *sharedInstance = nil;
+
 
 - (void)dealloc
 {
@@ -34,32 +34,11 @@ static MoodFaceVC *sharedInstance = nil;
   [super dealloc];
 }
 
-+(void)destroy{
-    [sharedInstance.view removeFromSuperview];
-  [sharedInstance release];
-  sharedInstance = nil;
-}
 
-+ (MoodFaceVC *)sharedInstance
-{
-  if (!sharedInstance) {
-    sharedInstance = [[self alloc] init];
-  }
-  return sharedInstance;
-}              
 
-+ (id)allocWithZone:(NSZone *)zone
-{
-  @synchronized(self)
-  {
-    if (sharedInstance == nil) {
-      sharedInstance = [super allocWithZone:zone];
-      return sharedInstance;
-    }
-  }
-  
-  return nil;
-}
+          
+
+
 
 -(id)init
 {
@@ -152,10 +131,6 @@ static MoodFaceVC *sharedInstance = nil;
 }
 
 
-- (void)didReceiveMemoryWarning
-{
-  [super didReceiveMemoryWarning];
-}
 
 #pragma mark - View lifecycle
 - (void)loadView
@@ -215,7 +190,7 @@ static MoodFaceVC *sharedInstance = nil;
       UIButton *aBtn =[[UIButton alloc]init];
      aBtn.frame = R(fX, fY, fW, fW);
     aBtn.tag = nFlag++;
-      [aBtn setBackgroundImage:[UIImage imageNamed:aStrFace] forState:UIControlStateNormal];
+      [aBtn setBackgroundImage:img forState:UIControlStateNormal];
       [aBtn addTarget:self action:@selector(clickButton:) forControlEvents:UIControlEventTouchUpInside];
     [mScrollView addSubview:aBtn];
     [aBtn release];
@@ -334,56 +309,7 @@ static MoodFaceVC *sharedInstance = nil;
   return aStrFullPath;
 }
 
-- (void)hideOrShowAnimation:(BOOL)aIsHide
-{
-  if (ISIPAD) {
-    BOOL isHidden = self.view.hidden;
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    [UIView beginAnimations:nil context:context];
-    [UIView setAnimationDuration:0.3];
-    [UIView animateWithDuration:0.3
-                     animations:^{
-                       if (!aIsHide) {
-                         self.view.alpha = 1;
-                         self.view.hidden = NO;
-                       }else{
-                         self.view.alpha = 0;
-                         mPageControl.currentPage = 0;
-                       }
-                     }
-                     completion:^(BOOL finished){
-                       if (!isHidden) {
-                         self.view.hidden = YES;
-                         self.view.alpha = 0;
-                         [self changePage:nil];
-                       }
-                     }];
-    [UIView commitAnimations];
-  }else{
-    //NSInteger aNH = self.view.frame.origin.y;
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    [UIView beginAnimations:nil context:context];
-    [UIView setAnimationDuration:0.3];
-    [UIView animateWithDuration:0.3
-                     animations:^{
-                       //if (aNH == [UIScreen mainScreen].bounds.size.height-20) {
-                         if (!aIsHide) {
-                         //出现
-                         CGRect rFrame = self.view.frame;
-                         rFrame.origin.y = [UIScreen mainScreen].bounds.size.height-20-rFrame.size.height;
-                         self.view.frame = rFrame;
-                       }else{
-                         //消失
-                         CGRect rFrame = self.view.frame;
-                         rFrame.origin.y = [UIScreen mainScreen].bounds.size.height-20;
-                         self.view.frame = rFrame;
-                       }
-                     }
-                     completion:^(BOOL finished){
-                     }];
-    [UIView commitAnimations];
-  }
-}
+
 
 - (void)clickButton:(id)sender
 {    
@@ -397,9 +323,6 @@ static MoodFaceVC *sharedInstance = nil;
 //  [[NSNotificationCenter defaultCenter] postNotificationName:MOODFACE_SELECT object:nil userInfo:aDic];
   [aDic release];
   
-    if (ISIPAD) {
-        [self hideOrShowAnimation:YES];
-    }
 }
 
 - (NSString *)convertToImagedView:(NSString *)aStr
