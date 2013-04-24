@@ -21,6 +21,7 @@
 @synthesize mNWith;
 @synthesize mScrollView;
 @synthesize mPageControl;
+@synthesize delegate;
 
 
 
@@ -33,13 +34,6 @@
   [mArrFacesImgName release];
   [super dealloc];
 }
-
-
-
-          
-
-
-
 -(id)init
 {
   if (self = [super init]) {
@@ -138,6 +132,7 @@
   CGRect rFrameMain = [UIScreen mainScreen].bounds;
   UIView *aView = [[UIView alloc] initWithFrame:ISIPAD?R(0,0,414,183.5):R(0,265,rFrameMain.size.width,rFrameMain.size.height-265)];
   aView.backgroundColor = [UIColor clearColor];
+    aView.userInteractionEnabled=YES;
   self.view =aView;
   [aView release];
   
@@ -322,6 +317,9 @@
                         aStrShow, @"face",aStrFaceImgPath, @"imgpath", nil];
 //  [[NSNotificationCenter defaultCenter] postNotificationName:MOODFACE_SELECT object:nil userInfo:aDic];
   [aDic release];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(moodFaceVC:selected:imageName:)]) {
+        [self.delegate moodFaceVC:self selected:aStrShow imageName:aStrFaceImgPath];
+    }
   
 }
 

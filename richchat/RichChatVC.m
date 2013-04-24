@@ -20,7 +20,7 @@
 @end
 
 //富聊天视图控制的私有成员变量
-@interface RichChatVC (){
+@interface RichChatVC ()<MoodFaceDelegate>{
     CGFloat _heightKeyboard;
     UITableView * _table;
     UIImageView * _ivBg;
@@ -192,11 +192,12 @@
     }
     
     MoodFaceVC * mvc=[[MoodFaceVC alloc]init];
+    mvc.delegate=self;
     self.mood=mvc;
     CGRect rcMood = _mood.view.frame;
-    rcMood.origin.y=_ivBg.frame.size.height;
+    rcMood.origin.y=_ivBg.frame.size.height+_ivBg.frame.origin.y;
     _mood.view.frame=rcMood;
-    [_ivBg addSubview:mvc.view];
+    [self.view addSubview:mvc.view];
     [mvc release];
     
     
@@ -254,7 +255,7 @@
 -(void) autoMovekeyBoard: (float) h duration:(NSTimeInterval)time{
     
     [UIView animateWithDuration:time animations:^{
-        _ivBg.frame = CGRectMake(_ivBg.frame.origin.x
+        _ivBg.frame= CGRectMake(_ivBg.frame.origin.x
                                  , (float)(self.view.frame.size.height-h-SINGLE_LINE_HEIGHT-10)
                                  , _ivBg.frame.size.width
                                  , SINGLE_LINE_HEIGHT+10);
@@ -275,7 +276,10 @@
         
         //通知栏20，导航栏44，编辑框SINGLE_LINE_HEIGHT
         _table.frame = CGRectMake(0.0f, 0.0f, VIEW_WIDTH,(float)(VIEW_HEIGHT-h-44-SINGLE_LINE_HEIGHT-10));
-        
+        CGRect rcMood = _mood.view.frame;
+        rcMood.origin.y=_ivBg.frame.size.height+_ivBg.frame.origin.y;
+        _mood.view.frame=rcMood;
+
         
 
     } completion:^(BOOL finished){
@@ -343,8 +347,13 @@
 }
 -(void)onClickFace:(UIButton *)sender{
     _isShowMood=YES;
-    [_tvInput resignFirstResponder];
-    [self autoMovekeyBoard:205 duration:0.3];
+    if (_tvInput.internalTextView.isFirstResponder) {
+        [_tvInput resignFirstResponder];
+    }else{
+        [self autoMovekeyBoard:216 duration:0.3];
+    }
+    
+    
     
 }
 -(IBAction)onClickSend:(id)sender
@@ -497,6 +506,11 @@
     _btnVoice.frame=rc;
     
     _table.frame = CGRectMake(0.0f, 0.0f, VIEW_WIDTH,_ivBg.frame.origin.y);
+    
+    CGRect rcMood = _mood.view.frame;
+    rcMood.origin.y=_ivBg.frame.size.height+_ivBg.frame.origin.y;
+    _mood.view.frame=rcMood;
+
     [self moveTableViewToBottom];
 }
 -(BOOL)growingTextViewShouldReturn:(HPGrowingTextView *)growingTextView{
@@ -504,5 +518,8 @@
         [self onClickSend:nil];
         return NO;
 }
-
+#pragma mark - mood face delegate
+-(void)moodFaceVC:(MoodFaceVC *)vc selected:(NSString *)strDescription imageName:(NSString *)strImg{
+    [_tvInput setText:[_tvInput.text stringByAppendingString:strDescription]];
+}
 @end

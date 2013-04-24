@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+@class MoodFaceVC;
+@protocol MoodFaceDelegate <NSObject>
 
+@required
+-(void)moodFaceVC:(MoodFaceVC *)vc selected:(NSString *)strDescription imageName:(NSString *)strImg;
+
+@end
 @interface MoodFaceVC : UIViewController
 <UIScrollViewDelegate>
 
@@ -19,11 +25,12 @@
 @property (assign, nonatomic) NSInteger mNWordSize;
 @property (assign, nonatomic) NSInteger mNImgSize;
 @property (assign, nonatomic) NSInteger mNWith;
+@property (assign, nonatomic) id<MoodFaceDelegate> delegate;
 
 
 
 - (void)clickButton:(id)sender;
-- (void)hideOrShowAnimation:(BOOL)aIsHide;
+
 - (NSString *)getImgPathName:(NSString *)aDescription;
 - (NSString *)convertToImagedView:(NSString *)aStr;
 //获得图文混排视图
