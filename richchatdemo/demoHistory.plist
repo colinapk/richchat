@@ -4,6 +4,12 @@
 <array>
 	<dict>
 		<key>content</key>
+		<date>2013-04-25T06:35:10Z</date>
+		<key>type</key>
+		<integer>1</integer>
+	</dict>
+	<dict>
+		<key>content</key>
 		<string>Hello,Nice to meet you! What&apos;s your name?</string>
 		<key>type</key>
 		<integer>2</integer>

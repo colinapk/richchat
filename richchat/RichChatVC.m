@@ -43,18 +43,26 @@
 @synthesize delegate=_delegate;
 @synthesize mood=_mood;
 
-#define DEBUG_MODE NO
+#define DEBUG_MODE YES
 #define VIEW_WIDTH 320
 #define VIEW_HEIGHT 460
+//当条目类型为时间时，cell的高度
+#define CELL_TYPE_TIME_HEIGHT 30
+//是否每行都显示时间
+#define ITEM_SHOW_TIME YES
 //头像的宽和高
 #define FACE_HEIGHT 40
 //每行绘制气泡起始的高度，效果是行与行的间隔
 #define ITEMS_SEPERATE 10
-
+//聊天记录的字体大小
 #define ITEM_FONT_SIZE 18
+//左右边界的缩进距离
 #define VIEW_INSET 10
+//对self来说是右边，对对方来说是左边
 #define CONTENT_INSET_BIG 20
+//与CONTENT_INSET_BIG相反
 #define CONTENT_INSET_SMALL 15
+//Mood返回的view在气泡中的顶，底部缩进
 #define CONTENT_INSET_TOP 3
 #define CONTENT_INSET_BOTTOM (CONTENT_INSET_TOP+3)
 //预定义文本输入框单行高度
@@ -92,7 +100,12 @@
     UITableView * table=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 0) style:UITableViewStylePlain];
     table.dataSource=self;
     table.delegate=self;
-    table.separatorStyle=UITableViewCellSeparatorStyleNone;
+    if (DEBUG_MODE) {
+        table.separatorStyle=UITableViewCellSeparatorStyleSingleLine;
+    }else{
+        table.separatorStyle=UITableViewCellSeparatorStyleNone;
+    }
+    
     table.backgroundColor=[UIColor clearColor];
     [self.view addSubview:table];
     _table = table;
@@ -410,17 +423,20 @@
     }
     CGFloat cellHeight=0;
     cellHeight=FACE_HEIGHT;
+    if (item.itemType==ENUM_HISTORY_TYPE_TIME) {
+        cellHeight=CELL_TYPE_TIME_HEIGHT;
+    }
     if (item.itemType==ENUM_HISTORY_TYPE_TEXT) {
         NSString * strContent=item.itemContent;
         CGSize size=[_mood assembleMessageAtIndex:strContent].frame.size;
         if ((size.height+CONTENT_INSET_TOP+CONTENT_INSET_BOTTOM)>cellHeight) {
             cellHeight=size.height+CONTENT_INSET_TOP+CONTENT_INSET_BOTTOM;
         }
-        
+        cellHeight+=ITEMS_SEPERATE;
     }
     
     [item release];
-    return cellHeight+ITEMS_SEPERATE;
+    return cellHeight;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString * cellIdentify=@"historyCell";
@@ -496,6 +512,17 @@
 
     }else{
         //不是信息，是时间标签
+        if (item.itemType==ENUM_HISTORY_TYPE_TIME) {
+            UILabel * lbDate=[[UILabel alloc]init];
+            CGRect rc=CGRectMake(0, 0, _table.frame.size.width, CELL_TYPE_TIME_HEIGHT);
+            lbDate.frame=rc;
+            NSDate * date=(NSDate *)item.itemContent;
+            lbDate.text=[self caculateTime:[date timeIntervalSince1970]];
+            lbDate.textAlignment=UITextAlignmentCenter;
+            [cell.contentView addSubview:lbDate];
+            [lbDate release];
+        }
+        
     }
           
     [item release];
@@ -555,4 +582,49 @@
 -(void)moodFaceVC:(MoodFaceVC *)vc selected:(NSString *)strDescription imageName:(NSString *)strImg{
     [_tvInput setText:[_tvInput.text stringByAppendingString:strDescription]];
 }
+#pragma mark - common
+- (NSString *)caculateTime:(double)aDInterval
+{
+    NSString *aTimeString=@"";
+    NSTimeInterval aLate = aDInterval;
+    
+    NSDate* aDateNow= [NSDate dateWithTimeIntervalSinceNow:0];
+    NSTimeInterval aIntervalNow=[aDateNow timeIntervalSince1970]*1;
+    
+    NSTimeInterval aDifferenceValue = aIntervalNow-aLate;
+    
+    if (aDifferenceValue / 3600 < 1) {
+        aTimeString = [NSString stringWithFormat:@"%f", aDifferenceValue/60];
+        aTimeString = [aTimeString substringToIndex:aTimeString.length-7];
+        
+        NSInteger aInt = [aTimeString intValue];
+        aTimeString=[NSString stringWithFormat:NSLocalizedString(@"%d分钟前",@""), aInt];
+        
+    }
+    if (aDifferenceValue / 3600 > 1 && aDifferenceValue / 86400 < 1) {
+        aTimeString = [NSString stringWithFormat:@"%f", aDifferenceValue/3600];
+        aTimeString = [aTimeString substringToIndex:aTimeString.length-7];
+        aTimeString=[NSString stringWithFormat:NSLocalizedString(@"%@小时前",@""), aTimeString];
+    }
+    if (aDifferenceValue/86400>1&&aDifferenceValue/86400<3)
+    {
+        aTimeString = [NSString stringWithFormat:@"%f", aDifferenceValue/86400];
+        aTimeString = [aTimeString substringToIndex:aTimeString.length-7];
+        aTimeString=[NSString stringWithFormat:NSLocalizedString(@"%@天前",@""), aTimeString];
+    }
+    if (aDifferenceValue/86400>3) {
+        NSDateFormatter *date=[[NSDateFormatter alloc] init];
+        //[date setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+        [date setDateFormat:@"MM-dd HH:mm:ss"];
+        
+        NSTimeInterval aLateInterval = aLate - aIntervalNow;
+        
+        NSDate *aDateFull = [NSDate dateWithTimeIntervalSinceNow:aLateInterval];
+        aTimeString = [date stringFromDate:aDateFull];
+        [date release];
+    }
+    
+    return aTimeString;
+}
+
 @end
