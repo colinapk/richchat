@@ -48,6 +48,9 @@
 #define VIEW_HEIGHT 460
 //当条目类型为时间时，cell的高度
 #define CELL_TYPE_TIME_HEIGHT 30
+//条目不为时间类型时，日期lable高度
+#define CONTENT_DATE_LABLE_HEIGHT 20
+#define CONTENT_DATE_LABLE_FONT_SIZE 12
 //是否每行都显示时间
 #define ITEM_SHOW_TIME YES
 //头像的宽和高
@@ -433,6 +436,9 @@
             cellHeight=size.height+CONTENT_INSET_TOP+CONTENT_INSET_BOTTOM;
         }
         cellHeight+=ITEMS_SEPERATE;
+        if (ITEM_SHOW_TIME) {
+            cellHeight+=CONTENT_DATE_LABLE_HEIGHT;
+        }
     }
     
     [item release];
@@ -460,6 +466,9 @@
             ivFace.image=item.itemSenderFace;
         }
         CGRect rc=CGRectMake(item.itemSenderIsSelf?(_table.frame.size.width-VIEW_INSET-FACE_HEIGHT):VIEW_INSET, [self tableView:tableView heightForRowAtIndexPath:indexPath]-FACE_HEIGHT, FACE_HEIGHT, FACE_HEIGHT);
+        if (ITEM_SHOW_TIME) {
+            rc.origin.y-=CONTENT_DATE_LABLE_HEIGHT;
+        }
         ivFace.frame=rc;
         [cell.contentView addSubview:ivFace];
         [ivFace release];
@@ -476,6 +485,7 @@
                                         , ITEMS_SEPERATE
                                         , sizeContent.width+CONTENT_INSET_BIG+CONTENT_INSET_SMALL
                                         , sizeContent.height+CONTENT_INSET_TOP+CONTENT_INSET_BOTTOM);
+            
             if (rcContentBg.size.width<36) {
                 CGFloat enlarge=36-rcContentBg.size.width;
                 rcContentBg.size.width=36;
@@ -505,8 +515,25 @@
             if (DEBUG_MODE) {
                 viewContent.backgroundColor=[UIColor colorWithWhite:0 alpha:0.3];
             }
-            
             [ivContentBg addSubview:viewContent];
+            
+            if (ITEM_SHOW_TIME) {
+                UILabel * lbDate=[[UILabel alloc]init];
+                lbDate.backgroundColor=[UIColor clearColor];
+                lbDate.font=[UIFont systemFontOfSize:CONTENT_DATE_LABLE_FONT_SIZE];
+                NSDate * date=(NSDate *)item.itemTime;
+                lbDate.text=[self caculateTime:[date timeIntervalSince1970]];
+                lbDate.textAlignment=item.itemSenderIsSelf?UITextAlignmentRight:UITextAlignmentLeft;
+                CGSize size=[lbDate.text sizeWithFont:lbDate.font];
+                CGRect rc=CGRectMake(item.itemSenderIsSelf?(ivFace.frame.origin.x-size.width):(rcContentBg.size.width<size.width?(rcContentBg.origin.x+rcContent.origin.x):(rcContentBg.origin.x+rcContentBg.size.width-size.width)),
+                                     rcContentBg.origin.y+rcContentBg.size.height
+                                     , size.width
+                                     , CONTENT_DATE_LABLE_HEIGHT);
+                lbDate.frame=rc;
+                [cell.contentView addSubview:lbDate];
+                [lbDate release];
+
+            }
             
         }
 
