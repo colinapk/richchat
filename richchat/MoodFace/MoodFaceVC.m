@@ -37,6 +37,10 @@
 -(id)init
 {
   if (self = [super init]) {
+      //default
+      mNImgSize = 28;
+      mNWordSize = 10;
+      
     mArrFacesImgName = [[NSArray alloc] initWithObjects:
                         @"face_0", @"face_1", @"face_2",@"face_3", @"face_4",
                         @"face_5", @"face_6", @"face_7",@"face_8", @"face_9",
@@ -216,8 +220,7 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-  mNImgSize = 28;
-  mNWordSize = 10;
+   
 }
 
 - (void)viewDidUnload
@@ -415,7 +418,7 @@
   UIView *returnView = [[UIView alloc] initWithFrame:CGRectZero];
   returnView.backgroundColor = [UIColor clearColor];
   NSArray *data = array;
-  UIFont *fon = [UIFont systemFontOfSize:18];
+  UIFont *fon = [UIFont systemFontOfSize:mNWordSize];
 
   CGFloat upX = 0;
   CGFloat upY = 0;

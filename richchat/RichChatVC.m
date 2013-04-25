@@ -42,17 +42,24 @@
 @implementation RichChatVC
 @synthesize delegate=_delegate;
 @synthesize mood=_mood;
-//预定义行高 字体
-#define DEBUG_MODE NO
+
+#define DEBUG_MODE YES
 #define VIEW_WIDTH 320
 #define VIEW_HEIGHT 460
+//头像的宽和高
 #define FACE_HEIGHT 40
+//每行绘制气泡起始的高度，效果是行与行的间隔
 #define ITEMS_SEPERATE 10
+
 #define ITEM_FONT_SIZE 18
 #define VIEW_INSET 10
-#define CONTENT_INSET_BIG 14
-#define CONTENT_INSET_SMALL 10
+#define CONTENT_INSET_BIG 20
+#define CONTENT_INSET_SMALL 15
+#define CONTENT_INSET_TOP 0
+#define CONTENT_INSET_BOTTOM 2
+//预定义文本输入框单行高度
 #define SINGLE_LINE_HEIGHT 38 //60
+//预定义文本输入框字体
 #define FONT_SIZE        18
 //#define SINGLE_LINE_HEIGHT 40 //64
 //#define FONT_SIZE        20
@@ -197,6 +204,7 @@
     MoodFaceVC * mvc=[[MoodFaceVC alloc]init];
     mvc.delegate=self;
     mvc.mNWith=VIEW_WIDTH-VIEW_INSET*2-FACE_HEIGHT-CONTENT_INSET_BIG-CONTENT_INSET_SMALL;
+    mvc.mNWordSize=ITEM_FONT_SIZE;
     self.mood=mvc;
     CGRect rcMood = _mood.view.frame;
     rcMood.origin.y=_ivBg.frame.size.height+_ivBg.frame.origin.y;
@@ -402,10 +410,9 @@
     cellHeight=FACE_HEIGHT;
     if (item.itemType==ENUM_HISTORY_TYPE_TEXT) {
         NSString * strContent=item.itemContent;
-        CGSize size=[strContent sizeWithFont:[UIFont systemFontOfSize:ITEM_FONT_SIZE] constrainedToSize:CGSizeMake(_table.frame.size.width-VIEW_INSET*2-FACE_HEIGHT-CONTENT_INSET_SMALL-CONTENT_INSET_BIG, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping];
-        size=[_mood assembleMessageAtIndex:strContent].frame.size;
-        if ((size.height+CONTENT_INSET_BIG+CONTENT_INSET_SMALL)>cellHeight) {
-            cellHeight=size.height+CONTENT_INSET_SMALL+CONTENT_INSET_BIG;
+        CGSize size=[_mood assembleMessageAtIndex:strContent].frame.size;
+        if ((size.height+CONTENT_INSET_TOP+CONTENT_INSET_BOTTOM)>cellHeight) {
+            cellHeight=size.height+CONTENT_INSET_TOP+CONTENT_INSET_BOTTOM;
         }
         
     }
@@ -439,17 +446,30 @@
             NSString * strContent=item.itemContent;
             UIView * viewContent=[_mood assembleMessageAtIndex:strContent];
             CGSize sizeContent=viewContent.frame.size;
-            
-            
+                       
             CGRect rcContentBg=CGRectMake(item.itemSenderIsSelf
                                         ?ivFace.frame.origin.x-sizeContent.width-CONTENT_INSET_BIG-CONTENT_INSET_SMALL
                                         :ivFace.frame.origin.x
                                         +ivFace.frame.size.width
                                         , ITEMS_SEPERATE
                                         , sizeContent.width+CONTENT_INSET_BIG+CONTENT_INSET_SMALL
-                                        , sizeContent.height+CONTENT_INSET_BIG+CONTENT_INSET_SMALL);
-            
-            UIImage * imgContentBg=[[UIImage imageNamed:(item.itemSenderIsSelf?@"bubbleSelf":@"bubble")]stretchableImageWithLeftCapWidth:22 topCapHeight:15];
+                                        , sizeContent.height+CONTENT_INSET_TOP+CONTENT_INSET_BOTTOM);
+            if (rcContentBg.size.width<36) {
+                CGFloat enlarge=36-rcContentBg.size.width;
+                rcContentBg.size.width=36;
+                if (item.itemSenderIsSelf) {
+                    rcContentBg.origin.x-=enlarge;
+                }else{
+                    rcContentBg.origin.x+=enlarge;
+                }
+            }
+            if (rcContentBg.size.height<FACE_HEIGHT) {
+                //单行的时候，可以确保气泡下沿与头像下沿齐平
+                rcContentBg.origin.y=ITEMS_SEPERATE+FACE_HEIGHT-rcContentBg.size.height;
+            }
+
+
+            UIImage * imgContentBg=[[UIImage imageNamed:(item.itemSenderIsSelf?@"bubbleSelf":@"bubble")]stretchableImageWithLeftCapWidth:item.itemSenderIsSelf?CONTENT_INSET_SMALL:CONTENT_INSET_BIG topCapHeight:15];
             UIImageView * ivContentBg=[[UIImageView alloc]init];
             ivContentBg.frame=rcContentBg;
             ivContentBg.image=imgContentBg;
@@ -458,10 +478,10 @@
             
             CGRect rcContent=viewContent.frame;
             rcContent.origin.x=item.itemSenderIsSelf?CONTENT_INSET_SMALL:CONTENT_INSET_BIG;
-            rcContent.origin.y=CONTENT_INSET_SMALL;
+            rcContent.origin.y=CONTENT_INSET_TOP;
             viewContent.frame=rcContent;
             if (DEBUG_MODE) {
-                viewContent.backgroundColor=[UIColor yellowColor];
+                viewContent.backgroundColor=[UIColor colorWithWhite:0 alpha:0.3];
             }
             
             [ivContentBg addSubview:viewContent];
