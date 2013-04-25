@@ -368,7 +368,7 @@
   NSRange range=[message rangeOfString: BEGIN_FLAG];
   NSRange range1=[message rangeOfString: END_FLAG];
   
-  //判断当前字符串是否还有表情的标志。
+  //判断当前字符串是否有表情的标志。
   if (range.length && range1.length) {
     if (range.location>0) {
       [array addObject:[message substringToIndex:range.location]];
@@ -397,7 +397,7 @@
 #define KFacialSizeWidth (ISIPAD?30:22)
 #define KFacialSizeHeight (ISIPAD?30:22)
 #define KImgInterval 5
-
+//把文本转换成图文混排的一个view
 -(UIView *)assembleMessageAtIndex : (NSString *) message
 {
   if (message) {

@@ -44,5 +44,19 @@
 		<key>sender_title</key>
 		<string>wangjia</string>
 	</dict>
+	<dict>
+		<key>content</key>
+		<string>[微笑][二]</string>
+		<key>type</key>
+		<integer>2</integer>
+		<key>time</key>
+		<date>2013-04-23T09:32:50Z</date>
+		<key>sender_face</key>
+		<string>wangjia</string>
+		<key>sender_is_self</key>
+		<true/>
+		<key>sender_title</key>
+		<string>wangjia</string>
+	</dict>
 </array>
 </plist>

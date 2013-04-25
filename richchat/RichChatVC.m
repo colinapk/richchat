@@ -55,8 +55,8 @@
 #define VIEW_INSET 10
 #define CONTENT_INSET_BIG 20
 #define CONTENT_INSET_SMALL 15
-#define CONTENT_INSET_TOP 0
-#define CONTENT_INSET_BOTTOM 2
+#define CONTENT_INSET_TOP 3
+#define CONTENT_INSET_BOTTOM (CONTENT_INSET_TOP+3)
 //预定义文本输入框单行高度
 #define SINGLE_LINE_HEIGHT 38 //60
 //预定义文本输入框字体
@@ -205,6 +205,7 @@
     mvc.delegate=self;
     mvc.mNWith=VIEW_WIDTH-VIEW_INSET*2-FACE_HEIGHT-CONTENT_INSET_BIG-CONTENT_INSET_SMALL;
     mvc.mNWordSize=ITEM_FONT_SIZE;
+    mvc.mNImgSize=24;
     self.mood=mvc;
     CGRect rcMood = _mood.view.frame;
     rcMood.origin.y=_ivBg.frame.size.height+_ivBg.frame.origin.y;
