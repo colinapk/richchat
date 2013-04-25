@@ -43,7 +43,7 @@
 @synthesize delegate=_delegate;
 @synthesize mood=_mood;
 
-#define DEBUG_MODE YES
+#define DEBUG_MODE NO
 #define VIEW_WIDTH 320
 #define VIEW_HEIGHT 460
 //头像的宽和高
@@ -382,7 +382,8 @@
     }else
     {
         RichChatItem * item=[[RichChatItem alloc]init];
-        item.itemSenderTitle=messageStr;
+        item.itemType=ENUM_HISTORY_TYPE_TEXT;
+        item.itemContent=messageStr;
         [self sendMessage:item];
         [item release];
     }
@@ -426,6 +427,10 @@
     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdentify];
     if (!cell) {
         cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentify];
+    }
+    cell.selectionStyle=UITableViewCellSelectionStyleNone;
+    for (UIView * view in cell.contentView.subviews) {
+        [view removeFromSuperview];
     }
     RichChatItem * item=[[RichChatItem alloc]init];
     if (self.delegate && [self.delegate respondsToSelector:@selector(richChatHistoryItem:AtIndex:)]) {
