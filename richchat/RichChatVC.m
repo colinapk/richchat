@@ -94,11 +94,6 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-        
-    
-   
-    
-    
     //聊天记录
     UITableView * table=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 0) style:UITableViewStylePlain];
     table.dataSource=self;
@@ -390,9 +385,9 @@
 	NSString *messageStr = _tvInput.text;
    
     
-    if (messageStr == nil)
+    if (messageStr == nil || [[messageStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]isEqualToString:@""])
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"发送失败！" message:@"发送的内容不能为空！" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"发送失败" message:@"发送的内容不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
         [alert show];
         [alert release];
     }else
@@ -497,6 +492,7 @@
             }
             if (rcContentBg.size.height<FACE_HEIGHT) {
                 //单行的时候，可以确保气泡下沿与头像下沿齐平
+                rcContentBg.size.height=30;
                 rcContentBg.origin.y=ITEMS_SEPERATE+FACE_HEIGHT-rcContentBg.size.height;
             }
 
