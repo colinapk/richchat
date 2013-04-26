@@ -62,8 +62,10 @@
 }
 -(void)loadView{
     UIView * view=[[UIView alloc]init];
-    view.frame=CGRectMake(0, 0, VIEW_WIDTH, self.navigationController.navigationBarHidden?VIEW_HEIGHT:(VIEW_HEIGHT-self.navigationController.navigationBar.frame.size.height));
+    CGRect  bounds=[[UIScreen mainScreen]applicationFrame];
+    view.frame=CGRectMake(0, 0, bounds.size.width, self.navigationController.navigationBarHidden?bounds.size.height:(bounds.size.height/*-self.navigationController.navigationBar.frame.size.height*/));
     self.view=view;
+    bounds=self.view.frame;
     [view release];
 }
 - (void)viewDidLoad
@@ -193,7 +195,7 @@
     
     MoodFaceVC * mvc=[[MoodFaceVC alloc]init];
     mvc.delegate=self;
-    mvc.mNWith=VIEW_WIDTH-VIEW_INSET*2-FACE_HEIGHT-CONTENT_INSET_BIG-CONTENT_INSET_SMALL;
+    mvc.mNWith=self.view.frame.size.width-VIEW_INSET*2-FACE_HEIGHT-CONTENT_INSET_BIG-CONTENT_INSET_SMALL;
     mvc.mNWordSize=CONTENT_FONT_SIZE;
     mvc.mNImgSize=24;
     self.mood=mvc;
@@ -283,7 +285,7 @@
         _btnFace.frame=rc;
         
         //通知栏20，导航栏44，编辑框INPUT_SINGLE_LINE_HEIGHT
-        _table.frame = CGRectMake(0.0f, 0.0f, VIEW_WIDTH,(float)(VIEW_HEIGHT-h-44-INPUT_SINGLE_LINE_HEIGHT-10));
+        _table.frame = CGRectMake(0.0f, 0.0f, self.view.frame.size.width,(float)(self.view.frame.size.height-h-INPUT_SINGLE_LINE_HEIGHT-10));
         CGRect rcMood = _mood.view.frame;
         rcMood.origin.y=_ivBg.frame.size.height+_ivBg.frame.origin.y;
         _mood.view.frame=rcMood;
@@ -404,20 +406,20 @@
     
 }
 -(void)onClickCellButton:(UIButton *)sender{
-    if (self.delegate&&[self.delegate respondsToSelector:@selector(richChatOnClickCell:type:data:)])
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(richChatHistoryItem:AtIndex:)])
     {
-        ENUM_HISTORY_TYPE type=ENUM_HISTORY_TYPE_TEXT;
-        NSData * data=nil;
-        [self.delegate richChatOnClickCell:sender.tag type:&type data:&data];
-        if (ENUM_HISTORY_TYPE_VOICE==type) {
+        RichChatItem * item=[[RichChatItem alloc]init];
+        [self.delegate richChatHistoryItem:item AtIndex:sender.tag];
+        if (ENUM_HISTORY_TYPE_VOICE==item.itemType) {
             sender.selected=!sender.selected;
             if (sender.selected) {
-                [_media playFileData:data];
+                [_media playFileData:item.itemContent];
             }else{
                 [_media.audioPlayer stop];
             }
             
         }
+        [item release];
     }
 }
 -(void)sendMessage:(id)content type:(ENUM_HISTORY_TYPE)type{
@@ -585,7 +587,11 @@
         if (CONTENT_DATE_LABLE_IS_SHOW)
         {
             UILabel * lbDate=[[UILabel alloc]init];
-            lbDate.backgroundColor=[UIColor clearColor];
+            if (DEBUG_MODE) {
+                lbDate.backgroundColor=[UIColor brownColor];
+            } else {
+                lbDate.backgroundColor=[UIColor clearColor];
+            }
             lbDate.font=[UIFont systemFontOfSize:CONTENT_DATE_LABLE_FONT_SIZE];
             NSDate * date=(NSDate *)item.itemTime;
             lbDate.text=[self caculateTime:[date timeIntervalSince1970]];
@@ -606,6 +612,11 @@
         //不是信息，是时间标签
         if (item.itemType==ENUM_HISTORY_TYPE_TIME) {
             UILabel * lbDate=[[UILabel alloc]init];
+            if (DEBUG_MODE) {
+                lbDate.backgroundColor=[UIColor greenColor];
+            } else {
+                lbDate.backgroundColor=[UIColor clearColor];
+            }
             CGRect rc=CGRectMake(0, 0, _table.frame.size.width, CELL_TYPE_TIME_HEIGHT);
             lbDate.frame=rc;
             NSDate * date=(NSDate *)item.itemContent;
@@ -657,7 +668,7 @@
     rc.origin.y=_ivBg.frame.size.height-5-rc.size.height;
     _btnVoice.frame=rc;
     
-    _table.frame = CGRectMake(0.0f, 0.0f, VIEW_WIDTH,_ivBg.frame.origin.y);
+    _table.frame = CGRectMake(0.0f, 0.0f, self.view.frame.size.width,_ivBg.frame.origin.y);
     
     CGRect rcMood = _mood.view.frame;
     rcMood.origin.y=_ivBg.frame.size.height+_ivBg.frame.origin.y;

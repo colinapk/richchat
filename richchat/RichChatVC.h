@@ -10,8 +10,8 @@
 #import "HPGrowingTextView.h"
 
 #define DEBUG_MODE YES
-#define VIEW_WIDTH 320
-#define VIEW_HEIGHT 460
+//#define VIEW_WIDTH 320
+//#define VIEW_HEIGHT 460
 //左右边界的缩进距离
 #define VIEW_INSET 10
 //当条目类型为时间时，cell的高度
@@ -69,7 +69,7 @@ typedef enum {
 -(void)     richChatHistoryItem:(RichChatItem *)item AtIndex:(NSInteger)index;
 -(void)     richChatRequestToSendMessage:(id)content type:(ENUM_HISTORY_TYPE)type;
 @optional
--(void)     richChatOnClickCell:(NSInteger)row type:(ENUM_HISTORY_TYPE *)pType data:(NSData**)pData;
+//-(void)     richChatOnClickCell:(NSInteger)row type:(ENUM_HISTORY_TYPE *)pType data:(NSData**)pData;
 @end
 
 @interface RichChatVC : UIViewController<UITableViewDataSource

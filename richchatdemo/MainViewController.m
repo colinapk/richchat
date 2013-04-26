@@ -113,17 +113,17 @@
         }
     }
 }
--(void)richChatOnClickCell:(NSInteger)row type:(ENUM_HISTORY_TYPE *)pType data:(NSData **)pData{
-    if (row<self.chatArray.count) {
-        NSDictionary * dict=[self.chatArray objectAtIndex:row];
-        if (dict&&[dict isKindOfClass:[NSDictionary class]]) {
-            //将dict中的数据赋值给对应的item属性
-            ENUM_HISTORY_TYPE type=(ENUM_HISTORY_TYPE)[[dict objectForKey:@"type"]integerValue];
-            *pType=type;
-            if (ENUM_HISTORY_TYPE_VOICE==type) {
-                *pData=[dict objectForKey:@"content"];
-            }
-        }
-    }
-}
+//-(void)richChatOnClickCell:(NSInteger)row type:(ENUM_HISTORY_TYPE *)pType data:(NSData **)pData{
+//    if (row<self.chatArray.count) {
+//        NSDictionary * dict=[self.chatArray objectAtIndex:row];
+//        if (dict&&[dict isKindOfClass:[NSDictionary class]]) {
+//            //将dict中的数据赋值给对应的item属性
+//            ENUM_HISTORY_TYPE type=(ENUM_HISTORY_TYPE)[[dict objectForKey:@"type"]integerValue];
+//            *pType=type;
+//            if (ENUM_HISTORY_TYPE_VOICE==type) {
+//                *pData=[dict objectForKey:@"content"];
+//            }
+//        }
+//    }
+//}
 @end
