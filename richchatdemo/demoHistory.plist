@@ -66,9 +66,9 @@
 	</dict>
 	<dict>
 		<key>content</key>
-		<string>[哭]</string>
+		<string>http://file.market.xiaomi.com/download/df7/a28e0bf3d7e7627ff2244c73d155588c388208b5/%E8%9C%A1%E7%AC%94%E5%B0%8F%E6%96%B0-%E8%80%81%E5%A4%A7%E5%8A%A0%E6%B2%B9.mp3</string>
 		<key>type</key>
-		<integer>2</integer>
+		<integer>3</integer>
 		<key>time</key>
 		<date>2013-04-23T09:36:50Z</date>
 		<key>sender_face</key>

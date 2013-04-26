@@ -492,7 +492,8 @@
         [ivFace release];
         
         CGRect rcContentBg=CGRectZero;
-        UIImage * imgContentBg=[[UIImage imageNamed:(item.itemSenderIsSelf?@"bubbleSelf":@"bubble")]stretchableImageWithLeftCapWidth:item.itemSenderIsSelf?CONTENT_INSET_SMALL:CONTENT_INSET_BIG topCapHeight:15];
+        UIImage * imgContentBg=[[UIImage imageNamed:(item.itemSenderIsSelf?@"bubbleSelf":@"bubble")]stretchableImageWithLeftCapWidth:item.itemSenderIsSelf?CONTENT_INSET_SMALL:CONTENT_INSET_BIG topCapHeight:16];
+        //44*31 image size
         UIImageView * ivContentBg=[[UIImageView alloc]init];
         ivContentBg.userInteractionEnabled=YES;
         ivContentBg.image=imgContentBg;
@@ -504,6 +505,9 @@
             NSString * strContent=item.itemContent;
             UIView * viewContent=[_mood assembleMessageAtIndex:strContent];
             CGSize sizeContent=viewContent.frame.size;
+            if (sizeContent.height<27/*单行文字的高度*/) {
+                sizeContent.height=27;
+            }
                        
             rcContentBg=CGRectMake(item.itemSenderIsSelf
                                         ?ivFace.frame.origin.x-sizeContent.width-CONTENT_INSET_BIG-CONTENT_INSET_SMALL
@@ -511,24 +515,7 @@
                                         +ivFace.frame.size.width
                                         , CELLS_SEPERATE
                                         , sizeContent.width+CONTENT_INSET_BIG+CONTENT_INSET_SMALL
-                                        , sizeContent.height+CONTENT_INSET_TOP+CONTENT_INSET_BOTTOM);
-            
-            if (rcContentBg.size.width<36) {
-                CGFloat enlarge=36-rcContentBg.size.width;
-                rcContentBg.size.width=36;
-                if (item.itemSenderIsSelf) {
-                    rcContentBg.origin.x-=enlarge;
-                }else{
-                    rcContentBg.origin.x+=enlarge;
-                }
-            }
-            if (rcContentBg.size.height<FACE_HEIGHT) {
-                //单行的时候，可以确保气泡下沿与头像下沿齐平
-                rcContentBg.origin.y=CELLS_SEPERATE+FACE_HEIGHT-rcContentBg.size.height;
-            }
-
-
-                        
+                                        , sizeContent.height+CONTENT_INSET_TOP+CONTENT_INSET_BOTTOM);                
             CGRect rcContent=viewContent.frame;
             rcContent.origin.x=item.itemSenderIsSelf?CONTENT_INSET_SMALL:CONTENT_INSET_BIG;
             rcContent.origin.y=CONTENT_INSET_TOP;
@@ -540,12 +527,12 @@
             [ivContentBg addSubview:viewContent];
         }
         if (item.itemType==ENUM_HISTORY_TYPE_VOICE) {
-//            NSData * strContent=(NSData *)item.itemContent;
-//            AVAudioPlayer * player=[[AVAudioPlayer alloc]initWithData:strContent error:nil];
-            NSTimeInterval length=3;
-//            [player release];
-            CGSize sizeContent=CGSizeMake(length*2+35, 30);
-            
+            NSTimeInterval length=0;
+            UIImage * imgPlay=[UIImage imageNamed:@"button_play"];
+            CGSize sizeContent=CGSizeMake(length*2+imgPlay.size.width, imgPlay.size.height);
+            if (sizeContent.height<27/*单行文字的高度*/) {
+                sizeContent.height=27;
+            }
             rcContentBg=CGRectMake(item.itemSenderIsSelf
                                    ?ivFace.frame.origin.x-sizeContent.width-CONTENT_INSET_BIG-CONTENT_INSET_SMALL
                                    :ivFace.frame.origin.x
@@ -553,21 +540,7 @@
                                    , CELLS_SEPERATE
                                    , sizeContent.width+CONTENT_INSET_BIG+CONTENT_INSET_SMALL
                                    , sizeContent.height+CONTENT_INSET_TOP+CONTENT_INSET_BOTTOM);
-            
-            if (rcContentBg.size.width<36) {
-                CGFloat enlarge=36-rcContentBg.size.width;
-                rcContentBg.size.width=36;
-                if (item.itemSenderIsSelf) {
-                    rcContentBg.origin.x-=enlarge;
-                }else{
-                    rcContentBg.origin.x+=enlarge;
-                }
-            }
-            if (rcContentBg.size.height<FACE_HEIGHT) {
-                //单行的时候，可以确保气泡下沿与头像下沿齐平
-                rcContentBg.origin.y=CELLS_SEPERATE+FACE_HEIGHT-rcContentBg.size.height;
-            }
-            
+       
             
             UIButton * btnMsgVoice=[UIButton buttonWithType:UIButtonTypeCustom];
             [btnMsgVoice addTarget:self action:@selector(onClickCellButton:) forControlEvents:UIControlEventTouchUpInside];
@@ -584,6 +557,10 @@
             
             [ivContentBg addSubview:btnMsgVoice];
 
+        }
+        if (rcContentBg.size.height<FACE_HEIGHT) {
+            //单行的时候，可以确保气泡下沿与头像下沿齐平
+            rcContentBg.origin.y=CELLS_SEPERATE+FACE_HEIGHT-rcContentBg.size.height;
         }
         ivContentBg.frame=rcContentBg;
         if (CONTENT_DATE_LABLE_IS_SHOW)

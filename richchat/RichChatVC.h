@@ -10,7 +10,7 @@
 #import "HPGrowingTextView.h"
 #import "NHPlayer.h"
 
-#define DEBUG_MODE YES
+#define DEBUG_MODE NO
 //#define VIEW_WIDTH 320
 //#define VIEW_HEIGHT 460
 //左右边界的缩进距离
@@ -30,9 +30,9 @@
 //聊天记录的字体大小
 #define CONTENT_FONT_SIZE 18
 //对self来说是右边，对对方来说是左边
-#define CONTENT_INSET_BIG 20
+#define CONTENT_INSET_BIG 26
 //与CONTENT_INSET_BIG相反
-#define CONTENT_INSET_SMALL 15
+#define CONTENT_INSET_SMALL 18
 //Mood返回的view在气泡中的顶，底部缩进
 #define CONTENT_INSET_TOP 3
 #define CONTENT_INSET_BOTTOM (CONTENT_INSET_TOP+3)

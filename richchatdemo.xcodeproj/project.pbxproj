@@ -12,8 +12,8 @@
 		98196C19172924EF0053D281 /* NHPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 98196C18172924EF0053D281 /* NHPlayer.m */; };
 		98196C1B172925530053D281 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98196C1A172925530053D281 /* AVFoundation.framework */; };
 		982B2B3C1725245700BD4AA4 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 982B2B3B1725245700BD4AA4 /* MainViewController.m */; };
-		982B2B3F1725431800BD4AA4 /* bubble.png in Resources */ = {isa = PBXBuildFile; fileRef = 982B2B3D1725431800BD4AA4 /* bubble.png */; };
-		982B2B401725431800BD4AA4 /* bubbleSelf.png in Resources */ = {isa = PBXBuildFile; fileRef = 982B2B3E1725431800BD4AA4 /* bubbleSelf.png */; };
+		982B2B3F1725431800BD4AA4 /* bubble@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 982B2B3D1725431800BD4AA4 /* bubble@2x.png */; };
+		982B2B401725431800BD4AA4 /* bubbleSelf@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 982B2B3E1725431800BD4AA4 /* bubbleSelf@2x.png */; };
 		982B2B421725448C00BD4AA4 /* wangjia.png in Resources */ = {isa = PBXBuildFile; fileRef = 982B2B411725448C00BD4AA4 /* wangjia.png */; };
 		983A9E2C1727A42800F5067A /* face_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 983A9DED1727A42800F5067A /* face_0.png */; };
 		983A9E2D1727A42800F5067A /* face_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 983A9DEE1727A42800F5067A /* face_1.png */; };
@@ -106,8 +106,8 @@
 		98196C1A172925530053D281 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		982B2B3A1725245700BD4AA4 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		982B2B3B1725245700BD4AA4 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
-		982B2B3D1725431800BD4AA4 /* bubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubble.png; sourceTree = "<group>"; };
-		982B2B3E1725431800BD4AA4 /* bubbleSelf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubbleSelf.png; sourceTree = "<group>"; };
+		982B2B3D1725431800BD4AA4 /* bubble@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bubble@2x.png"; sourceTree = "<group>"; };
+		982B2B3E1725431800BD4AA4 /* bubbleSelf@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bubbleSelf@2x.png"; sourceTree = "<group>"; };
 		982B2B411725448C00BD4AA4 /* wangjia.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wangjia.png; sourceTree = "<group>"; };
 		983A9DED1727A42800F5067A /* face_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = face_0.png; sourceTree = "<group>"; };
 		983A9DEE1727A42800F5067A /* face_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = face_1.png; sourceTree = "<group>"; };
@@ -388,8 +388,8 @@
 			children = (
 				981121E0172A516C0036299C /* button_stop@2x.png */,
 				981121E1172A516C0036299C /* button_play@2x.png */,
-				982B2B3D1725431800BD4AA4 /* bubble.png */,
-				982B2B3E1725431800BD4AA4 /* bubbleSelf.png */,
+				982B2B3D1725431800BD4AA4 /* bubble@2x.png */,
+				982B2B3E1725431800BD4AA4 /* bubbleSelf@2x.png */,
 				988FA0CB16EDBBDD00E51EF1 /* text@2x.png */,
 				988FA0C916EDB73400E51EF1 /* holdtotalk@2x.png */,
 				988FA0C716EDB04F00E51EF1 /* box@2x.png */,
@@ -461,8 +461,8 @@
 				988FA0C816EDB04F00E51EF1 /* box@2x.png in Resources */,
 				988FA0CA16EDB73400E51EF1 /* holdtotalk@2x.png in Resources */,
 				988FA0CC16EDBBDD00E51EF1 /* text@2x.png in Resources */,
-				982B2B3F1725431800BD4AA4 /* bubble.png in Resources */,
-				982B2B401725431800BD4AA4 /* bubbleSelf.png in Resources */,
+				982B2B3F1725431800BD4AA4 /* bubble@2x.png in Resources */,
+				982B2B401725431800BD4AA4 /* bubbleSelf@2x.png in Resources */,
 				982B2B421725448C00BD4AA4 /* wangjia.png in Resources */,
 				98FD40BD17268ABE00398A79 /* demoHistory.plist in Resources */,
 				98FD40BF17268C3F00398A79 /* fugen.png in Resources */,
