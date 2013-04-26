@@ -77,11 +77,13 @@
     table.delegate=self;
     if (DEBUG_MODE) {
         table.separatorStyle=UITableViewCellSeparatorStyleSingleLine;
+        table.backgroundColor=[UIColor cyanColor];
     }else{
         table.separatorStyle=UITableViewCellSeparatorStyleNone;
+        table.backgroundColor=[UIColor clearColor];
     }
     
-    table.backgroundColor=[UIColor clearColor];
+    
     [self.view addSubview:table];
     _table = table;
     [table release];
@@ -408,7 +410,13 @@
         NSData * data=nil;
         [self.delegate richChatOnClickCell:sender.tag type:&type data:&data];
         if (ENUM_HISTORY_TYPE_VOICE==type) {
-            [_media playFileData:data];
+            sender.selected=!sender.selected;
+            if (sender.selected) {
+                [_media playFileData:data];
+            }else{
+                [_media.audioPlayer stop];
+            }
+            
         }
     }
 }
@@ -560,6 +568,8 @@
             UIButton * btnMsgVoice=[UIButton buttonWithType:UIButtonTypeCustom];
             [btnMsgVoice addTarget:self action:@selector(onClickCellButton:) forControlEvents:UIControlEventTouchUpInside];
             btnMsgVoice.tag=indexPath.row;
+            [btnMsgVoice setImage:[UIImage imageNamed:@"button_play"] forState:UIControlStateNormal];
+            [btnMsgVoice setImage:[UIImage imageNamed:@"button_stop"] forState:UIControlStateSelected];
             CGRect rcContent=CGRectMake(0, 0, sizeContent.width, sizeContent.height);
             rcContent.origin.x=item.itemSenderIsSelf?CONTENT_INSET_SMALL:CONTENT_INSET_BIG;
             rcContent.origin.y=CONTENT_INSET_TOP;
