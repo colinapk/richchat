@@ -10,7 +10,7 @@
 #import "HPGrowingTextView.h"
 #import "NHPlayer.h"
 
-#define DEBUG_MODE NO
+#define DEBUG_MODE 0
 //#define VIEW_WIDTH 320
 //#define VIEW_HEIGHT 460
 //左右边界的缩进距离

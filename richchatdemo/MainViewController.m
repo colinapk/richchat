@@ -87,7 +87,7 @@
     if (ENUM_HISTORY_TYPE_TEXT==type) {
         [dictitem setObject:content forKey:@"content"];
     }
-    if (ENUM_HISTORY_TYPE_VOICE) {
+    if (ENUM_HISTORY_TYPE_VOICE==type) {
 //        NSData * data=(NSData *)content;
         //上传给服务器
         //成功后刷界面

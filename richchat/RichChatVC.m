@@ -101,17 +101,19 @@
     [ivBg release];
     
     //+按钮
+    UIImage * imgPlus=[UIImage imageNamed:@"plus"];
     UIButton * btnPlus=[UIButton buttonWithType:UIButtonTypeCustom];
-    btnPlus.frame=CGRectMake(0, _tvInput.frame.origin.y, INPUT_SINGLE_LINE_HEIGHT, INPUT_SINGLE_LINE_HEIGHT);
-    [btnPlus setBackgroundImage:[UIImage imageNamed:@"plus"] forState:UIControlStateNormal];
+    btnPlus.frame=CGRectMake(0, _tvInput.frame.origin.y, imgPlus.size.width, imgPlus.size.height);
+    [btnPlus setBackgroundImage:imgPlus forState:UIControlStateNormal];
 //    [btnPlus addTarget:self action:@selector(onClickSend:) forControlEvents:UIControlEventTouchUpInside];
     _btnPlus = btnPlus;
     [ivBg addSubview:btnPlus];
     
     //表情按钮
+    UIImage * imgFace=[UIImage imageNamed:@"happy"];
     UIButton * btnFace=[UIButton buttonWithType:UIButtonTypeCustom];
-    btnFace.frame=CGRectMake(INPUT_SINGLE_LINE_HEIGHT, _tvInput.frame.origin.y, INPUT_SINGLE_LINE_HEIGHT, INPUT_SINGLE_LINE_HEIGHT);
-    [btnFace setBackgroundImage:[UIImage imageNamed:@"happy"] forState:UIControlStateNormal];
+    btnFace.frame=CGRectMake(INPUT_SINGLE_LINE_HEIGHT, _tvInput.frame.origin.y, imgFace.size.width,imgFace.size.height);
+    [btnFace setBackgroundImage:imgFace forState:UIControlStateNormal];
     [btnFace addTarget:self action:@selector(onClickFace:) forControlEvents:UIControlEventTouchUpInside];
     _btnFace = btnFace;
     [ivBg addSubview:btnFace];
@@ -140,21 +142,29 @@
     [tv release];
     
     //voice/text按钮
+    UIImage * imgVoice=[UIImage imageNamed:@"voice"];
+    UIImage * imgText=[UIImage imageNamed:@"text"];
     UIButton * btnVoice=[UIButton buttonWithType:UIButtonTypeCustom];
-    btnVoice.frame=CGRectMake(ivBg.frame.size.width-INPUT_SINGLE_LINE_HEIGHT, _tvInput.frame.origin.y, INPUT_SINGLE_LINE_HEIGHT, INPUT_SINGLE_LINE_HEIGHT);
-    [btnVoice setBackgroundImage:[UIImage imageNamed:@"voice"] forState:UIControlStateNormal];
-    [btnVoice setBackgroundImage:[UIImage imageNamed:@"text"] forState:UIControlStateSelected];
+    btnVoice.frame=CGRectMake(ivBg.frame.size.width-INPUT_SINGLE_LINE_HEIGHT, _tvInput.frame.origin.y, imgVoice.size.width,imgVoice.size.height);
+    [btnVoice setBackgroundImage:imgVoice forState:UIControlStateNormal];
+    [btnVoice setBackgroundImage:imgText forState:UIControlStateSelected];
     [btnVoice addTarget:self action:@selector(onClickBtnVoiceText:) forControlEvents:UIControlEventTouchUpInside];
     _btnVoice = btnVoice;
     [ivBg addSubview:btnVoice];
     
     //Hold to talk
     UIButton * btnTalk=[UIButton buttonWithType:UIButtonTypeCustom];
-    UIImage * img = [UIImage imageNamed:@"holdtotalk"];
-    btnTalk.frame=CGRectMake(ivBg.frame.size.width/2-img.size.width/2, 5, img.size.width, INPUT_SINGLE_LINE_HEIGHT);
-    [btnTalk setBackgroundImage:img forState:UIControlStateNormal];
+    UIImage * img = [UIImage imageNamed:@"talk_blue"];
+    btnTalk.frame=CGRectMake(btnPlus.frame.origin.x+btnPlus.frame.size.width
+                             , ivBg.frame.size.height/2-img.size.height/2
+                             ,btnVoice.frame.origin.x-btnPlus.frame.size.width-btnPlus.frame.origin.x
+                             , img.size.height);
+    [btnTalk setImage:img forState:UIControlStateNormal];
+    if (DEBUG_MODE) {
+        btnTalk.backgroundColor=[UIColor yellowColor];
+    }
     [btnTalk setTitleColor:[UIColor darkTextColor] forState:UIControlStateNormal];
-    [btnTalk setTitle:NSLocalizedString(@"Hold To Talk", nil) forState:UIControlStateNormal];
+//    [btnTalk setTitle:NSLocalizedString(@"Hold To Talk", nil) forState:UIControlStateNormal];
     _btnTalk=btnTalk;
     btnTalk.hidden=YES;
     [ivBg addSubview:btnTalk];
