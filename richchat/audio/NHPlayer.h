@@ -26,4 +26,5 @@
 -(void)playFile:(NSString *)strFilePath;
 -(void)recordTo:(NSString *)strFilePath;
 -(void)playFileData:(NSData *)data;
+-(void)playFileOnline:(NSString *)strUrl;
 @end

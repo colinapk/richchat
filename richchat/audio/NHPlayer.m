@@ -80,6 +80,12 @@
     [data release];
     
 }
+-(void)playFileOnline:(NSString *)strUrl{
+    NSURL * url=[NSURL URLWithString:strUrl];
+    NSData * data=[NSData dataWithContentsOfURL:url];
+    [self playFileData:data];
+       
+}
 -(void)recordTo:(NSString *)strFilePath{
     if (_audioRecorder) {
         [_audioRecorder stop];

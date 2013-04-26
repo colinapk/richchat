@@ -83,7 +83,18 @@
 //    item.itemContent=[dict objectForKey:@"content"];
 //    item.itemSenderIsSelf=[[dict objectForKey:@"sender_is_self"]boolValue];
     //模仿网络请求
-    NSMutableDictionary * dictitem=[[NSMutableDictionary alloc]initWithObjectsAndKeys:[NSString stringWithFormat:@"%d",type],@"type",content,@"content",@"wangjia",@"sender_title",[NSDate date],@"time" ,@"wangjia",@"sender_face",@"1",@"sender_is_self",nil];
+    NSMutableDictionary * dictitem=[[NSMutableDictionary alloc]initWithObjectsAndKeys:[NSString stringWithFormat:@"%d",type],@"type",@"wangjia",@"sender_title",[NSDate date],@"time" ,@"wangjia",@"sender_face",@"1",@"sender_is_self",nil];
+    if (ENUM_HISTORY_TYPE_TEXT==type) {
+        [dictitem setObject:content forKey:@"content"];
+    }
+    if (ENUM_HISTORY_TYPE_VOICE) {
+//        NSData * data=(NSData *)content;
+        //上传给服务器
+        //成功后刷界面
+        
+        //刷界面得到的是一个网址，用户点击后下载播放
+        [dictitem setObject:@"http://file.market.xiaomi.com/download/df7/a28e0bf3d7e7627ff2244c73d155588c388208b5/%E8%9C%A1%E7%AC%94%E5%B0%8F%E6%96%B0-%E8%80%81%E5%A4%A7%E5%8A%A0%E6%B2%B9.mp3" forKey:@"content"];
+    }
    
     NSMutableArray * items=[[NSMutableArray alloc]initWithArray:self.chatArray];
     [items addObject:dictitem];
@@ -104,26 +115,14 @@
         NSDictionary * dict=[self.chatArray objectAtIndex:index];
         if (dict&&[dict isKindOfClass:[NSDictionary class]]) {
             //将dict中的数据赋值给对应的item属性
-            item.itemSenderTitle=[dict objectForKey:@"sender_title"];
+//            item.itemSenderTitle=[dict objectForKey:@"sender_title"];
             item.itemType=(ENUM_HISTORY_TYPE)[[dict objectForKey:@"type"]integerValue];
+            item.itemContent=[dict objectForKey:@"content"];
             item.itemTime=[dict objectForKey:@"time"];
             item.itemSenderFace=[UIImage imageNamed:[dict objectForKey:@"sender_face"]];
-            item.itemContent=[dict objectForKey:@"content"];
             item.itemSenderIsSelf=[[dict objectForKey:@"sender_is_self"]boolValue];
         }
     }
 }
-//-(void)richChatOnClickCell:(NSInteger)row type:(ENUM_HISTORY_TYPE *)pType data:(NSData **)pData{
-//    if (row<self.chatArray.count) {
-//        NSDictionary * dict=[self.chatArray objectAtIndex:row];
-//        if (dict&&[dict isKindOfClass:[NSDictionary class]]) {
-//            //将dict中的数据赋值给对应的item属性
-//            ENUM_HISTORY_TYPE type=(ENUM_HISTORY_TYPE)[[dict objectForKey:@"type"]integerValue];
-//            *pType=type;
-//            if (ENUM_HISTORY_TYPE_VOICE==type) {
-//                *pData=[dict objectForKey:@"content"];
-//            }
-//        }
-//    }
-//}
+
 @end

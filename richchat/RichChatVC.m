@@ -8,7 +8,7 @@
 
 #import "RichChatVC.h"
 #import "MoodFaceVC.h"
-#import "NHPlayer.h"
+
 
 //富聊天条目的模型实现
 @implementation RichChatItem
@@ -32,6 +32,7 @@
     UIButton * _btnPlus;
     UIButton * _btnTalk;
     UIButton * _btnCancel;
+    UIButton * _btnCellVoice;
     
     BOOL  _isPan;
     BOOL  _isShowMood;
@@ -206,7 +207,7 @@
     [mvc release];
     
     NHPlayer * player=[[NHPlayer alloc]init];
-//    player.delegate=self;//暂不需要
+    player.delegate=self;
     self.media=player;
     [player release];
     
@@ -413,7 +414,8 @@
         if (ENUM_HISTORY_TYPE_VOICE==item.itemType) {
             sender.selected=!sender.selected;
             if (sender.selected) {
-                [_media playFileData:item.itemContent];
+                _btnCellVoice=sender;
+                [_media playFileOnline:item.itemContent];
             }else{
                 [_media.audioPlayer stop];
             }
@@ -538,10 +540,10 @@
             [ivContentBg addSubview:viewContent];
         }
         if (item.itemType==ENUM_HISTORY_TYPE_VOICE) {
-            NSData * strContent=(NSData *)item.itemContent;
-            AVAudioPlayer * player=[[AVAudioPlayer alloc]initWithData:strContent error:nil];
-            NSTimeInterval length=player.duration;
-            [player release];
+//            NSData * strContent=(NSData *)item.itemContent;
+//            AVAudioPlayer * player=[[AVAudioPlayer alloc]initWithData:strContent error:nil];
+            NSTimeInterval length=3;
+//            [player release];
             CGSize sizeContent=CGSizeMake(length*2+35, 30);
             
             rcContentBg=CGRectMake(item.itemSenderIsSelf
@@ -684,6 +686,12 @@
 #pragma mark - mood face delegate
 -(void)moodFaceVC:(MoodFaceVC *)vc selected:(NSString *)strDescription imageName:(NSString *)strImg{
     [_tvInput setText:[_tvInput.text stringByAppendingString:strDescription]];
+}
+#pragma mark - nhplayer delegate
+-(void)NHPlayer:(NHPlayer *)player onProgress:(CGFloat)progress{
+    if (1==progress) {
+        _btnCellVoice.selected=NO;
+    }
 }
 #pragma mark - common
 - (NSString *)caculateTime:(double)aDInterval

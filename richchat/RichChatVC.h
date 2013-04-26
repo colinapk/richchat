@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "HPGrowingTextView.h"
+#import "NHPlayer.h"
 
 #define DEBUG_MODE YES
 //#define VIEW_WIDTH 320
@@ -75,6 +76,7 @@ typedef enum {
 @interface RichChatVC : UIViewController<UITableViewDataSource
 ,UITableViewDelegate
 ,UITextViewDelegate
+,NHPlayerDelegate
 ,HPGrowingTextViewDelegate>{
 
 }
