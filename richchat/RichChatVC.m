@@ -173,11 +173,11 @@
     
     //move up to cancel
     UIButton * lab=[UIButton buttonWithType:UIButtonTypeCustom];
-    lab.frame=CGRectMake(0, 0, 100, 100);
-    lab.center=self.view.center;
+    lab.frame=CGRectMake(0, 0, 100, 120);
+    lab.center=CGPointMake(self.view.center.x, self.view.center.y-50);
     lab.backgroundColor=[UIColor colorWithWhite:0 alpha:0.5];
-    [lab setTitle:NSLocalizedString(@"Move Up To Cancel", nil) forState:UIControlStateNormal];
-    [lab setTitle:NSLocalizedString(@"Release To Cancel", nil) forState:UIControlStateSelected];
+    [lab setImage:[UIImage imageNamed:@"mic_black"] forState:UIControlStateNormal];
+    [lab setImage:[UIImage imageNamed:@"trash_black"] forState:UIControlStateSelected];
     [self.view addSubview:lab];
     _btnCancel=lab;
     _btnCancel.hidden=YES;

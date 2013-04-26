@@ -78,6 +78,8 @@
 		983A9E681727A42800F5067A /* smiley_bj.png in Resources */ = {isa = PBXBuildFile; fileRef = 983A9E2B1727A42800F5067A /* smiley_bj.png */; };
 		986302EA172142860095EC95 /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 986302E7172142860095EC95 /* HPGrowingTextView.m */; };
 		986302EB172142860095EC95 /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 986302E9172142860095EC95 /* HPTextViewInternal.m */; };
+		98669A9C172A9AF400A081E5 /* mic_black@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 98669A9A172A9AF400A081E5 /* mic_black@2x.png */; };
+		98669A9D172A9AF400A081E5 /* trash_black@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 98669A9B172A9AF400A081E5 /* trash_black@2x.png */; };
 		987F294716E87A8400D670C2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 987F294616E87A8300D670C2 /* UIKit.framework */; };
 		987F294916E87A8400D670C2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 987F294816E87A8400D670C2 /* Foundation.framework */; };
 		987F294B16E87A8400D670C2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 987F294A16E87A8400D670C2 /* CoreGraphics.framework */; };
@@ -174,6 +176,8 @@
 		986302E7172142860095EC95 /* HPGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPGrowingTextView.m; sourceTree = "<group>"; };
 		986302E8172142860095EC95 /* HPTextViewInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPTextViewInternal.h; sourceTree = "<group>"; };
 		986302E9172142860095EC95 /* HPTextViewInternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPTextViewInternal.m; sourceTree = "<group>"; };
+		98669A9A172A9AF400A081E5 /* mic_black@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mic_black@2x.png"; sourceTree = "<group>"; };
+		98669A9B172A9AF400A081E5 /* trash_black@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "trash_black@2x.png"; sourceTree = "<group>"; };
 		987F294316E87A8300D670C2 /* richchatdemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = richchatdemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		987F294616E87A8300D670C2 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		987F294816E87A8400D670C2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -384,6 +388,8 @@
 		988FA0C016ED8A2300E51EF1 /* image */ = {
 			isa = PBXGroup;
 			children = (
+				98669A9A172A9AF400A081E5 /* mic_black@2x.png */,
+				98669A9B172A9AF400A081E5 /* trash_black@2x.png */,
 				98B3E94A172A8640006B5C4C /* talk_blue@2x.png */,
 				981121E0172A516C0036299C /* button_stop@2x.png */,
 				981121E1172A516C0036299C /* button_play@2x.png */,
@@ -524,6 +530,8 @@
 				981121E2172A516C0036299C /* button_stop@2x.png in Resources */,
 				981121E3172A516C0036299C /* button_play@2x.png in Resources */,
 				98B3E94B172A8640006B5C4C /* talk_blue@2x.png in Resources */,
+				98669A9C172A9AF400A081E5 /* mic_black@2x.png in Resources */,
+				98669A9D172A9AF400A081E5 /* trash_black@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
