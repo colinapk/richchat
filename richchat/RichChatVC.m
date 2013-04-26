@@ -385,11 +385,20 @@
     
 }
 -(void)onClickFace:(UIButton *)sender{
-    _isShowMood=YES;
+   
+    
     if (_tvInput.internalTextView.isFirstResponder) {
+        _isShowMood=YES;
         [_tvInput resignFirstResponder];
     }else{
-        [self autoMovekeyBoard:216 duration:0.3];
+        if (_isShowMood) {
+              [self autoMovekeyBoard:0 duration:0.3];
+            _isShowMood=NO;
+        } else {
+            [self autoMovekeyBoard:216 duration:0.3];
+             _isShowMood=YES;
+        }
+        
     }
     
     
@@ -435,8 +444,7 @@
     }
 }
 -(void)sendMessage:(id)content type:(ENUM_HISTORY_TYPE)type{
-//    [_arrayHistory addObject:str];
-//    [_table reloadData];
+    _isShowMood=NO;
     if (self.delegate && [self.delegate respondsToSelector:@selector(richChatRequestToSendMessage:type:)]) {
         [self.delegate richChatRequestToSendMessage:content type:type];
     }
