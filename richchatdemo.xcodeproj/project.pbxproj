@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		98196C19172924EF0053D281 /* NHPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 98196C18172924EF0053D281 /* NHPlayer.m */; };
+		98196C1B172925530053D281 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98196C1A172925530053D281 /* AVFoundation.framework */; };
 		982B2B3C1725245700BD4AA4 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 982B2B3B1725245700BD4AA4 /* MainViewController.m */; };
 		982B2B3F1725431800BD4AA4 /* bubble.png in Resources */ = {isa = PBXBuildFile; fileRef = 982B2B3D1725431800BD4AA4 /* bubble.png */; };
 		982B2B401725431800BD4AA4 /* bubbleSelf.png in Resources */ = {isa = PBXBuildFile; fileRef = 982B2B3E1725431800BD4AA4 /* bubbleSelf.png */; };
@@ -95,6 +97,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		98196C17172924EF0053D281 /* NHPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NHPlayer.h; sourceTree = "<group>"; };
+		98196C18172924EF0053D281 /* NHPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NHPlayer.m; sourceTree = "<group>"; };
+		98196C1A172925530053D281 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		982B2B3A1725245700BD4AA4 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		982B2B3B1725245700BD4AA4 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		982B2B3D1725431800BD4AA4 /* bubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubble.png; sourceTree = "<group>"; };
@@ -196,6 +201,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98196C1B172925530053D281 /* AVFoundation.framework in Frameworks */,
 				987F294716E87A8400D670C2 /* UIKit.framework in Frameworks */,
 				987F294916E87A8400D670C2 /* Foundation.framework in Frameworks */,
 				987F294B16E87A8400D670C2 /* CoreGraphics.framework in Frameworks */,
@@ -205,6 +211,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		98196C16172924EF0053D281 /* audio */ = {
+			isa = PBXGroup;
+			children = (
+				98196C17172924EF0053D281 /* NHPlayer.h */,
+				98196C18172924EF0053D281 /* NHPlayer.m */,
+			);
+			path = audio;
+			sourceTree = "<group>";
+		};
 		983A9DEB1727A42800F5067A /* MoodFace */ = {
 			isa = PBXGroup;
 			children = (
@@ -322,6 +337,7 @@
 		987F294516E87A8300D670C2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				98196C1A172925530053D281 /* AVFoundation.framework */,
 				987F294616E87A8300D670C2 /* UIKit.framework */,
 				987F294816E87A8400D670C2 /* Foundation.framework */,
 				987F294A16E87A8400D670C2 /* CoreGraphics.framework */,
@@ -353,6 +369,7 @@
 		987F297516E8841A00D670C2 /* richchat */ = {
 			isa = PBXGroup;
 			children = (
+				98196C16172924EF0053D281 /* audio */,
 				983A9DEB1727A42800F5067A /* MoodFace */,
 				986302E5172142850095EC95 /* HPGrowingTextView */,
 				988FA0C016ED8A2300E51EF1 /* image */,
@@ -520,6 +537,7 @@
 				986302EB172142860095EC95 /* HPTextViewInternal.m in Sources */,
 				982B2B3C1725245700BD4AA4 /* MainViewController.m in Sources */,
 				983A9E651727A42800F5067A /* MoodFaceVC.m in Sources */,
+				98196C19172924EF0053D281 /* NHPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

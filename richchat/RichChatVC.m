@@ -8,6 +8,7 @@
 
 #import "RichChatVC.h"
 #import "MoodFaceVC.h"
+#import "NHPlayer.h"
 
 //富聊天条目的模型实现
 @implementation RichChatItem
@@ -36,50 +37,26 @@
     BOOL  _isShowMood;
 }
 @property(nonatomic,strong)MoodFaceVC * mood;
+@property(nonatomic,strong)NHPlayer * media;
 @end
 
 //富聊天视图控制的实现
 @implementation RichChatVC
 @synthesize delegate=_delegate;
 @synthesize mood=_mood;
+@synthesize media=_media;
 
-#define DEBUG_MODE YES
-#define VIEW_WIDTH 320
-#define VIEW_HEIGHT 460
-//当条目类型为时间时，cell的高度
-#define CELL_TYPE_TIME_HEIGHT 30
-//条目不为时间类型时，日期lable高度
-#define CONTENT_DATE_LABLE_HEIGHT 20
-#define CONTENT_DATE_LABLE_FONT_SIZE 12
-//是否每行都显示时间
-#define ITEM_SHOW_TIME YES
-//头像的宽和高
-#define FACE_HEIGHT 40
-//每行绘制气泡起始的高度，效果是行与行的间隔
-#define ITEMS_SEPERATE 10
-//聊天记录的字体大小
-#define ITEM_FONT_SIZE 18
-//左右边界的缩进距离
-#define VIEW_INSET 10
-//对self来说是右边，对对方来说是左边
-#define CONTENT_INSET_BIG 20
-//与CONTENT_INSET_BIG相反
-#define CONTENT_INSET_SMALL 15
-//Mood返回的view在气泡中的顶，底部缩进
-#define CONTENT_INSET_TOP 3
-#define CONTENT_INSET_BOTTOM (CONTENT_INSET_TOP+3)
-//预定义文本输入框单行高度
-#define SINGLE_LINE_HEIGHT 38 //60
-//预定义文本输入框字体
-#define FONT_SIZE        18
-//#define SINGLE_LINE_HEIGHT 40 //64
-//#define FONT_SIZE        20
-//#define SINGLE_LINE_HEIGHT 43 //70
-//#define FONT_SIZE        22
-//#define SINGLE_LINE_HEIGHT 45 //74
-//#define FONT_SIZE        24
+
+//#define INPUT_SINGLE_LINE_HEIGHT 40 //64
+//#define INPUT_FONT_SIZE        20
+//#define INPUT_SINGLE_LINE_HEIGHT 43 //70
+//#define INPUT_FONT_SIZE        22
+//#define INPUT_SINGLE_LINE_HEIGHT 45 //74
+//#define INPUT_FONT_SIZE        24
 
 -(void)dealloc{
+    _media.delegate=nil;
+    [_media release];
     [_mood release];
     [super dealloc];
 }
@@ -113,14 +90,14 @@
     UIImageView * ivBg=[[UIImageView alloc]initWithImage:nil];
     ivBg.userInteractionEnabled=YES;
     ivBg.backgroundColor=[UIColor lightGrayColor];
-    ivBg.frame=CGRectMake(0, 0, self.view.frame.size.width, SINGLE_LINE_HEIGHT+10);
+    ivBg.frame=CGRectMake(0, 0, self.view.frame.size.width, INPUT_SINGLE_LINE_HEIGHT+10);
     _ivBg=ivBg;
     [self.view addSubview:ivBg];
     [ivBg release];
     
     //+按钮
     UIButton * btnPlus=[UIButton buttonWithType:UIButtonTypeCustom];
-    btnPlus.frame=CGRectMake(0, _tvInput.frame.origin.y, SINGLE_LINE_HEIGHT, SINGLE_LINE_HEIGHT);
+    btnPlus.frame=CGRectMake(0, _tvInput.frame.origin.y, INPUT_SINGLE_LINE_HEIGHT, INPUT_SINGLE_LINE_HEIGHT);
     [btnPlus setBackgroundImage:[UIImage imageNamed:@"plus"] forState:UIControlStateNormal];
 //    [btnPlus addTarget:self action:@selector(onClickSend:) forControlEvents:UIControlEventTouchUpInside];
     _btnPlus = btnPlus;
@@ -128,7 +105,7 @@
     
     //表情按钮
     UIButton * btnFace=[UIButton buttonWithType:UIButtonTypeCustom];
-    btnFace.frame=CGRectMake(SINGLE_LINE_HEIGHT, _tvInput.frame.origin.y, SINGLE_LINE_HEIGHT, SINGLE_LINE_HEIGHT);
+    btnFace.frame=CGRectMake(INPUT_SINGLE_LINE_HEIGHT, _tvInput.frame.origin.y, INPUT_SINGLE_LINE_HEIGHT, INPUT_SINGLE_LINE_HEIGHT);
     [btnFace setBackgroundImage:[UIImage imageNamed:@"happy"] forState:UIControlStateNormal];
     [btnFace addTarget:self action:@selector(onClickFace:) forControlEvents:UIControlEventTouchUpInside];
     _btnFace = btnFace;
@@ -136,7 +113,7 @@
     
     //文字框背景
     UITextField * tf=[[UITextField alloc]init];
-    tf.frame=CGRectMake(SINGLE_LINE_HEIGHT*2, 5, ivBg.frame.size.width-SINGLE_LINE_HEIGHT*3, SINGLE_LINE_HEIGHT);
+    tf.frame=CGRectMake(INPUT_SINGLE_LINE_HEIGHT*2, 5, ivBg.frame.size.width-INPUT_SINGLE_LINE_HEIGHT*3, INPUT_SINGLE_LINE_HEIGHT);
     [tf setBorderStyle:UITextBorderStyleRoundedRect];
     tf.userInteractionEnabled=NO;
     [ivBg addSubview:tf];
@@ -146,7 +123,7 @@
     
     //文字框
     HPGrowingTextView * tv=[[HPGrowingTextView alloc]init];
-    tv.font=[UIFont systemFontOfSize:FONT_SIZE];
+    tv.font=[UIFont systemFontOfSize:INPUT_FONT_SIZE];
     tv.delegate=self;
     tv.internalTextView.backgroundColor=[UIColor clearColor];
     tv.frame=tf.frame;
@@ -159,7 +136,7 @@
     
     //voice/text按钮
     UIButton * btnVoice=[UIButton buttonWithType:UIButtonTypeCustom];
-    btnVoice.frame=CGRectMake(ivBg.frame.size.width-SINGLE_LINE_HEIGHT, _tvInput.frame.origin.y, SINGLE_LINE_HEIGHT, SINGLE_LINE_HEIGHT);
+    btnVoice.frame=CGRectMake(ivBg.frame.size.width-INPUT_SINGLE_LINE_HEIGHT, _tvInput.frame.origin.y, INPUT_SINGLE_LINE_HEIGHT, INPUT_SINGLE_LINE_HEIGHT);
     [btnVoice setBackgroundImage:[UIImage imageNamed:@"voice"] forState:UIControlStateNormal];
     [btnVoice setBackgroundImage:[UIImage imageNamed:@"text"] forState:UIControlStateSelected];
     [btnVoice addTarget:self action:@selector(onClickBtnVoiceText:) forControlEvents:UIControlEventTouchUpInside];
@@ -169,7 +146,7 @@
     //Hold to talk
     UIButton * btnTalk=[UIButton buttonWithType:UIButtonTypeCustom];
     UIImage * img = [UIImage imageNamed:@"holdtotalk"];
-    btnTalk.frame=CGRectMake(ivBg.frame.size.width/2-img.size.width/2, 5, img.size.width, SINGLE_LINE_HEIGHT);
+    btnTalk.frame=CGRectMake(ivBg.frame.size.width/2-img.size.width/2, 5, img.size.width, INPUT_SINGLE_LINE_HEIGHT);
     [btnTalk setBackgroundImage:img forState:UIControlStateNormal];
     [btnTalk setTitleColor:[UIColor darkTextColor] forState:UIControlStateNormal];
     [btnTalk setTitle:NSLocalizedString(@"Hold To Talk", nil) forState:UIControlStateNormal];
@@ -215,7 +192,7 @@
     MoodFaceVC * mvc=[[MoodFaceVC alloc]init];
     mvc.delegate=self;
     mvc.mNWith=VIEW_WIDTH-VIEW_INSET*2-FACE_HEIGHT-CONTENT_INSET_BIG-CONTENT_INSET_SMALL;
-    mvc.mNWordSize=ITEM_FONT_SIZE;
+    mvc.mNWordSize=CONTENT_FONT_SIZE;
     mvc.mNImgSize=24;
     self.mood=mvc;
     CGRect rcMood = _mood.view.frame;
@@ -223,6 +200,11 @@
     _mood.view.frame=rcMood;
     [self.view addSubview:mvc.view];
     [mvc release];
+    
+    NHPlayer * player=[[NHPlayer alloc]init];
+//    player.delegate=self;//暂不需要
+    self.media=player;
+    [player release];
     
     
 }
@@ -280,26 +262,26 @@
     
     [UIView animateWithDuration:time animations:^{
         _ivBg.frame= CGRectMake(_ivBg.frame.origin.x
-                                 , (float)(self.view.frame.size.height-h-SINGLE_LINE_HEIGHT-10)
+                                 , (float)(self.view.frame.size.height-h-INPUT_SINGLE_LINE_HEIGHT-10)
                                  , _ivBg.frame.size.width
-                                 , SINGLE_LINE_HEIGHT+10);
+                                 , INPUT_SINGLE_LINE_HEIGHT+10);
         
-        _tfBg.frame=CGRectMake(_tfBg.frame.origin.x, _tfBg.frame.origin.y, _tfBg.frame.size.width, SINGLE_LINE_HEIGHT);
+        _tfBg.frame=CGRectMake(_tfBg.frame.origin.x, _tfBg.frame.origin.y, _tfBg.frame.size.width, INPUT_SINGLE_LINE_HEIGHT);
         _tvInput.frame=_tfBg.frame;
         
         CGRect rc=_btnVoice.frame;
         rc.origin.y=_ivBg.frame.size.height-5-rc.size.height;
         _btnVoice.frame=rc;
         
-        rc.size.width=SINGLE_LINE_HEIGHT;
+        rc.size.width=INPUT_SINGLE_LINE_HEIGHT;
         rc.origin.x=0;
         _btnPlus.frame=rc;
         
-        rc.origin.x=SINGLE_LINE_HEIGHT;
+        rc.origin.x=INPUT_SINGLE_LINE_HEIGHT;
         _btnFace.frame=rc;
         
-        //通知栏20，导航栏44，编辑框SINGLE_LINE_HEIGHT
-        _table.frame = CGRectMake(0.0f, 0.0f, VIEW_WIDTH,(float)(VIEW_HEIGHT-h-44-SINGLE_LINE_HEIGHT-10));
+        //通知栏20，导航栏44，编辑框INPUT_SINGLE_LINE_HEIGHT
+        _table.frame = CGRectMake(0.0f, 0.0f, VIEW_WIDTH,(float)(VIEW_HEIGHT-h-44-INPUT_SINGLE_LINE_HEIGHT-10));
         CGRect rcMood = _mood.view.frame;
         rcMood.origin.y=_ivBg.frame.size.height+_ivBg.frame.origin.y;
         _mood.view.frame=rcMood;
@@ -325,6 +307,9 @@
 -(void)onTalkTouchDown:(UIButton *)sender{
     _isPan=NO;
     _btnCancel.hidden=NO;
+    
+    NSString * strPath=[NSTemporaryDirectory() stringByAppendingPathComponent:[@"talk" stringByAppendingPathExtension:@"caf"]];
+    [_media recordTo:strPath];
     NSLog(@"开始录音");
 }
 -(void)onTalkTouchUpInside:(UIButton *)sender{
@@ -333,7 +318,19 @@
     }
     _btnCancel.hidden=YES;
     NSLog(@"停止录音");
-     [self sendMessage:@"一段语音"];
+    NSURL * url = _media.audioRecorder.url;
+    NSTimeInterval length=_media.audioRecorder.currentTime;
+    [_media.audioRecorder stop];
+    if (length>1) {
+        //send
+        
+            [self sendMessage:[NSData dataWithContentsOfURL:url] type:ENUM_HISTORY_TYPE_VOICE];
+        
+    }else{
+        //不够长
+    }
+
+//     [self sendMessage:@"一段语音"];
 }
 -(void)onClickBtnVoiceText:(UIButton *)sender{
     sender.selected=!sender.selected;
@@ -359,12 +356,15 @@
     if (UIGestureRecognizerStateEnded==pan.state) {
         _btnCancel.hidden=YES;
         NSLog(@"停止录音");
-        if (isOnLab) {
-           
-        } else {
-            [self sendMessage:@"一段语音"];
+        NSURL * url = _media.audioRecorder.url;
+        NSTimeInterval length=_media.audioRecorder.currentTime;
+        [_media.audioRecorder stop];
+        if (length>1) {
+            //send
+           [self sendMessage:[NSData dataWithContentsOfURL:url] type:ENUM_HISTORY_TYPE_VOICE];
+        }else{
+            //不够长
         }
-        
     }
     
     
@@ -392,22 +392,31 @@
         [alert release];
     }else
     {
-        RichChatItem * item=[[RichChatItem alloc]init];
-        item.itemType=ENUM_HISTORY_TYPE_TEXT;
-        item.itemContent=messageStr;
-        [self sendMessage:item];
-        [item release];
+        
+        [self sendMessage:messageStr type:ENUM_HISTORY_TYPE_TEXT];
+        
     }
 	_tvInput.text = @"";
 	[_tvInput resignFirstResponder];
     
     
 }
--(void)sendMessage:(RichChatItem*)item{
+-(void)onClickCellButton:(UIButton *)sender{
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(richChatOnClickCell:type:data:)])
+    {
+        ENUM_HISTORY_TYPE type=ENUM_HISTORY_TYPE_TEXT;
+        NSData * data=nil;
+        [self.delegate richChatOnClickCell:sender.tag type:&type data:&data];
+        if (ENUM_HISTORY_TYPE_VOICE==type) {
+            [_media playFileData:data];
+        }
+    }
+}
+-(void)sendMessage:(id)content type:(ENUM_HISTORY_TYPE)type{
 //    [_arrayHistory addObject:str];
 //    [_table reloadData];
-    if (self.delegate && [self.delegate respondsToSelector:@selector(richChatRequestToSendMessage:)]) {
-        [self.delegate richChatRequestToSendMessage:item];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(richChatRequestToSendMessage:type:)]) {
+        [self.delegate richChatRequestToSendMessage:content type:type];
     }
     
 }
@@ -423,19 +432,21 @@
     cellHeight=FACE_HEIGHT;
     if (item.itemType==ENUM_HISTORY_TYPE_TIME) {
         cellHeight=CELL_TYPE_TIME_HEIGHT;
-    }
-    if (item.itemType==ENUM_HISTORY_TYPE_TEXT) {
-        NSString * strContent=item.itemContent;
-        CGSize size=[_mood assembleMessageAtIndex:strContent].frame.size;
-        if ((size.height+CONTENT_INSET_TOP+CONTENT_INSET_BOTTOM)>cellHeight) {
-            cellHeight=size.height+CONTENT_INSET_TOP+CONTENT_INSET_BOTTOM;
+    }else{
+        if (item.itemType==ENUM_HISTORY_TYPE_TEXT) {
+            NSString * strContent=item.itemContent;
+            CGSize size=[_mood assembleMessageAtIndex:strContent].frame.size;
+            if ((size.height+CONTENT_INSET_TOP+CONTENT_INSET_BOTTOM)>cellHeight) {
+                cellHeight=size.height+CONTENT_INSET_TOP+CONTENT_INSET_BOTTOM;
+            }
         }
-        cellHeight+=ITEMS_SEPERATE;
-        if (ITEM_SHOW_TIME) {
+        cellHeight+=CELLS_SEPERATE;
+        
+        if (CONTENT_DATE_LABLE_IS_SHOW) {
             cellHeight+=CONTENT_DATE_LABLE_HEIGHT;
         }
     }
-    
+
     [item release];
     return cellHeight;
 }
@@ -460,24 +471,33 @@
         if (item.itemSenderFace && [item.itemSenderFace isKindOfClass:[UIImage class]]) {
             ivFace.image=item.itemSenderFace;
         }
-        CGRect rc=CGRectMake(item.itemSenderIsSelf?(_table.frame.size.width-VIEW_INSET-FACE_HEIGHT):VIEW_INSET, [self tableView:tableView heightForRowAtIndexPath:indexPath]-FACE_HEIGHT, FACE_HEIGHT, FACE_HEIGHT);
-        if (ITEM_SHOW_TIME) {
-            rc.origin.y-=CONTENT_DATE_LABLE_HEIGHT;
+        CGRect rcFace=CGRectMake(item.itemSenderIsSelf?(_table.frame.size.width-VIEW_INSET-FACE_HEIGHT):VIEW_INSET, [self tableView:tableView heightForRowAtIndexPath:indexPath]-FACE_HEIGHT, FACE_HEIGHT, FACE_HEIGHT);
+        if (CONTENT_DATE_LABLE_IS_SHOW) {
+            rcFace.origin.y-=CONTENT_DATE_LABLE_HEIGHT;
         }
-        ivFace.frame=rc;
+        ivFace.frame=rcFace;
         [cell.contentView addSubview:ivFace];
         [ivFace release];
         
-        if (item.itemType==ENUM_HISTORY_TYPE_TEXT) {
+        CGRect rcContentBg=CGRectZero;
+        UIImage * imgContentBg=[[UIImage imageNamed:(item.itemSenderIsSelf?@"bubbleSelf":@"bubble")]stretchableImageWithLeftCapWidth:item.itemSenderIsSelf?CONTENT_INSET_SMALL:CONTENT_INSET_BIG topCapHeight:15];
+        UIImageView * ivContentBg=[[UIImageView alloc]init];
+        ivContentBg.userInteractionEnabled=YES;
+        ivContentBg.image=imgContentBg;
+        [cell.contentView addSubview:ivContentBg];
+        [ivContentBg release];
+
+        if (item.itemType==ENUM_HISTORY_TYPE_TEXT)
+        {
             NSString * strContent=item.itemContent;
             UIView * viewContent=[_mood assembleMessageAtIndex:strContent];
             CGSize sizeContent=viewContent.frame.size;
                        
-            CGRect rcContentBg=CGRectMake(item.itemSenderIsSelf
+            rcContentBg=CGRectMake(item.itemSenderIsSelf
                                         ?ivFace.frame.origin.x-sizeContent.width-CONTENT_INSET_BIG-CONTENT_INSET_SMALL
                                         :ivFace.frame.origin.x
                                         +ivFace.frame.size.width
-                                        , ITEMS_SEPERATE
+                                        , CELLS_SEPERATE
                                         , sizeContent.width+CONTENT_INSET_BIG+CONTENT_INSET_SMALL
                                         , sizeContent.height+CONTENT_INSET_TOP+CONTENT_INSET_BOTTOM);
             
@@ -492,18 +512,11 @@
             }
             if (rcContentBg.size.height<FACE_HEIGHT) {
                 //单行的时候，可以确保气泡下沿与头像下沿齐平
-                rcContentBg.size.height=30;
-                rcContentBg.origin.y=ITEMS_SEPERATE+FACE_HEIGHT-rcContentBg.size.height;
+                rcContentBg.origin.y=CELLS_SEPERATE+FACE_HEIGHT-rcContentBg.size.height;
             }
 
 
-            UIImage * imgContentBg=[[UIImage imageNamed:(item.itemSenderIsSelf?@"bubbleSelf":@"bubble")]stretchableImageWithLeftCapWidth:item.itemSenderIsSelf?CONTENT_INSET_SMALL:CONTENT_INSET_BIG topCapHeight:15];
-            UIImageView * ivContentBg=[[UIImageView alloc]init];
-            ivContentBg.frame=rcContentBg;
-            ivContentBg.image=imgContentBg;
-            [cell.contentView addSubview:ivContentBg];
-            [ivContentBg release];
-            
+                        
             CGRect rcContent=viewContent.frame;
             rcContent.origin.x=item.itemSenderIsSelf?CONTENT_INSET_SMALL:CONTENT_INSET_BIG;
             rcContent.origin.y=CONTENT_INSET_TOP;
@@ -511,27 +524,73 @@
             if (DEBUG_MODE) {
                 viewContent.backgroundColor=[UIColor colorWithWhite:0 alpha:0.3];
             }
-            [ivContentBg addSubview:viewContent];
             
-            if (ITEM_SHOW_TIME) {
-                UILabel * lbDate=[[UILabel alloc]init];
-                lbDate.backgroundColor=[UIColor clearColor];
-                lbDate.font=[UIFont systemFontOfSize:CONTENT_DATE_LABLE_FONT_SIZE];
-                NSDate * date=(NSDate *)item.itemTime;
-                lbDate.text=[self caculateTime:[date timeIntervalSince1970]];
-                lbDate.textAlignment=item.itemSenderIsSelf?UITextAlignmentRight:UITextAlignmentLeft;
-                CGSize size=[lbDate.text sizeWithFont:lbDate.font];
-                CGRect rc=CGRectMake(item.itemSenderIsSelf?(ivFace.frame.origin.x-size.width):(rcContentBg.size.width<size.width?(rcContentBg.origin.x+rcContent.origin.x):(rcContentBg.origin.x+rcContentBg.size.width-size.width)),
-                                     rcContentBg.origin.y+rcContentBg.size.height
-                                     , size.width
-                                     , CONTENT_DATE_LABLE_HEIGHT);
-                lbDate.frame=rc;
-                [cell.contentView addSubview:lbDate];
-                [lbDate release];
-
+            [ivContentBg addSubview:viewContent];
+        }
+        if (item.itemType==ENUM_HISTORY_TYPE_VOICE) {
+            NSData * strContent=(NSData *)item.itemContent;
+            AVAudioPlayer * player=[[AVAudioPlayer alloc]initWithData:strContent error:nil];
+            NSTimeInterval length=player.duration;
+            [player release];
+            CGSize sizeContent=CGSizeMake(length*2+35, 30);
+            
+            rcContentBg=CGRectMake(item.itemSenderIsSelf
+                                   ?ivFace.frame.origin.x-sizeContent.width-CONTENT_INSET_BIG-CONTENT_INSET_SMALL
+                                   :ivFace.frame.origin.x
+                                   +ivFace.frame.size.width
+                                   , CELLS_SEPERATE
+                                   , sizeContent.width+CONTENT_INSET_BIG+CONTENT_INSET_SMALL
+                                   , sizeContent.height+CONTENT_INSET_TOP+CONTENT_INSET_BOTTOM);
+            
+            if (rcContentBg.size.width<36) {
+                CGFloat enlarge=36-rcContentBg.size.width;
+                rcContentBg.size.width=36;
+                if (item.itemSenderIsSelf) {
+                    rcContentBg.origin.x-=enlarge;
+                }else{
+                    rcContentBg.origin.x+=enlarge;
+                }
+            }
+            if (rcContentBg.size.height<FACE_HEIGHT) {
+                //单行的时候，可以确保气泡下沿与头像下沿齐平
+                rcContentBg.origin.y=CELLS_SEPERATE+FACE_HEIGHT-rcContentBg.size.height;
             }
             
+            
+            UIButton * btnMsgVoice=[UIButton buttonWithType:UIButtonTypeCustom];
+            [btnMsgVoice addTarget:self action:@selector(onClickCellButton:) forControlEvents:UIControlEventTouchUpInside];
+            btnMsgVoice.tag=indexPath.row;
+            CGRect rcContent=CGRectMake(0, 0, sizeContent.width, sizeContent.height);
+            rcContent.origin.x=item.itemSenderIsSelf?CONTENT_INSET_SMALL:CONTENT_INSET_BIG;
+            rcContent.origin.y=CONTENT_INSET_TOP;
+            btnMsgVoice.frame=rcContent;
+            if (DEBUG_MODE) {
+                [btnMsgVoice setBackgroundColor:[UIColor yellowColor]];
+            }
+            
+            [ivContentBg addSubview:btnMsgVoice];
+
         }
+        ivContentBg.frame=rcContentBg;
+        if (CONTENT_DATE_LABLE_IS_SHOW)
+        {
+            UILabel * lbDate=[[UILabel alloc]init];
+            lbDate.backgroundColor=[UIColor clearColor];
+            lbDate.font=[UIFont systemFontOfSize:CONTENT_DATE_LABLE_FONT_SIZE];
+            NSDate * date=(NSDate *)item.itemTime;
+            lbDate.text=[self caculateTime:[date timeIntervalSince1970]];
+            lbDate.textAlignment=item.itemSenderIsSelf?UITextAlignmentRight:UITextAlignmentLeft;
+            CGSize size=[lbDate.text sizeWithFont:lbDate.font];
+            CGRect rc=CGRectMake(item.itemSenderIsSelf?(ivFace.frame.origin.x-size.width):(rcContentBg.size.width<size.width?(rcContentBg.origin.x+rcContentBg.origin.x):(rcContentBg.origin.x+rcContentBg.size.width-size.width)),
+                                 rcContentBg.origin.y+rcContentBg.size.height
+                                 , size.width
+                                 , CONTENT_DATE_LABLE_HEIGHT);
+            lbDate.frame=rc;
+            [cell.contentView addSubview:lbDate];
+            [lbDate release];
+            
+        }
+
 
     }else{
         //不是信息，是时间标签
