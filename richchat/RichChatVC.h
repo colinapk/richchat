@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "HPGrowingTextView.h"
 #import "NHPlayer.h"
+#import "EGORefreshTableHeaderView.h"
 
 #define DEBUG_MODE 0
 //#define VIEW_WIDTH 320
@@ -66,6 +67,7 @@ typedef enum {
 @protocol RichChatDelegate<NSObject>
 @required
 -(void)     richChatRequestToUpdateHistory;
+-(void)     richChatRequestToLoadMore;
 -(NSInteger)richChatHistoryCount;
 -(void)     richChatHistoryItem:(RichChatItem *)item AtIndex:(NSInteger)index;
 -(void)     richChatRequestToSendMessage:(id)content type:(ENUM_HISTORY_TYPE)type;
@@ -77,9 +79,19 @@ typedef enum {
 ,UITableViewDelegate
 ,UITextViewDelegate
 ,NHPlayerDelegate
-,HPGrowingTextViewDelegate>{
+,HPGrowingTextViewDelegate
+,EGORefreshTableHeaderDelegate
+>{
+    EGORefreshTableHeaderView *_refreshHeaderView;
+	
+	//  Reloading var should really be your tableviews datasource
+	//  Putting it here for demo purposes
+	BOOL _reloading;
 
 }
 @property(nonatomic,assign) id<RichChatDelegate>  delegate;
 -(void)reloadTableView;
+//ego need
+- (void)reloadTableViewDataSource;
+- (void)doneLoadingTableViewData;
 @end
