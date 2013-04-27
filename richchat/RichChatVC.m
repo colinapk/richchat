@@ -102,6 +102,10 @@
 		
 	}
     
+    UIBarButtonItem * btnRefresh=[[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(requestForNearest20messages)];
+    self.navigationItem.rightBarButtonItem=btnRefresh;
+    [btnRefresh release];
+    
     //输入区域
     UIImageView * ivBg=[[UIImageView alloc]initWithImage:nil];
     ivBg.userInteractionEnabled=YES;
@@ -211,9 +215,7 @@
     }
 #endif
     
-    if (self.delegate&&[self.delegate respondsToSelector:@selector(richChatRequestToUpdateHistory)]) {
-        [self.delegate richChatRequestToUpdateHistory];
-    }
+  
     
     MoodFaceVC * mvc=[[MoodFaceVC alloc]init];
     mvc.delegate=self;
@@ -232,7 +234,7 @@
     self.media=player;
     [player release];
     
-    
+    [self requestForNearest20messages];
 }
 -(void)viewWillAppear:(BOOL)animated{
     [self autoMovekeyBoard:0 duration:0];
@@ -326,9 +328,19 @@
 }
 
 #pragma mark - funtions
--(void)reloadTableView{
+-(void)requestForNearest20messages{
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(richChatRequestToUpdateHistory)]) {
+        [self.delegate richChatRequestToUpdateHistory];
+    }
+}
+-(void)reloadTableViewToTop:(BOOL)isToTop{
     [_table reloadData];
-    [self moveTableViewToBottom];
+    if (isToTop) {
+        [self moveTableViewToTop];
+    } else {
+        [self moveTableViewToBottom];
+    }
+    
 }
 -(void)onTalkTouchDown:(UIButton *)sender{
     _isPan=NO;
@@ -653,6 +665,14 @@
     }
 
 }
+-(void)moveTableViewToTop{
+    NSInteger rowsCount=[_table numberOfRowsInSection:0];
+    if (rowsCount>0) {
+        NSIndexPath * pi=[NSIndexPath indexPathForRow:0 inSection:0];
+        [_table scrollToRowAtIndexPath:pi atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+    }
+    
+}
 #pragma mark - hptext delegate
 -(void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height{
    
@@ -758,10 +778,11 @@
 }
 
 - (void)doneLoadingTableViewData{
-	
+
 	//  model should call this when its done loading
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_table];
+    
 	
 }
 #pragma mark -

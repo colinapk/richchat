@@ -90,7 +90,7 @@ typedef enum {
 
 }
 @property(nonatomic,assign) id<RichChatDelegate>  delegate;
--(void)reloadTableView;
+-(void)reloadTableViewToTop:(BOOL)isToTop;
 //ego need
 - (void)reloadTableViewDataSource;
 - (void)doneLoadingTableViewData;
