@@ -780,6 +780,12 @@
 - (void)doneLoadingTableViewData{
 
 	//  model should call this when its done loading
+	[NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(doneLoadingTableViewDataAsync) userInfo:nil repeats:NO];
+	
+}
+- (void)doneLoadingTableViewDataAsync{
+    
+	//  model should call this when its done loading
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_table];
     

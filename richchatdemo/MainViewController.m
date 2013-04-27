@@ -57,7 +57,7 @@
     
     RichChatVC * vc=(RichChatVC *)self.navigationController.topViewController;
     if ([vc isKindOfClass:[RichChatVC class]]) {
-        [vc reloadTableView];
+        [vc reloadTableViewToTop:NO];
     }
     
 }
@@ -75,6 +75,10 @@
     
     
 }
+-(void)richChatRequestToLoadMore{
+    
+}
+
 -(void)richChatRequestToSendMessage:(id)content type:(ENUM_HISTORY_TYPE)type{
 //    item.itemSenderTitle=[dict objectForKey:@"sender_title"];
 //    item.itemType=(ENUM_HISTORY_TYPE)[[dict objectForKey:@"type"]integerValue];
