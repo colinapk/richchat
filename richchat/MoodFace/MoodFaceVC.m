@@ -163,7 +163,7 @@
     UIButton * btnSend=[UIButton buttonWithType:UIButtonTypeCustom];
     UIImage * imgSend=[UIImage imageNamed:@"btn_bg_blue"];
     btnSend.frame=CGRectMake(self.view.frame.size.width-imgSend.size.width, mPageControl.frame.origin.y, imgSend.size.width, imgSend.size.height);
-    [btnSend setTitle:@"Send" forState:UIControlStateNormal];
+    [btnSend setTitle:NSLocalizedString(@"发送", @"Send") forState:UIControlStateNormal];
     [btnSend setBackgroundImage:imgSend forState:UIControlStateNormal];
     [btnSend setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [btnSend addTarget:self action:@selector(clickSend:) forControlEvents:UIControlEventTouchUpInside];
