@@ -427,11 +427,11 @@
     
     
 }
--(IBAction)onClickSend:(id)sender
+-(void)onUserSend
 {
-	NSString *messageStr = _tvInput.text;
-   
+    _isShowMood=NO;
     
+	NSString *messageStr = _tvInput.text;
     if (messageStr == nil || [[messageStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]isEqualToString:@""])
     {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"发送失败" message:@"发送的内容不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
@@ -485,7 +485,6 @@
     }
 }
 -(void)sendMessage:(id)content type:(ENUM_HISTORY_TYPE)type{
-    _isShowMood=NO;
     if (self.delegate && [self.delegate respondsToSelector:@selector(richChatRequestToSendMessage:type:)]) {
         [self.delegate richChatRequestToSendMessage:content type:type];
     }
@@ -724,12 +723,16 @@
 }
 -(BOOL)growingTextViewShouldReturn:(HPGrowingTextView *)growingTextView{
         //return key
-        [self onClickSend:nil];
+        [self onUserSend];
         return NO;
 }
 #pragma mark - mood face delegate
 -(void)moodFaceVC:(MoodFaceVC *)vc selected:(NSString *)strDescription imageName:(NSString *)strImg{
-    [_tvInput setText:[_tvInput.text stringByAppendingString:strDescription]];
+    [_tvInput.internalTextView setText:[_tvInput.internalTextView.text stringByAppendingString:strDescription]];
+}
+-(void)moodFaceVC:(MoodFaceVC *)vc onClickSend:(UIButton *)sender{
+    [self onUserSend];
+    [self autoMovekeyBoard:0 duration:0.3];
 }
 #pragma mark - nhplayer delegate
 -(void)NHPlayer:(NHPlayer *)player onProgress:(CGFloat)progress{

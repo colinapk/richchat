@@ -153,12 +153,21 @@
   [self.view addSubview:mScrollView];
   
   
-  mPageControl = [[UIPageControl alloc] initWithFrame:R(mScrollView.frame.origin.x, mScrollView.frame.origin.y+mScrollView.frame.size.height, mScrollView.frame.size.width, 30)];
+  mPageControl = [[UIPageControl alloc] initWithFrame:R(mScrollView.frame.origin.x+mScrollView.frame.size.width/5*2, mScrollView.frame.origin.y+mScrollView.frame.size.height, mScrollView.frame.size.width/5, 30)];
   mPageControl.backgroundColor = [UIColor clearColor];
   mPageControl.numberOfPages = 0;
   mPageControl.hidesForSinglePage = YES;
   [mPageControl addTarget:self action:@selector(changePage:) forControlEvents:UIControlEventValueChanged];
   [self.view addSubview:mPageControl];
+    
+    UIButton * btnSend=[UIButton buttonWithType:UIButtonTypeCustom];
+    UIImage * imgSend=[UIImage imageNamed:@"btn_bg_blue"];
+    btnSend.frame=CGRectMake(self.view.frame.size.width-imgSend.size.width, mPageControl.frame.origin.y, imgSend.size.width, imgSend.size.height);
+    [btnSend setTitle:@"Send" forState:UIControlStateNormal];
+    [btnSend setBackgroundImage:imgSend forState:UIControlStateNormal];
+    [btnSend setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [btnSend addTarget:self action:@selector(clickSend:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:btnSend];
   
   CGFloat fX = 8;
   CGFloat fY = ISIPAD?5:15;
@@ -305,7 +314,11 @@
   
   return aStrFullPath;
 }
-
+-(void)clickSend:(UIButton *)sender{
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(moodFaceVC:onClickSend:)]) {
+        [self.delegate moodFaceVC:self onClickSend:sender];
+    }
+}
 - (void)clickButton:(id)sender
 {    
   UIButton *aBtn = (UIButton *)sender;

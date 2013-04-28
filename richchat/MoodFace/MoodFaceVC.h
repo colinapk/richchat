@@ -14,7 +14,7 @@
 
 @required
 -(void)moodFaceVC:(MoodFaceVC *)vc selected:(NSString *)strDescription imageName:(NSString *)strImg;
-
+-(void)moodFaceVC:(MoodFaceVC *)vc onClickSend:(UIButton *)sender;
 @end
 @interface MoodFaceVC : UIViewController
 <UIScrollViewDelegate>
