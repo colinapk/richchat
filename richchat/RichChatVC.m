@@ -457,7 +457,25 @@
             sender.selected=!sender.selected;
             if (sender.selected) {
                 _btnCellVoice=sender;
-                [_media playFileOnline:item.itemContent];
+                //显示下载进度条
+//                [_media playFileOnline:item.itemContent];
+                NSURL * url=[NSURL URLWithString:item.itemContent];;
+                
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                     
+                    NSData * data=[NSData dataWithContentsOfURL:url];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        //隐藏下载进度条
+                       
+                        [_media playFileData:data];
+                        
+                        
+                    });
+                    
+                });
+               
+                
             }else{
                 [_media.audioPlayer stop];
             }

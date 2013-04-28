@@ -10,7 +10,7 @@
 
 #define ISIPAD NO
 #define R(x,y,w,h) CGRectMake(x,y,w,h)
-#define FACES_FOLDER @"faces"
+
 
 @implementation MoodFaceVC
 @synthesize mArrFacesImgName;
@@ -23,8 +23,6 @@
 @synthesize mPageControl;
 @synthesize delegate;
 
-
-
 - (void)dealloc
 {
   [mPageControl release];
@@ -34,6 +32,7 @@
   [mArrFacesImgName release];
   [super dealloc];
 }
+
 -(id)init
 {
   if (self = [super init]) {
@@ -128,13 +127,11 @@
   return self;
 }
 
-
-
 #pragma mark - View lifecycle
 - (void)loadView
 {
   CGRect rFrameMain = [UIScreen mainScreen].bounds;
-  UIView *aView = [[UIView alloc] initWithFrame:ISIPAD?R(0,0,414,183.5):R(0,265,rFrameMain.size.width,rFrameMain.size.height-265)];
+  UIView *aView = [[UIView alloc] initWithFrame:R(0,265,rFrameMain.size.width,rFrameMain.size.height-265)];
   aView.backgroundColor = [UIColor clearColor];
     aView.userInteractionEnabled=YES;
   self.view =aView;
@@ -184,8 +181,10 @@
       fY = fContentY;
     }
 
-    NSString *aStrFace = [NSString stringWithFormat:@"%@", aStr];
-      UIImage * img=[UIImage imageNamed:aStrFace];
+      NSString *aStrFace = [NSString stringWithFormat:@"%@/%@", FACES_FOLDER, aStr];
+      NSString *aStrFullPath = [[NSBundle mainBundle] pathForResource:aStrFace ofType:@"png" inDirectory:IMAGES_DIR];
+
+      UIImage * img=[UIImage imageWithContentsOfFile:aStrFullPath];
       UIButton *aBtn =[[UIButton alloc]init];
      aBtn.frame = R(fX, fY, fW, fW);
     aBtn.tag = nFlag++;
@@ -306,8 +305,6 @@
   
   return aStrFullPath;
 }
-
-
 
 - (void)clickButton:(id)sender
 {    
@@ -439,7 +436,11 @@
         }
         
         NSString *aImgPath = [self getImgShortPath:str];
-        UIImageView *ivFace=[[UIImageView alloc] initWithImage:[UIImage imageNamed:aImgPath]];
+          
+          NSString *aStrFace = [NSString stringWithFormat:@"%@/%@", FACES_FOLDER, aImgPath];
+          NSString *aStrFullPath = [[NSBundle mainBundle] pathForResource:aStrFace ofType:@"png" inDirectory:@"Images"];
+  
+        UIImageView *ivFace=[[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:aStrFullPath]];
         ivFace.frame = CGRectMake(upX, upY, KFacialSizeWidth, KFacialSizeHeight);
         [returnView addSubview:ivFace];
         

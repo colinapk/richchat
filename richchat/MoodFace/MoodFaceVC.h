@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#define IMAGES_DIR @"Images"
+#define FACES_FOLDER @"Expression"
 @class MoodFaceVC;
 @protocol MoodFaceDelegate <NSObject>
 
@@ -26,8 +28,6 @@
 @property (assign, nonatomic) NSInteger mNImgSize;
 @property (assign, nonatomic) NSInteger mNWith;
 @property (assign, nonatomic) id<MoodFaceDelegate> delegate;
-
-
 
 - (void)clickButton:(id)sender;
 
