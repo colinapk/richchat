@@ -126,9 +126,11 @@
     
     //表情按钮
     UIImage * imgFace=[UIImage imageNamed:@"happy"];
+    UIImage * imgText=[UIImage imageNamed:@"text"];
     UIButton * btnFace=[UIButton buttonWithType:UIButtonTypeCustom];
     btnFace.frame=CGRectMake(INPUT_SINGLE_LINE_HEIGHT, _tvInput.frame.origin.y, imgFace.size.width,imgFace.size.height);
     [btnFace setBackgroundImage:imgFace forState:UIControlStateNormal];
+    [btnFace setBackgroundImage:imgText forState:UIControlStateSelected];
     [btnFace addTarget:self action:@selector(onClickFace:) forControlEvents:UIControlEventTouchUpInside];
     _btnFace = btnFace;
     [ivBg addSubview:btnFace];
@@ -158,11 +160,11 @@
     
     //voice/text按钮
     UIImage * imgVoice=[UIImage imageNamed:@"voice"];
-    UIImage * imgText=[UIImage imageNamed:@"text"];
+    UIImage * imgTextBlue=[UIImage imageNamed:@"txt_blue"];
     UIButton * btnVoice=[UIButton buttonWithType:UIButtonTypeCustom];
     btnVoice.frame=CGRectMake(ivBg.frame.size.width-INPUT_SINGLE_LINE_HEIGHT, _tvInput.frame.origin.y, imgVoice.size.width,imgVoice.size.height);
     [btnVoice setBackgroundImage:imgVoice forState:UIControlStateNormal];
-    [btnVoice setBackgroundImage:imgText forState:UIControlStateSelected];
+    [btnVoice setBackgroundImage:imgTextBlue forState:UIControlStateSelected];
     [btnVoice addTarget:self action:@selector(onClickBtnVoiceText:) forControlEvents:UIControlEventTouchUpInside];
     _btnVoice = btnVoice;
     [ivBg addSubview:btnVoice];
@@ -187,20 +189,20 @@
     [btnTalk addTarget:self action:@selector(onTalkTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
     
     //move up to cancel
-    UIButton * lab=[UIButton buttonWithType:UIButtonTypeCustom];
-    lab.frame=CGRectMake(0, 0, 100, 120);
-    lab.center=CGPointMake(self.view.center.x, self.view.center.y-50);
-    lab.backgroundColor=[UIColor colorWithWhite:0 alpha:0.5];
-    [lab setImage:[UIImage imageNamed:@"mic_black"] forState:UIControlStateNormal];
-    [lab setImage:[UIImage imageNamed:@"trash_black"] forState:UIControlStateSelected];
-    [self.view addSubview:lab];
-    _btnCancel=lab;
+    UIButton * btnCancelImg=[UIButton buttonWithType:UIButtonTypeCustom];
+    btnCancelImg.frame=CGRectMake(0, 0, 100, 120);
+    btnCancelImg.center=CGPointMake(self.view.center.x, self.view.center.y-50);
+    btnCancelImg.backgroundColor=[UIColor colorWithWhite:0 alpha:0.5];
+    [btnCancelImg setImage:[UIImage imageNamed:@"mic_black"] forState:UIControlStateNormal];
+    [btnCancelImg setImage:[UIImage imageNamed:@"trash_black"] forState:UIControlStateSelected];
+    [self.view addSubview:btnCancelImg];
+    _btnCancel=btnCancelImg;
     _btnCancel.hidden=YES;
+    
 
     //手势
     UIPanGestureRecognizer * pan=[[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(handlePanGesture:)];
     [_btnTalk addGestureRecognizer:pan];
-//    lab.userInteractionEnabled=YES;
     [pan release];
     
     //监听键盘高度的变换
@@ -246,7 +248,7 @@
      Reduce the size of the text view so that it's not obscured by the keyboard.
      Animate the resize so that it's in sync with the appearance of the keyboard.
      */
-    
+    _btnFace.selected=NO;
     NSDictionary *userInfo = [notification userInfo];
     
     // Get the origin of the keyboard when it's displayed.
@@ -267,7 +269,6 @@
 
 
 - (void)keyboardWillHide:(NSNotification *)notification {
-    
     NSDictionary* userInfo = [notification userInfo];
     
     /*
@@ -278,7 +279,7 @@
     NSTimeInterval animationDuration;
     [animationDurationValue getValue:&animationDuration];
     
-    if (_isShowMood) {
+    if (_btnFace.selected) {
         //把键盘撤掉就行了，就不把编辑区域整体下移了
     }else{
         [self autoMovekeyBoard:0 duration:animationDuration];
@@ -409,17 +410,18 @@
 }
 -(void)onClickFace:(UIButton *)sender{
    
-    
     if (_tvInput.internalTextView.isFirstResponder) {
-        _isShowMood=YES;
+        _btnFace.selected=YES;
         [_tvInput resignFirstResponder];
     }else{
-        if (_isShowMood) {
-              [self autoMovekeyBoard:0 duration:0.3];
-            _isShowMood=NO;
+        if (_btnFace.selected) {
+//              [self autoMovekeyBoard:0 duration:0.3];
+            [_tvInput.internalTextView becomeFirstResponder];
+            _btnFace.selected=NO;
+            
         } else {
             [self autoMovekeyBoard:216 duration:0.3];
-             _isShowMood=YES;
+             _btnFace.selected=YES;
         }
         
     }
@@ -429,7 +431,7 @@
 }
 -(void)onUserSend
 {
-    _isShowMood=NO;
+    _btnFace.selected=NO;
     
 	NSString *messageStr = _tvInput.text;
     if (messageStr == nil || [[messageStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]isEqualToString:@""])
