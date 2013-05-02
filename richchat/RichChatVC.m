@@ -476,35 +476,49 @@
         RichChatItem * item=[[RichChatItem alloc]init];
         [self.delegate richChatHistoryItem:item AtIndex:sender.view.tag];
         if (ENUM_HISTORY_TYPE_VOICE==item.itemType) {
+            NSURL * url=[NSURL URLWithString:item.itemContent];;
             
-            if (YES) {
-                
-                //显示下载进度条
-               
-                //                [_media playFileOnline:item.itemContent];
-                NSURL * url=[NSURL URLWithString:item.itemContent];;
-                
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    
-                     [self bubbleAlphaChange:sender.view];
-                    NSData * data=[NSData dataWithContentsOfURL:url];
-                    
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        //隐藏下载进度条
-                        [sender.view.layer removeAnimationForKey:@"animationDown"];
-                        [_media playFileData:data];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    NSString * strPath=[item.itemContent lastPathComponent];
+                    NSString * strDoc=[self voiceFileDocumentPath];
+                                        
+                    if (strDoc) {
+                        strPath=[strDoc stringByAppendingFormat:@"/%@",strPath];
                         
+                        NSData * data=nil;
+
+                        if (![[NSFileManager defaultManager]fileExistsAtPath:strPath])
+                        {  //不存在文件，则缓存下来并保存。
+                            data=[NSData dataWithContentsOfURL:url];
+                            [self bubbleAlphaChange:sender.view];
+                            NSError * error=nil;
+                            BOOL res=[data writeToFile:strPath options:NSDataWritingFileProtectionNone error:&error];
+                            if (res) {
+                                NSLog(@"成功下载一段语音");
+                            }
+                            
+
+                        }else{
+                            //存在的话，直接播放
+                            data=[NSData dataWithContentsOfFile:strPath];
+                        }
                         
-                    });
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            //隐藏下载进度条
+                            [_media playFileData:data];
+                            
+                            
+                        });
+                    }
+                    
+                    
                     
                 });
                 
                 
-            }else{
-                [_media.audioPlayer stop];
             }
             
-        }
+        
         [item release];
     }
 }
@@ -772,6 +786,24 @@
     }
 }
 #pragma mark - common
+-(NSString *)voiceFileDocumentPath{
+    NSArray * search=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,DOMAIN, YES);
+    NSString * strDoc=search.count>0?[search objectAtIndex:0]:nil;
+    if (strDoc) {
+        strDoc=[strDoc stringByAppendingString:@"/RichChat/voice"];
+        if (![[NSFileManager defaultManager]fileExistsAtPath:strDoc]) {
+           BOOL res= [[NSFileManager defaultManager]createDirectoryAtPath:strDoc withIntermediateDirectories:YES attributes:nil error:nil];
+            if (res) {
+                return strDoc;
+            }
+            
+        }else{
+            return strDoc;
+        }
+    }
+    return nil;
+
+}
 - (NSString *)caculateTime:(double)aDInterval
 {
     NSString *aTimeString=@"";
