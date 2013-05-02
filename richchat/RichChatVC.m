@@ -32,7 +32,7 @@
     UIButton * _btnPlus;
     UIButton * _btnTalk;
     UIButton * _btnCancel;
-    UIButton * _btnCellVoice;
+    //    UIButton * _btnCellVoice;
     
     BOOL  _isPan;
     BOOL  _isShowMood;
@@ -120,7 +120,7 @@
     UIButton * btnPlus=[UIButton buttonWithType:UIButtonTypeCustom];
     btnPlus.frame=CGRectMake(0, _tvInput.frame.origin.y, imgPlus.size.width, imgPlus.size.height);
     [btnPlus setBackgroundImage:imgPlus forState:UIControlStateNormal];
-//    [btnPlus addTarget:self action:@selector(onClickSend:) forControlEvents:UIControlEventTouchUpInside];
+    //    [btnPlus addTarget:self action:@selector(onClickSend:) forControlEvents:UIControlEventTouchUpInside];
     _btnPlus = btnPlus;
     [ivBg addSubview:btnPlus];
     
@@ -142,7 +142,7 @@
     tf.userInteractionEnabled=NO;
     [ivBg addSubview:tf];
     _tfBg=tf;
-//    _tfBg.hidden=YES;
+    //    _tfBg.hidden=YES;
     [tf release];
     
     //文字框
@@ -151,7 +151,7 @@
     tv.delegate=self;
     tv.internalTextView.backgroundColor=[UIColor clearColor];
     tv.frame=tf.frame;
-//    tv.keyboardType=UIKeyboardTypeDefault;
+    //    tv.keyboardType=UIKeyboardTypeDefault;
     tv.returnKeyType=UIReturnKeySend;
     tv.contentMode=UIControlContentVerticalAlignmentBottom;
     [ivBg addSubview:tv];
@@ -181,7 +181,7 @@
         btnTalk.backgroundColor=[UIColor yellowColor];
     }
     [btnTalk setTitleColor:[UIColor darkTextColor] forState:UIControlStateNormal];
-//    [btnTalk setTitle:NSLocalizedString(@"Hold To Talk", nil) forState:UIControlStateNormal];
+    //    [btnTalk setTitle:NSLocalizedString(@"Hold To Talk", nil) forState:UIControlStateNormal];
     _btnTalk=btnTalk;
     btnTalk.hidden=YES;
     [ivBg addSubview:btnTalk];
@@ -199,7 +199,7 @@
     _btnCancel=btnCancelImg;
     _btnCancel.hidden=YES;
     
-
+    
     //手势
     UIPanGestureRecognizer * pan=[[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(handlePanGesture:)];
     [_btnTalk addGestureRecognizer:pan];
@@ -213,11 +213,11 @@
 #ifdef __IPHONE_5_0
     float version = [[[UIDevice currentDevice] systemVersion] floatValue];
     if (version >= 5.0) {
-//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
+        //        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
     }
 #endif
     
-  
+    
     
     MoodFaceVC * mvc=[[MoodFaceVC alloc]init];
     mvc.delegate=self;
@@ -291,9 +291,9 @@
     
     [UIView animateWithDuration:time animations:^{
         _ivBg.frame= CGRectMake(_ivBg.frame.origin.x
-                                 , (float)(self.view.frame.size.height-h-INPUT_SINGLE_LINE_HEIGHT-10)
-                                 , _ivBg.frame.size.width
-                                 , INPUT_SINGLE_LINE_HEIGHT+10);
+                                , (float)(self.view.frame.size.height-h-INPUT_SINGLE_LINE_HEIGHT-10)
+                                , _ivBg.frame.size.width
+                                , INPUT_SINGLE_LINE_HEIGHT+10);
         
         _tfBg.frame=CGRectMake(_tfBg.frame.origin.x, _tfBg.frame.origin.y, _tfBg.frame.size.width, INPUT_SINGLE_LINE_HEIGHT);
         _tvInput.frame=_tfBg.frame;
@@ -314,16 +314,16 @@
         CGRect rcMood = _mood.view.frame;
         rcMood.origin.y=_ivBg.frame.size.height+_ivBg.frame.origin.y;
         _mood.view.frame=rcMood;
-
         
-
+        
+        
     } completion:^(BOOL finished){
         if (finished) {
             [self moveTableViewToBottom];
         }
     }];
-   
-	    
+    
+    
     
     
 }
@@ -363,19 +363,19 @@
     if (length>1) {
         //send
         
-            [self sendMessage:[NSData dataWithContentsOfURL:url] type:ENUM_HISTORY_TYPE_VOICE];
+        [self sendMessage:[NSData dataWithContentsOfURL:url] type:ENUM_HISTORY_TYPE_VOICE];
         
     }else{
         //不够长
     }
-
-//     [self sendMessage:@"一段语音"];
+    
+    //     [self sendMessage:@"一段语音"];
 }
 -(void)onClickBtnVoiceText:(UIButton *)sender{
     sender.selected=!sender.selected;
     if (sender.selected) {
         //进入语音模式
-//        [_tvInput setText:@""];
+        //        [_tvInput setText:@""];
         [_tvInput resignFirstResponder];
         [self autoMovekeyBoard:0 duration:0.3];
     } else {
@@ -400,7 +400,7 @@
         [_media.audioRecorder stop];
         if (length>1) {
             //send
-           [self sendMessage:[NSData dataWithContentsOfURL:url] type:ENUM_HISTORY_TYPE_VOICE];
+            [self sendMessage:[NSData dataWithContentsOfURL:url] type:ENUM_HISTORY_TYPE_VOICE];
         }else{
             //不够长
         }
@@ -409,19 +409,19 @@
     
 }
 -(void)onClickFace:(UIButton *)sender{
-   
+    
     if (_tvInput.internalTextView.isFirstResponder) {
         _btnFace.selected=YES;
         [_tvInput resignFirstResponder];
     }else{
         if (_btnFace.selected) {
-//              [self autoMovekeyBoard:0 duration:0.3];
+            //              [self autoMovekeyBoard:0 duration:0.3];
             [_tvInput.internalTextView becomeFirstResponder];
             _btnFace.selected=NO;
             
         } else {
             [self autoMovekeyBoard:216 duration:0.3];
-             _btnFace.selected=YES;
+            _btnFace.selected=YES;
         }
         
     }
@@ -450,33 +450,55 @@
     
     
 }
--(void)onClickCellButton:(UIButton *)sender{
+-(void)bubbleAlphaChange:(UIView *)aniView{
+    [UIView animateWithDuration:0.1 animations:^{
+        CGFloat al=aniView.alpha;
+        if (al!=0.3f) {
+            aniView.alpha=0.3f;
+        }else{
+            aniView.alpha=0.7f;
+        }
+    }completion:^(BOOL isFinish){
+        if(isFinish){
+            if (!_media.audioPlayer.isPlaying) {
+                [self bubbleAlphaChange:aniView];
+            }else{
+                aniView.alpha=1.0f;
+            }
+            
+        }
+        
+    }];
+}
+-(void)onClickCellButton:(UITapGestureRecognizer *)sender{
     if (self.delegate&&[self.delegate respondsToSelector:@selector(richChatHistoryItem:AtIndex:)])
     {
         RichChatItem * item=[[RichChatItem alloc]init];
-        [self.delegate richChatHistoryItem:item AtIndex:sender.tag];
+        [self.delegate richChatHistoryItem:item AtIndex:sender.view.tag];
         if (ENUM_HISTORY_TYPE_VOICE==item.itemType) {
-            sender.selected=!sender.selected;
-            if (sender.selected) {
-                _btnCellVoice=sender;
+            
+            if (YES) {
+                
                 //显示下载进度条
-//                [_media playFileOnline:item.itemContent];
+               
+                //                [_media playFileOnline:item.itemContent];
                 NSURL * url=[NSURL URLWithString:item.itemContent];;
                 
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                     
+                    
+                     [self bubbleAlphaChange:sender.view];
                     NSData * data=[NSData dataWithContentsOfURL:url];
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
                         //隐藏下载进度条
-                       
+                        [sender.view.layer removeAnimationForKey:@"animationDown"];
                         [_media playFileData:data];
                         
                         
                     });
                     
                 });
-               
+                
                 
             }else{
                 [_media.audioPlayer stop];
@@ -518,7 +540,7 @@
             cellHeight+=CONTENT_DATE_LABLE_HEIGHT;
         }
     }
-
+    
     [item release];
     return cellHeight;
 }
@@ -557,9 +579,13 @@
         UIImageView * ivContentBg=[[UIImageView alloc]init];
         ivContentBg.userInteractionEnabled=YES;
         ivContentBg.image=imgContentBg;
+        ivContentBg.tag=indexPath.row;
         [cell.contentView addSubview:ivContentBg];
         [ivContentBg release];
-
+        
+        UITapGestureRecognizer * tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickCellButton:)];
+        [ivContentBg addGestureRecognizer:tap];
+        
         if (item.itemType==ENUM_HISTORY_TYPE_TEXT)
         {
             NSString * strContent=item.itemContent;
@@ -568,14 +594,14 @@
             if (sizeContent.height<27/*单行文字的高度*/) {
                 sizeContent.height=27;
             }
-                       
+            
             rcContentBg=CGRectMake(item.itemSenderIsSelf
-                                        ?ivFace.frame.origin.x-sizeContent.width-CONTENT_INSET_BIG-CONTENT_INSET_SMALL
-                                        :ivFace.frame.origin.x
-                                        +ivFace.frame.size.width
-                                        , CELLS_SEPERATE
-                                        , sizeContent.width+CONTENT_INSET_BIG+CONTENT_INSET_SMALL
-                                        , sizeContent.height+CONTENT_INSET_TOP+CONTENT_INSET_BOTTOM);                
+                                   ?ivFace.frame.origin.x-sizeContent.width-CONTENT_INSET_BIG-CONTENT_INSET_SMALL
+                                   :ivFace.frame.origin.x
+                                   +ivFace.frame.size.width
+                                   , CELLS_SEPERATE
+                                   , sizeContent.width+CONTENT_INSET_BIG+CONTENT_INSET_SMALL
+                                   , sizeContent.height+CONTENT_INSET_TOP+CONTENT_INSET_BOTTOM);
             CGRect rcContent=viewContent.frame;
             rcContent.origin.x=item.itemSenderIsSelf?CONTENT_INSET_SMALL:CONTENT_INSET_BIG;
             rcContent.origin.y=CONTENT_INSET_TOP;
@@ -600,24 +626,27 @@
                                    , CELLS_SEPERATE
                                    , sizeContent.width+CONTENT_INSET_BIG+CONTENT_INSET_SMALL
                                    , sizeContent.height+CONTENT_INSET_TOP+CONTENT_INSET_BOTTOM);
-       
             
-            UIButton * btnMsgVoice=[UIButton buttonWithType:UIButtonTypeCustom];
-            [btnMsgVoice addTarget:self action:@selector(onClickCellButton:) forControlEvents:UIControlEventTouchUpInside];
-            btnMsgVoice.tag=indexPath.row;
-            [btnMsgVoice setImage:[UIImage imageNamed:@"button_play"] forState:UIControlStateNormal];
-            [btnMsgVoice setImage:[UIImage imageNamed:@"button_stop"] forState:UIControlStateSelected];
-            CGRect rcContent=CGRectMake(0, 0, sizeContent.width, sizeContent.height);
-            rcContent.origin.x=item.itemSenderIsSelf?CONTENT_INSET_SMALL:CONTENT_INSET_BIG;
-            rcContent.origin.y=CONTENT_INSET_TOP;
-            btnMsgVoice.frame=rcContent;
-            if (DEBUG_MODE) {
-                [btnMsgVoice setBackgroundColor:[UIColor yellowColor]];
-            }
             
-            [ivContentBg addSubview:btnMsgVoice];
-
+            //            UIButton * btnMsgVoice=[UIButton buttonWithType:UIButtonTypeCustom];
+            //            [btnMsgVoice addTarget:self action:@selector(onClickCellButton:) forControlEvents:UIControlEventTouchUpInside];
+            //            btnMsgVoice.tag=indexPath.row;
+            //            [btnMsgVoice setImage:[UIImage imageNamed:@"button_play"] forState:UIControlStateNormal];
+            //            [btnMsgVoice setImage:[UIImage imageNamed:@"button_stop"] forState:UIControlStateSelected];
+            //            CGRect rcContent=CGRectMake(0, 0, sizeContent.width, sizeContent.height);
+            //            rcContent.origin.x=item.itemSenderIsSelf?CONTENT_INSET_SMALL:CONTENT_INSET_BIG;
+            //            rcContent.origin.y=CONTENT_INSET_TOP;
+            //            btnMsgVoice.frame=rcContent;
+            //            if (DEBUG_MODE) {
+            //                [btnMsgVoice setBackgroundColor:[UIColor yellowColor]];
+            //            }
+            //
+            //            [ivContentBg addSubview:btnMsgVoice];
+            
         }
+        
+        
+        
         if (rcContentBg.size.height<FACE_HEIGHT) {
             //单行的时候，可以确保气泡下沿与头像下沿齐平
             rcContentBg.origin.y=CELLS_SEPERATE+FACE_HEIGHT-rcContentBg.size.height;
@@ -645,8 +674,8 @@
             [lbDate release];
             
         }
-
-
+        
+        
     }else{
         //不是信息，是时间标签
         if (item.itemType==ENUM_HISTORY_TYPE_TIME) {
@@ -666,7 +695,7 @@
         }
         
     }
-          
+    
     [item release];
     return cell;
 }
@@ -682,7 +711,7 @@
         NSIndexPath * pi=[NSIndexPath indexPathForRow:rowsCount-1 inSection:0];
         [_table scrollToRowAtIndexPath:pi atScrollPosition:UITableViewScrollPositionBottom animated:NO];
     }
-
+    
 }
 -(void)moveTableViewToTop{
     NSInteger rowsCount=[_table numberOfRowsInSection:0];
@@ -694,7 +723,7 @@
 }
 #pragma mark - hptext delegate
 -(void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height{
-   
+    
     _tfBg.frame=CGRectMake(_tfBg.frame.origin.x, _tfBg.frame.origin.y, _tfBg.frame.size.width, height);
     _tvInput.frame=_tfBg.frame;
     
@@ -720,13 +749,13 @@
     CGRect rcMood = _mood.view.frame;
     rcMood.origin.y=_ivBg.frame.size.height+_ivBg.frame.origin.y;
     _mood.view.frame=rcMood;
-
+    
     [self moveTableViewToBottom];
 }
 -(BOOL)growingTextViewShouldReturn:(HPGrowingTextView *)growingTextView{
-        //return key
-        [self onUserSend];
-        return NO;
+    //return key
+    [self onUserSend];
+    return NO;
 }
 #pragma mark - mood face delegate
 -(void)moodFaceVC:(MoodFaceVC *)vc selected:(NSString *)strDescription imageName:(NSString *)strImg{
@@ -739,7 +768,7 @@
 #pragma mark - nhplayer delegate
 -(void)NHPlayer:(NHPlayer *)player onProgress:(CGFloat)progress{
     if (1==progress) {
-        _btnCellVoice.selected=NO;
+        //        _btnCellVoice.selected=NO;
     }
 }
 #pragma mark - common
@@ -801,7 +830,7 @@
 }
 
 - (void)doneLoadingTableViewData{
-
+    
 	//  model should call this when its done loading
 	[NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(doneLoadingTableViewDataAsync) userInfo:nil repeats:NO];
 	
