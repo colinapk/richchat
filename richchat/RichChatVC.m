@@ -32,6 +32,7 @@
     UIButton * _btnPlus;
     UIButton * _btnTalk;
     UIButton * _btnCancel;
+    UIButton * _btnTitleCancel;
     //    UIButton * _btnCellVoice;
     UIImageView * _ivPlayingWave;
     
@@ -196,9 +197,22 @@
     btnCancelImg.backgroundColor=[UIColor colorWithWhite:0 alpha:0.5];
     [btnCancelImg setImage:[UIImage imageNamed:@"mic_black"] forState:UIControlStateNormal];
     [btnCancelImg setImage:[UIImage imageNamed:@"trash_black"] forState:UIControlStateSelected];
+    [btnCancelImg setImageEdgeInsets:UIEdgeInsetsMake(-20.0f,0, 0, 0)];
     [self.view addSubview:btnCancelImg];
     _btnCancel=btnCancelImg;
     _btnCancel.hidden=YES;
+    
+    CGFloat hTitle=30.0f;
+    UIButton * btnCancelLabel=[UIButton buttonWithType:UIButtonTypeCustom];
+    btnCancelLabel.titleLabel.font=[UIFont systemFontOfSize:10];
+    btnCancelLabel.frame=CGRectMake(0, btnCancelImg.frame.size.height-hTitle, btnCancelImg.frame.size.width, hTitle);
+    [btnCancelLabel setTitle:@"手指上滑取消发送" forState:UIControlStateNormal];
+    [btnCancelLabel setTitle:@"松开手指取消发送" forState:UIControlStateSelected];
+    [btnCancelLabel setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_btnCancel addSubview:btnCancelLabel];
+    _btnTitleCancel=btnCancelLabel;
+
+
     
     
     //手势
@@ -392,6 +406,7 @@
     CGPoint point = [pan locationInView:self.view];
     BOOL isOnLab = CGRectContainsPoint(_btnCancel.frame, point);
     _btnCancel.selected=isOnLab;
+    _btnTitleCancel.selected=_btnCancel.selected;
     _isPan=YES;
     if (UIGestureRecognizerStateEnded==pan.state) {
         _btnCancel.hidden=YES;
