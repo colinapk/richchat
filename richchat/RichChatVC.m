@@ -408,17 +408,16 @@
     _btnCancel.selected=isOnLab;
     _btnTitleCancel.selected=_btnCancel.selected;
     _isPan=YES;
+    NSLog(@"%d,%d",isOnLab,pan.state);
     if (UIGestureRecognizerStateEnded==pan.state) {
         _btnCancel.hidden=YES;
         NSLog(@"停止录音");
         NSURL * url = _media.audioRecorder.url;
         NSTimeInterval length=_media.audioRecorder.currentTime;
         [_media.audioRecorder stop];
-        if (length>1) {
+        if (length>1&&!isOnLab) {
             //send
             [self sendMessage:[NSData dataWithContentsOfURL:url] type:ENUM_HISTORY_TYPE_VOICE];
-        }else{
-            //不够长
         }
     }
     
