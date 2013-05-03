@@ -632,7 +632,7 @@
                        UIImageView * ivVoiceWave=[[UIImageView alloc]init];
             CGRect rcWave=CGRectMake(0, 0, imgPlay.size.width, imgPlay.size.height);
             rcWave.origin.x=item.itemSenderIsSelf?CONTENT_INSET_SMALL:CONTENT_INSET_BIG;
-            rcWave.origin.y=CONTENT_INSET_TOP;
+            rcWave.origin.y=CONTENT_INSET_TOP+5;
             ivVoiceWave.frame=rcWave;
             ivVoiceWave.image=imgPlay;
             
