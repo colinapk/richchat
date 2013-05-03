@@ -344,20 +344,8 @@
 }
 
 #pragma mark - funtions
--(void)requestForNearest20messages{
-    if (self.delegate&&[self.delegate respondsToSelector:@selector(richChatRequestToUpdateHistory)]) {
-        [self.delegate richChatRequestToUpdateHistory];
-    }
-}
--(void)reloadTableViewToTop:(BOOL)isToTop{
-    [_table reloadData];
-    if (isToTop) {
-        [self moveTableViewToTop];
-    } else {
-        [self moveTableViewToBottom];
-    }
-    
-}
+
+
 -(void)onTalkTouchDown:(UIButton *)sender{
     _isPan=NO;
     _btnCancel.hidden=NO;
@@ -465,26 +453,6 @@
     
     
 }
--(void)bubbleAlphaChange:(UIView *)aniView forPath:(NSString*)strPath{
-    [UIView animateWithDuration:0.5 animations:^{
-        CGFloat al=aniView.alpha;
-        if (al!=0.3f) {
-            aniView.alpha=0.3f;
-        }else{
-            aniView.alpha=0.7f;
-        }
-    }completion:^(BOOL isFinish){
-        if(isFinish){
-            if (![[NSFileManager defaultManager]fileExistsAtPath:strPath]) {
-                [self bubbleAlphaChange:aniView forPath:strPath];
-            }else{
-                aniView.alpha=1.0f;
-            }
-            
-        }
-        
-    }];
-}
 -(void)onClickCellButton:(UITapGestureRecognizer *)sender{
     if (self.delegate&&[self.delegate respondsToSelector:@selector(richChatHistoryItem:AtIndex:)])
     {
@@ -528,6 +496,7 @@
                             BOOL res=[data writeToFile:strPath options:NSDataWritingFileProtectionNone error:&error];
                             if (res) {
                                 NSLog(@"成功下载一段语音");
+                                [self resizeBubble:sender.view file:strPath];
                             }
                             
 
@@ -556,12 +525,7 @@
         [item release];
     }
 }
--(void)sendMessage:(id)content type:(ENUM_HISTORY_TYPE)type{
-    if (self.delegate && [self.delegate respondsToSelector:@selector(richChatRequestToSendMessage:type:)]) {
-        [self.delegate richChatRequestToSendMessage:content type:type];
-    }
-    
-}
+
 #pragma mark - table
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -661,9 +625,25 @@
             [ivContentBg addSubview:viewContent];
         }
         if (item.itemType==ENUM_HISTORY_TYPE_VOICE) {
-            NSTimeInterval length=0;
+           
             UIImage * imgPlay=[UIImage imageNamed:item.itemSenderIsSelf?@"waveself":@"wave"];
-            CGSize sizeContent=CGSizeMake(length*2+imgPlay.size.width, imgPlay.size.height);
+                       UIImageView * ivVoiceWave=[[UIImageView alloc]init];
+            CGRect rcWave=CGRectMake(0, 0, imgPlay.size.width, imgPlay.size.height);
+            rcWave.origin.x=item.itemSenderIsSelf?CONTENT_INSET_SMALL:CONTENT_INSET_BIG;
+            rcWave.origin.y=CONTENT_INSET_TOP;
+            ivVoiceWave.frame=rcWave;
+            ivVoiceWave.image=imgPlay;
+            
+             NSTimeInterval length=0;
+            //detect whether audio file downloaded
+            NSString * strPath=[item.itemContent lastPathComponent];
+            strPath=[[self voiceFileDocumentPath]stringByAppendingPathComponent:strPath];
+            if (![[NSFileManager defaultManager]fileExistsAtPath:strPath]) {
+                [self downloadVoice:item.itemContent bubble:ivContentBg wave:ivVoiceWave];
+            }else{
+                length=[self getLengthOfVoice:strPath];
+            }
+            CGSize sizeContent=CGSizeMake(length*3+imgPlay.size.width, imgPlay.size.height);
             if (sizeContent.height<27/*单行文字的高度*/) {
                 sizeContent.height=27;
             }
@@ -676,18 +656,7 @@
                                    , sizeContent.height+CONTENT_INSET_TOP+CONTENT_INSET_BOTTOM);
             
             
-            UIImageView * ivVoiceWave=[[UIImageView alloc]init];
-            CGRect rcContent=CGRectMake(0, 0, sizeContent.width, sizeContent.height);
-            rcContent.origin.x=item.itemSenderIsSelf?CONTENT_INSET_SMALL:CONTENT_INSET_BIG;
-            rcContent.origin.y=CONTENT_INSET_TOP;
-            ivVoiceWave.frame=rcContent;
-            ivVoiceWave.image=imgPlay;
-            //detect whether audio file downloaded
-            NSString * strPath=[item.itemContent lastPathComponent];
-            strPath=[[self voiceFileDocumentPath]stringByAppendingPathComponent:strPath];
-            if (![[NSFileManager defaultManager]fileExistsAtPath:strPath]) {
-                [self downloadVoice:item.itemContent bubble:ivContentBg wave:ivVoiceWave];
-            }
+
             //prepare for playing animation elements
             NSMutableArray * animationImages=[[NSMutableArray alloc]init];
             for (int i=1; i<4; i++) {
@@ -786,6 +755,15 @@
     }
     
 }
+-(void)reloadTableViewToTop:(BOOL)isToTop{
+    [_table reloadData];
+    if (isToTop) {
+        [self moveTableViewToTop];
+    } else {
+        [self moveTableViewToBottom];
+    }
+    
+}
 #pragma mark - hptext delegate
 -(void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height{
     
@@ -838,6 +816,68 @@
     }
 }
 #pragma mark - common
+-(void)requestForNearest20messages{
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(richChatRequestToUpdateHistory)]) {
+        [self.delegate richChatRequestToUpdateHistory];
+    }
+}
+-(void)sendMessage:(id)content type:(ENUM_HISTORY_TYPE)type{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(richChatRequestToSendMessage:type:)]) {
+        [self.delegate richChatRequestToSendMessage:content type:type];
+    }
+    
+}
+-(void)bubbleAlphaChange:(UIView *)aniView forPath:(NSString*)strPath{
+    [UIView animateWithDuration:0.5 animations:^{
+        CGFloat al=aniView.alpha;
+        if (al!=0.3f) {
+            aniView.alpha=0.3f;
+        }else{
+            aniView.alpha=0.7f;
+        }
+    }completion:^(BOOL isFinish){
+        if(isFinish){
+            if (![[NSFileManager defaultManager]fileExistsAtPath:strPath]) {
+                [self bubbleAlphaChange:aniView forPath:strPath];
+            }else{
+                aniView.alpha=1.0f;
+            }
+            
+        }
+        
+    }];
+}
+
+-(NSTimeInterval)getLengthOfVoice:(NSString *)strPath{
+    NSTimeInterval length=0;
+    NSData * data=[[NSData alloc]initWithContentsOfFile:strPath];
+    if (data) {
+        AVAudioPlayer * player=[[AVAudioPlayer alloc]initWithData:data error:nil];
+        if (player) {
+            length =  player.duration;
+        }
+        [player release];
+    }
+    [data release];
+    return length;
+}
+-(void)resizeBubble:(UIView *)ivBubble file:(NSString*)strPath{
+    NSData * data=[[NSData alloc]initWithContentsOfFile:strPath];
+    if (data) {
+        AVAudioPlayer * player=[[AVAudioPlayer alloc]initWithData:data error:nil];
+        if (player) {
+            NSTimeInterval length=player.duration;
+            CGRect rc=ivBubble.frame;
+            rc.size.width+=(length*5);
+            [UIView animateWithDuration:0.35 animations:^{
+                ivBubble.frame=rc;
+            }];
+        }
+        [player release];
+    }
+    [data release];
+   
+}
 -(NSString *)voiceFileDocumentPath{
     NSArray * search=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,DOMAIN, YES);
     NSString * strDoc=search.count>0?[search objectAtIndex:0]:nil;
@@ -872,6 +912,7 @@
             NSLog(@"成功下载一段语音");
             dispatch_async(dispatch_get_main_queue(), ^{
                 ivWave.image=imgPlay;
+                [self resizeBubble:ivBubble file:strPath];
             });
         }
         
