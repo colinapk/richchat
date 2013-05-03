@@ -33,6 +33,7 @@
     UIButton * _btnTalk;
     UIButton * _btnCancel;
     //    UIButton * _btnCellVoice;
+    UIImageView * _ivPlayingWave;
     
     BOOL  _isPan;
     BOOL  _isShowMood;
@@ -450,7 +451,7 @@
     
     
 }
--(void)bubbleAlphaChange:(UIView *)aniView{
+-(void)bubbleAlphaChange:(UIView *)aniView forPath:(NSString*)strPath{
     [UIView animateWithDuration:0.1 animations:^{
         CGFloat al=aniView.alpha;
         if (al!=0.3f) {
@@ -460,8 +461,8 @@
         }
     }completion:^(BOOL isFinish){
         if(isFinish){
-            if (!_media.audioPlayer.isPlaying) {
-                [self bubbleAlphaChange:aniView];
+            if (![[NSFileManager defaultManager]fileExistsAtPath:strPath]) {
+                [self bubbleAlphaChange:aniView forPath:strPath];
             }else{
                 aniView.alpha=1.0f;
             }
@@ -475,9 +476,25 @@
     {
         RichChatItem * item=[[RichChatItem alloc]init];
         [self.delegate richChatHistoryItem:item AtIndex:sender.view.tag];
+        
         if (ENUM_HISTORY_TYPE_VOICE==item.itemType) {
-            NSURL * url=[NSURL URLWithString:item.itemContent];;
+            [_media.audioPlayer stop];
+            for (UIView * view in sender.view.subviews) {
+                if ([view isKindOfClass:[UIImageView class]]) {
+                    
+//                    [_ivPlayingWave stopAnimating];
+                    if (_ivPlayingWave==(UIImageView *)view) {
+                        [_ivPlayingWave stopAnimating];
+                        _ivPlayingWave=nil;
+                        return;
+                    } else {
+                        _ivPlayingWave=(UIImageView *)view;
+                    }
+                    
+                }
+            }
             
+            NSURL * url=[NSURL URLWithString:item.itemContent];
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                     NSString * strPath=[item.itemContent lastPathComponent];
                     NSString * strDoc=[self voiceFileDocumentPath];
@@ -489,8 +506,8 @@
 
                         if (![[NSFileManager defaultManager]fileExistsAtPath:strPath])
                         {  //不存在文件，则缓存下来并保存。
+                            [self bubbleAlphaChange:sender.view forPath:strPath];
                             data=[NSData dataWithContentsOfURL:url];
-                            [self bubbleAlphaChange:sender.view];
                             NSError * error=nil;
                             BOOL res=[data writeToFile:strPath options:NSDataWritingFileProtectionNone error:&error];
                             if (res) {
@@ -505,6 +522,7 @@
                         
                         dispatch_async(dispatch_get_main_queue(), ^{
                             //隐藏下载进度条
+                            [_ivPlayingWave startAnimating];
                             [_media playFileData:data];
                             
                             
@@ -628,7 +646,7 @@
         }
         if (item.itemType==ENUM_HISTORY_TYPE_VOICE) {
             NSTimeInterval length=0;
-            UIImage * imgPlay=[UIImage imageNamed:@"button_play"];
+            UIImage * imgPlay=[UIImage imageNamed:item.itemSenderIsSelf?@"waveself":@"wave"];
             CGSize sizeContent=CGSizeMake(length*2+imgPlay.size.width, imgPlay.size.height);
             if (sizeContent.height<27/*单行文字的高度*/) {
                 sizeContent.height=27;
@@ -642,20 +660,54 @@
                                    , sizeContent.height+CONTENT_INSET_TOP+CONTENT_INSET_BOTTOM);
             
             
-            //            UIButton * btnMsgVoice=[UIButton buttonWithType:UIButtonTypeCustom];
-            //            [btnMsgVoice addTarget:self action:@selector(onClickCellButton:) forControlEvents:UIControlEventTouchUpInside];
-            //            btnMsgVoice.tag=indexPath.row;
-            //            [btnMsgVoice setImage:[UIImage imageNamed:@"button_play"] forState:UIControlStateNormal];
-            //            [btnMsgVoice setImage:[UIImage imageNamed:@"button_stop"] forState:UIControlStateSelected];
-            //            CGRect rcContent=CGRectMake(0, 0, sizeContent.width, sizeContent.height);
-            //            rcContent.origin.x=item.itemSenderIsSelf?CONTENT_INSET_SMALL:CONTENT_INSET_BIG;
-            //            rcContent.origin.y=CONTENT_INSET_TOP;
-            //            btnMsgVoice.frame=rcContent;
-            //            if (DEBUG_MODE) {
-            //                [btnMsgVoice setBackgroundColor:[UIColor yellowColor]];
-            //            }
-            //
-            //            [ivContentBg addSubview:btnMsgVoice];
+            UIImageView * ivVoiceWave=[[UIImageView alloc]init];
+            CGRect rcContent=CGRectMake(0, 0, sizeContent.width, sizeContent.height);
+            rcContent.origin.x=item.itemSenderIsSelf?CONTENT_INSET_SMALL:CONTENT_INSET_BIG;
+            rcContent.origin.y=CONTENT_INSET_TOP;
+            ivVoiceWave.frame=rcContent;
+            
+            //detect whether audio file downloaded
+            NSString * strPath=[item.itemContent lastPathComponent];
+            strPath=[[self voiceFileDocumentPath]stringByAppendingPathComponent:strPath];
+            if (![[NSFileManager defaultManager]fileExistsAtPath:strPath]) {
+                ivVoiceWave.image=nil;
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    NSURL * url=[NSURL URLWithString:item.itemContent];
+                    [self bubbleAlphaChange:ivContentBg forPath:strPath];
+                    NSData * data=[NSData dataWithContentsOfURL:url];
+                    NSError * error=nil;
+                    BOOL res=[data writeToFile:strPath options:NSDataWritingFileProtectionNone error:&error];
+                    if (res) {
+                        NSLog(@"成功下载一段语音");
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            ivVoiceWave.image=imgPlay;
+                        });
+                    }
+
+                });
+               
+            } else {
+                ivVoiceWave.image=imgPlay;
+            }
+            //prepare for playing animation elements
+            NSMutableArray * animationImages=[[NSMutableArray alloc]init];
+            for (int i=1; i<4; i++) {
+                NSString * str=[NSString stringWithFormat:@"wave%d",i];
+                if (item.itemSenderIsSelf) {
+                    str=[str stringByAppendingString:@"self"];
+                }
+                UIImage * img=[UIImage imageNamed:str];
+                [animationImages addObject:img];
+                
+            }
+            ivVoiceWave.animationImages=animationImages;
+            ivVoiceWave.animationDuration=0.2;
+            [animationImages release];
+            if (DEBUG_MODE) {
+                [ivVoiceWave setBackgroundColor:[UIColor yellowColor]];
+            }
+
+            [ivContentBg addSubview:ivVoiceWave];
             
         }
         
@@ -782,7 +834,8 @@
 #pragma mark - nhplayer delegate
 -(void)NHPlayer:(NHPlayer *)player onProgress:(CGFloat)progress{
     if (1==progress) {
-        //        _btnCellVoice.selected=NO;
+        [_ivPlayingWave stopAnimating];
+        _ivPlayingWave=nil;
     }
 }
 #pragma mark - common
