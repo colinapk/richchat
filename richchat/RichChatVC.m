@@ -452,7 +452,7 @@
     
 }
 -(void)bubbleAlphaChange:(UIView *)aniView forPath:(NSString*)strPath{
-    [UIView animateWithDuration:0.1 animations:^{
+    [UIView animateWithDuration:0.5 animations:^{
         CGFloat al=aniView.alpha;
         if (al!=0.3f) {
             aniView.alpha=0.3f;
@@ -479,12 +479,14 @@
         
         if (ENUM_HISTORY_TYPE_VOICE==item.itemType) {
             [_media.audioPlayer stop];
+            [_ivPlayingWave stopAnimating];
+            
+
             for (UIView * view in sender.view.subviews) {
                 if ([view isKindOfClass:[UIImageView class]]) {
                     
 //                    [_ivPlayingWave stopAnimating];
                     if (_ivPlayingWave==(UIImageView *)view) {
-                        [_ivPlayingWave stopAnimating];
                         _ivPlayingWave=nil;
                         return;
                     } else {
@@ -500,7 +502,7 @@
                     NSString * strDoc=[self voiceFileDocumentPath];
                                         
                     if (strDoc) {
-                        strPath=[strDoc stringByAppendingFormat:@"/%@",strPath];
+                        strPath=[strDoc stringByAppendingPathComponent:strPath];
                         
                         NSData * data=nil;
 
@@ -665,29 +667,12 @@
             rcContent.origin.x=item.itemSenderIsSelf?CONTENT_INSET_SMALL:CONTENT_INSET_BIG;
             rcContent.origin.y=CONTENT_INSET_TOP;
             ivVoiceWave.frame=rcContent;
-            
+            ivVoiceWave.image=imgPlay;
             //detect whether audio file downloaded
             NSString * strPath=[item.itemContent lastPathComponent];
             strPath=[[self voiceFileDocumentPath]stringByAppendingPathComponent:strPath];
             if (![[NSFileManager defaultManager]fileExistsAtPath:strPath]) {
-                ivVoiceWave.image=nil;
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    NSURL * url=[NSURL URLWithString:item.itemContent];
-                    [self bubbleAlphaChange:ivContentBg forPath:strPath];
-                    NSData * data=[NSData dataWithContentsOfURL:url];
-                    NSError * error=nil;
-                    BOOL res=[data writeToFile:strPath options:NSDataWritingFileProtectionNone error:&error];
-                    if (res) {
-                        NSLog(@"成功下载一段语音");
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            ivVoiceWave.image=imgPlay;
-                        });
-                    }
-
-                });
-               
-            } else {
-                ivVoiceWave.image=imgPlay;
+                [self downloadVoice:item.itemContent bubble:ivContentBg wave:ivVoiceWave];
             }
             //prepare for playing animation elements
             NSMutableArray * animationImages=[[NSMutableArray alloc]init];
@@ -701,7 +686,7 @@
                 
             }
             ivVoiceWave.animationImages=animationImages;
-            ivVoiceWave.animationDuration=0.2;
+            ivVoiceWave.animationDuration=1;
             [animationImages release];
             if (DEBUG_MODE) {
                 [ivVoiceWave setBackgroundColor:[UIColor yellowColor]];
@@ -855,6 +840,28 @@
         }
     }
     return nil;
+
+}
+-(void)downloadVoice:(NSString *)strUrl bubble:(UIImageView *)ivBubble wave:(UIImageView *)ivWave{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        UIImage * imgPlay=ivWave.image;
+        ivWave.image=nil;
+        NSString * strPath=[strUrl lastPathComponent];
+        strPath=[[self voiceFileDocumentPath]stringByAppendingPathComponent:strPath];
+        [self bubbleAlphaChange:ivBubble forPath:strPath];
+        
+        NSURL * url=[NSURL URLWithString:strUrl];
+        NSData * data=[NSData dataWithContentsOfURL:url];
+        NSError * error=nil;
+        BOOL res=[data writeToFile:strPath options:NSDataWritingFileProtectionNone error:&error];
+        if (res) {
+            NSLog(@"成功下载一段语音");
+            dispatch_async(dispatch_get_main_queue(), ^{
+                ivWave.image=imgPlay;
+            });
+        }
+        
+    });
 
 }
 - (NSString *)caculateTime:(double)aDInterval
