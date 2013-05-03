@@ -398,6 +398,8 @@
     _isPan=YES;
     NSLog(@"%d,%d",isOnLab,pan.state);
     if (UIGestureRecognizerStateEnded==pan.state) {
+        _btnCancel.selected=NO;
+        _btnTitleCancel.selected=NO;
         _btnCancel.hidden=YES;
         NSLog(@"停止录音");
         NSURL * url = _media.audioRecorder.url;
@@ -496,7 +498,7 @@
                             BOOL res=[data writeToFile:strPath options:NSDataWritingFileProtectionNone error:&error];
                             if (res) {
                                 NSLog(@"成功下载一段语音");
-                                [self resizeBubble:sender.view file:strPath];
+                                [self resizeBubble:sender.view file:strPath isSelf:item.itemSenderIsSelf];
                             }
                             
 
@@ -639,7 +641,7 @@
             NSString * strPath=[item.itemContent lastPathComponent];
             strPath=[[self voiceFileDocumentPath]stringByAppendingPathComponent:strPath];
             if (![[NSFileManager defaultManager]fileExistsAtPath:strPath]) {
-                [self downloadVoice:item.itemContent bubble:ivContentBg wave:ivVoiceWave];
+                [self downloadVoice:item.itemContent bubble:ivContentBg wave:ivVoiceWave isSelf:item.itemSenderIsSelf];
             }else{
                 length=[self getLengthOfVoice:strPath];
             }
@@ -861,14 +863,18 @@
     [data release];
     return length;
 }
--(void)resizeBubble:(UIView *)ivBubble file:(NSString*)strPath{
+-(void)resizeBubble:(UIView *)ivBubble file:(NSString*)strPath isSelf:(BOOL)isSelf{
     NSData * data=[[NSData alloc]initWithContentsOfFile:strPath];
     if (data) {
         AVAudioPlayer * player=[[AVAudioPlayer alloc]initWithData:data error:nil];
         if (player) {
             NSTimeInterval length=player.duration;
             CGRect rc=ivBubble.frame;
-            rc.size.width+=(length*5);
+            rc.size.width+=(length*3);
+            if (isSelf) {
+                rc.origin.x-=(length*3);
+            }
+            
             [UIView animateWithDuration:0.35 animations:^{
                 ivBubble.frame=rc;
             }];
@@ -896,7 +902,7 @@
     return nil;
 
 }
--(void)downloadVoice:(NSString *)strUrl bubble:(UIImageView *)ivBubble wave:(UIImageView *)ivWave{
+-(void)downloadVoice:(NSString *)strUrl bubble:(UIImageView *)ivBubble wave:(UIImageView *)ivWave isSelf:(BOOL)isSelf{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         UIImage * imgPlay=ivWave.image;
         ivWave.image=nil;
@@ -912,7 +918,7 @@
             NSLog(@"成功下载一段语音");
             dispatch_async(dispatch_get_main_queue(), ^{
                 ivWave.image=imgPlay;
-                [self resizeBubble:ivBubble file:strPath];
+                [self resizeBubble:ivBubble file:strPath isSelf:isSelf];
             });
         }
         
