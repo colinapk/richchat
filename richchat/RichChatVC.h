@@ -57,7 +57,7 @@ typedef enum {
 @interface RichChatItem : NSObject
 @property(nonatomic,assign)ENUM_HISTORY_TYPE itemType;
 @property(nonatomic,strong)id itemContent;
-@property(nonatomic,assign)NSDate * itemTime;
+@property(nonatomic,strong)NSDate * itemTime;
 @property(nonatomic,strong)NSString * itemSenderTitle;
 @property(nonatomic,strong)UIImage * itemSenderFace;
 @property(nonatomic,assign)BOOL itemSenderIsSelf;
